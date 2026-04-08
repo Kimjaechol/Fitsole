@@ -68,9 +68,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### UI/UX
 
-- [ ] **UIUX-01**: Site is mobile-first responsive (scanning flow is mobile-native)
-- [ ] **UIUX-02**: Site supports Korean language
-- [ ] **UIUX-03**: Landing page clearly communicates the custom insole value proposition
+- [x] **UIUX-01**: Site is mobile-first responsive (scanning flow is mobile-native)
+- [x] **UIUX-02**: Site supports Korean language
+- [x] **UIUX-03**: Landing page clearly communicates the custom insole value proposition
 
 ## v2 Requirements
 
@@ -111,9 +111,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ACCT-03 | Phase 1 | Pending |
 | ACCT-04 | Phase 1 | Pending |
 | ACCT-05 | Phase 1 | Complete |
-| UIUX-01 | Phase 1 | Pending |
-| UIUX-02 | Phase 1 | Pending |
-| UIUX-03 | Phase 1 | Pending |
+| UIUX-01 | Phase 1 | Complete |
+| UIUX-02 | Phase 1 | Complete |
+| UIUX-03 | Phase 1 | Complete |
 | SCAN-01 | Phase 2 | Pending |
 | SCAN-02 | Phase 2 | Pending |
 | SCAN-03 | Phase 2 | Pending |
