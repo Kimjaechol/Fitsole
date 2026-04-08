@@ -30,7 +30,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. User can view and manage their profile including saved foot scan placeholders and order history (empty states)
   3. The site is mobile-first responsive and renders correctly on smartphone browsers
   4. The site displays all content in Korean with a landing page that clearly communicates the custom insole value proposition
-**Plans**: TBD
+**Plans:** 4 plans
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Next.js project, database schema, Auth.js backend, test infrastructure
+- [ ] 01-02-PLAN.md — App shell with bottom tab bar, desktop nav, and Korean landing page
+- [ ] 01-03-PLAN.md — Auth forms (login, signup, password reset) with Zod validation
+- [ ] 01-04-PLAN.md — Profile page with 3 tabs, empty states, DB schema push, and verification
 **UI hint**: yes
 
 ### Phase 2: Foot Scanning
@@ -99,7 +104,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Accounts | 0/TBD | Not started | - |
+| 1. Foundation & Accounts | 0/4 | Planning complete | - |
 | 2. Foot Scanning | 0/TBD | Not started | - |
 | 3. Insole Design & Product Catalog | 0/TBD | Not started | - |
 | 4. Shopping & Checkout | 0/TBD | Not started | - |
