@@ -11,7 +11,7 @@ export default function MainLayout({
       <DesktopNav />
 
       <main className="flex-1 pb-[72px] md:pb-0">
-        <div className="mx-auto max-w-[1280px] px-4 md:px-6 lg:px-8">
+        <div className="mx-auto max-w-[1280px]">
           {children}
         </div>
       </main>
