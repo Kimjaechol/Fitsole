@@ -32,7 +32,7 @@ Decimal phases appear between their surrounding integers in numeric order.
   4. The site displays all content in Korean with a landing page that clearly communicates the custom insole value proposition
 **Plans:** 4 plans
 Plans:
-- [ ] 01-01-PLAN.md — Scaffold Next.js project, database schema, Auth.js backend, test infrastructure
+- [x] 01-01-PLAN.md — Scaffold Next.js project, database schema, Auth.js backend, test infrastructure
 - [ ] 01-02-PLAN.md — App shell with bottom tab bar, desktop nav, and Korean landing page
 - [ ] 01-03-PLAN.md — Auth forms (login, signup, password reset) with Zod validation
 - [ ] 01-04-PLAN.md — Profile page with 3 tabs, empty states, DB schema push, and verification
