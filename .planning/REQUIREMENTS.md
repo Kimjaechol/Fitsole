@@ -106,13 +106,50 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (To be populated by roadmapper) | | |
+| ACCT-01 | Phase 1 | Pending |
+| ACCT-02 | Phase 1 | Pending |
+| ACCT-03 | Phase 1 | Pending |
+| ACCT-04 | Phase 1 | Pending |
+| ACCT-05 | Phase 1 | Pending |
+| UIUX-01 | Phase 1 | Pending |
+| UIUX-02 | Phase 1 | Pending |
+| UIUX-03 | Phase 1 | Pending |
+| SCAN-01 | Phase 2 | Pending |
+| SCAN-02 | Phase 2 | Pending |
+| SCAN-03 | Phase 2 | Pending |
+| SCAN-04 | Phase 2 | Pending |
+| SCAN-05 | Phase 2 | Pending |
+| SCAN-06 | Phase 2 | Pending |
+| SCAN-07 | Phase 2 | Pending |
+| INSL-01 | Phase 3 | Pending |
+| INSL-02 | Phase 3 | Pending |
+| INSL-03 | Phase 3 | Pending |
+| INSL-04 | Phase 3 | Pending |
+| PROD-01 | Phase 3 | Pending |
+| PROD-02 | Phase 3 | Pending |
+| PROD-03 | Phase 3 | Pending |
+| PROD-04 | Phase 3 | Pending |
+| PROD-05 | Phase 3 | Pending |
+| SHOP-01 | Phase 4 | Pending |
+| SHOP-02 | Phase 4 | Pending |
+| SHOP-03 | Phase 4 | Pending |
+| SHOP-04 | Phase 4 | Pending |
+| ORDR-01 | Phase 5 | Pending |
+| ORDR-02 | Phase 5 | Pending |
+| ORDR-03 | Phase 5 | Pending |
+| ORDR-04 | Phase 5 | Pending |
+| SEGM-01 | Phase 6 | Pending |
+| SEGM-02 | Phase 6 | Pending |
+| SEGM-03 | Phase 6 | Pending |
+| SUPP-01 | Phase 6 | Pending |
+| SUPP-02 | Phase 6 | Pending |
+| SUPP-03 | Phase 6 | Pending |
 
 **Coverage:**
-- v1 requirements: 33 total
-- Mapped to phases: 0
-- Unmapped: 33 ⚠️
+- v1 requirements: 38 total
+- Mapped to phases: 38
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-09*
-*Last updated: 2026-04-09 after initial definition*
+*Last updated: 2026-04-09 after roadmap creation*
