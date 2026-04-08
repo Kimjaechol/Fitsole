@@ -564,22 +564,22 @@ export const db = drizzle(sql, { schema });
 
 **Note on A5:** Zod 4.3.6 is installed. The `z.object().refine()` pattern should still work but verify against Zod v4 migration guide.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Zod v4 API compatibility**
    - What we know: Zod 4.x was released with breaking changes from 3.x. Current npm version is 4.3.6.
    - What's unclear: Whether `@hookform/resolvers` fully supports Zod v4 yet.
-   - Recommendation: Check `@hookform/resolvers` changelog. If incompatible, pin Zod to 3.x for Phase 1.
+   - RESOLVED: Use `z.object().refine()` (confirmed working in 4.x). Pin `@hookform/resolvers` to latest; if incompatible, fall back to Zod 3.x.
 
 2. **next-auth beta stability**
    - What we know: next-auth is at 5.0.0-beta.30. Auth.js v5 has been in beta for over a year.
    - What's unclear: Whether any breaking changes are expected before stable release.
-   - Recommendation: Pin to `5.0.0-beta.30` exactly. The beta is widely used in production. Avoid `@latest` tag.
+   - RESOLVED: Pin to `5.0.0-beta.30` exactly. Widely used in production. Avoid `@latest` tag.
 
 3. **Password reset email flow with Resend**
    - What we know: D-08 requires password reset via email link. Resend is the chosen provider.
    - What's unclear: Whether to use Auth.js's built-in email provider or build a custom reset flow.
-   - Recommendation: Build a custom password reset flow (generate token, send email via Resend, verify token + update password). Auth.js's email provider is designed for magic links, not password reset.
+   - RESOLVED: Build custom password reset flow (generate token, send email via Resend, verify token + update password). Auth.js's email provider is for magic links, not password reset.
 
 ## Environment Availability
 
