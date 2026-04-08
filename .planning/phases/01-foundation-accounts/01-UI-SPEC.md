@@ -39,7 +39,19 @@ Declared values (must be multiples of 4):
 | 2xl | 48px | Landing page section breaks |
 | 3xl | 64px | Page-level vertical rhythm (hero top/bottom padding) |
 
-Exceptions: Bottom tab bar height is 56px (not a multiple of 8 but standard mobile nav height for 44px touch targets + 12px safe area).
+No exceptions to the spacing scale. Non-spacing dimensions are listed in the Component Dimensions section below.
+
+---
+
+## Component Dimensions
+
+Fixed-size component measurements that are not spacing tokens:
+
+| Component | Dimension | Value | Rationale |
+|-----------|-----------|-------|-----------|
+| BottomTabBar | Height | 56px | Standard mobile nav: 44px touch target + 12px safe area |
+| Input | Height | 48px | Mobile touch target minimum |
+| Button (primary) | Height | 48px | Mobile touch target minimum |
 
 ---
 
@@ -48,13 +60,15 @@ Exceptions: Bottom tab bar height is 56px (not a multiple of 8 but standard mobi
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 16px | 400 (Regular) | 1.5 |
-| Label | 14px | 600 (SemiBold) | 1.4 |
+| Label | 14px | 400 (Regular) | 1.4 |
 | Heading | 24px | 700 (Bold) | 1.2 |
 | Display | 32px | 700 (Bold) | 1.1 |
 
+Declared weights: 400 (Regular) for body and label text, 700 (Bold) for headings and display text. No other weights permitted.
+
 Font stack: `'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif`
 
-Note: Pretendard loaded via CDN (`https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css`) or self-hosted from `static/fonts/`. Variable font preferred for weight flexibility within the declared 400/600/700 range.
+Note: Pretendard loaded via CDN (`https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css`) or self-hosted from `static/fonts/`. Variable font preferred for weight flexibility within the declared 400/700 range.
 
 ---
 
@@ -73,6 +87,19 @@ Note: Pretendard loaded via CDN (`https://cdn.jsdelivr.net/gh/orioncactus/preten
 Accent reserved for: Primary CTA buttons ("내 발에 맞는 신발 찾기", "시작하기"), active bottom tab icon + label, text links, form input focus rings, login/signup submit button.
 
 Accent secondary reserved for: Landing page measurement process step icons, success toast/banner after signup, health-related badge/pill elements.
+
+---
+
+## Visual Hierarchy
+
+**Primary focal point:** The Landing hero CTA button ("내 발에 맞는 신발 찾기") is the primary visual anchor of the entire application. It uses the accent color at full saturation on the dominant white background, 48px height, 700 weight label text, and sits at the vertical center of the full-viewport hero section. All other interactive elements are visually subordinate to this CTA.
+
+**Hierarchy order:**
+1. Landing hero CTA — accent fill, largest touch target, viewport-centered
+2. Bottom CTA section — accent background with white text, secondary conversion point
+3. Auth form submit buttons — accent fill, full width, but within a form context
+4. Active bottom tab indicator — accent color icon + label, persistent but small
+5. Text links and focus rings — accent color, inline, lowest visual weight
 
 ---
 
