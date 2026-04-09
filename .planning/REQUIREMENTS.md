@@ -30,9 +30,9 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Insole Design — Line 1: Camera-based (인솔 설계 — 일반인용)
 
 - [x] **INSL-01**: System generates custom insole design from SfM scan data (arch height 79.4% + heel cup depth 40.2% optimization)
-- [ ] **INSL-02**: System calculates optimal arch height and heel cup depth using rule-based algorithms (calculate_optimal_arch_height, calculate_optimal_heel_cup_depth)
+- [x] **INSL-02**: System calculates optimal arch height and heel cup depth using rule-based algorithms (calculate_optimal_arch_height, calculate_optimal_heel_cup_depth)
 - [ ] **INSL-03**: User can preview custom insole design in 3D visualization with zone-by-zone hardness display
-- [ ] **INSL-04**: System recommends optimal shoe size per product based on scan data
+- [x] **INSL-04**: System recommends optimal shoe size per product based on scan data
 
 ### Insole Design — Line 2: SALTED SDK (인솔 설계 — 전문가용)
 
@@ -150,9 +150,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCAN-06 | Phase 2 | Complete |
 | SCAN-07 | Phase 2 | Complete |
 | INSL-01 | Phase 3 | Complete |
-| INSL-02 | Phase 3 | Pending |
+| INSL-02 | Phase 3 | Complete |
 | INSL-03 | Phase 3 | Pending |
-| INSL-04 | Phase 3 | Pending |
+| INSL-04 | Phase 3 | Complete |
 | PROD-01 | Phase 3 | Complete |
 | PROD-02 | Phase 3 | Complete |
 | PROD-03 | Phase 3 | Complete |
