@@ -74,7 +74,7 @@ Plans:
 **Plans:** 7 plans
 Plans:
 - [x] 03-01-PLAN.md — Type contracts, DB schema extension, Python Pydantic models for insole/SALTED
-- [ ] 03-02-PLAN.md — Payload CMS setup with Products, Categories, Media collections
+- [x] 03-02-PLAN.md — Payload CMS setup with Products, Categories, Media collections
 - [ ] 03-03-PLAN.md — Insole optimization algorithms (arch height, heel cup, hardness), design API
 - [ ] 03-04-PLAN.md — OpenSCAD parametric CAD pipeline, STL export, PrusaSlicer profile
 - [ ] 03-05-PLAN.md — SALTED BLE adapter (mock+real), biomechanical analysis, session API

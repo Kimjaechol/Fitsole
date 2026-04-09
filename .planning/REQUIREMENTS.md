@@ -54,9 +54,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Product Catalog (상품 카탈로그)
 
-- [ ] **PROD-01**: User can browse shoes by category (운동화, 구두, 부츠, 샌들 등)
-- [ ] **PROD-02**: User can filter shoes by category, size, price, and style
-- [ ] **PROD-03**: User can view product detail page with multiple images and descriptions
+- [x] **PROD-01**: User can browse shoes by category (운동화, 구두, 부츠, 샌들 등)
+- [x] **PROD-02**: User can filter shoes by category, size, price, and style
+- [x] **PROD-03**: User can view product detail page with multiple images and descriptions
 - [ ] **PROD-04**: Product page shows shoe + custom insole bundle pricing
 - [ ] **PROD-05**: Product page shows insole customization preview based on user's scan data
 
@@ -153,9 +153,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INSL-02 | Phase 3 | Pending |
 | INSL-03 | Phase 3 | Pending |
 | INSL-04 | Phase 3 | Pending |
-| PROD-01 | Phase 3 | Pending |
-| PROD-02 | Phase 3 | Pending |
-| PROD-03 | Phase 3 | Pending |
+| PROD-01 | Phase 3 | Complete |
+| PROD-02 | Phase 3 | Complete |
+| PROD-03 | Phase 3 | Complete |
 | PROD-04 | Phase 3 | Pending |
 | PROD-05 | Phase 3 | Pending |
 | SHOP-01 | Phase 4 | Pending |
