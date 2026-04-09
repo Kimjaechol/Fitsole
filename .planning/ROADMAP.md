@@ -39,7 +39,7 @@ Plans:
 **UI hint**: yes
 
 ### Phase 2: Foot Scanning
-**Goal**: Users can measure their feet using smartphone video SfM scanning (±0.15mm accuracy) with AI gait analysis, view 3D foot model with pressure heatmap, and results are saved to their profile
+**Goal**: Users can measure their feet using smartphone video SfM scanning (+-0.15mm accuracy) with AI gait analysis, view 3D foot model with pressure heatmap, and results are saved to their profile
 **Depends on**: Phase 1
 **Requirements**: SCAN-01, SCAN-02, SCAN-03, SCAN-04, SCAN-05, SCAN-06, SCAN-07, SCAN-08, SCAN-09, SCAN-10
 **Success Criteria** (what must be TRUE):
@@ -48,7 +48,15 @@ Plans:
   3. User can record a 5-10 step walking video and the system analyzes gait pattern, ankle alignment, and arch flexibility via AI
   4. System detects left/right asymmetry, scores scan quality, prompts re-scan if insufficient, and generates AI-estimated pressure distribution heatmap
   5. User can view interactive 3D foot model with measurement overlay and pressure heatmap, results saved to profile
-**Plans**: TBD
+**Plans:** 7 plans
+Plans:
+- [ ] 02-01-PLAN.md — Type contracts, DB schema extension, Zustand store, scan API routes
+- [ ] 02-02-PLAN.md — Python FastAPI backend scaffold with COLMAP SfM pipeline
+- [ ] 02-03-PLAN.md — Scan UI components (camera, recording, guides, onboarding, quality)
+- [ ] 02-04-PLAN.md — Gait analysis (MediaPipe Pose) and pressure estimation backend
+- [ ] 02-05-PLAN.md — Scan flow pages, video upload (TUS), processing status polling
+- [ ] 02-06-PLAN.md — 3D foot model viewer (R3F), results page, pressure heatmap
+- [ ] 02-07-PLAN.md — Integration wiring, profile update, end-to-end verification
 **UI hint**: yes
 
 ### Phase 3: Insole Design & Product Catalog
@@ -108,7 +116,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Accounts | 0/4 | Planning complete | - |
-| 2. Foot Scanning | 0/TBD | Not started | - |
+| 2. Foot Scanning | 0/7 | Planning complete | - |
 | 3. Insole Design & Product Catalog | 0/TBD | Not started | - |
 | 4. Shopping & Checkout | 0/TBD | Not started | - |
 | 5. Order Management & Factory Integration | 0/TBD | Not started | - |
