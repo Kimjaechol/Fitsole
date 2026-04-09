@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """COLMAP SfM 3D reconstruction module.
 
 Runs Structure-from-Motion pipeline using pycolmap to reconstruct

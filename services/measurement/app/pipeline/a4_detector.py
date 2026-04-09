@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """A4 paper detection and scale calibration module.
 
 Detects A4 paper (297mm x 210mm) in video frames using contour detection

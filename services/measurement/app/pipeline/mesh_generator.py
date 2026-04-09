@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Mesh generation from 3D point cloud.
 
 Converts SfM point cloud to triangle mesh using Open3D

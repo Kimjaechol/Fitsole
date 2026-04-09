@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """Arch flexibility analysis from pose landmarks over time.
 
 Computes arch flexibility index (0-1) by analyzing foot landmark
