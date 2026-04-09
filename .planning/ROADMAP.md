@@ -54,7 +54,7 @@ Plans:
 - [x] 02-02-PLAN.md — Python FastAPI backend scaffold with COLMAP SfM pipeline
 - [x] 02-03-PLAN.md — Scan UI components (camera, recording, guides, onboarding, quality)
 - [x] 02-04-PLAN.md — Gait analysis (MediaPipe Pose) and pressure estimation backend
-- [ ] 02-05-PLAN.md — Scan flow pages, video upload (TUS), processing status polling
+- [x] 02-05-PLAN.md — Scan flow pages, video upload (TUS), processing status polling
 - [ ] 02-06-PLAN.md — 3D foot model viewer (R3F), results page, pressure heatmap
 - [ ] 02-07-PLAN.md — Integration wiring, profile update, end-to-end verification
 **UI hint**: yes
