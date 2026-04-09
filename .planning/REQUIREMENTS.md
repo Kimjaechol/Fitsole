@@ -31,7 +31,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **INSL-01**: System generates custom insole design from SfM scan data (arch height 79.4% + heel cup depth 40.2% optimization)
 - [x] **INSL-02**: System calculates optimal arch height and heel cup depth using rule-based algorithms (calculate_optimal_arch_height, calculate_optimal_heel_cup_depth)
-- [ ] **INSL-03**: User can preview custom insole design in 3D visualization with zone-by-zone hardness display
+- [x] **INSL-03**: User can preview custom insole design in 3D visualization with zone-by-zone hardness display
 - [x] **INSL-04**: System recommends optimal shoe size per product based on scan data
 
 ### Insole Design — Line 2: SALTED SDK (인솔 설계 — 전문가용)
@@ -57,8 +57,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PROD-01**: User can browse shoes by category (운동화, 구두, 부츠, 샌들 등)
 - [x] **PROD-02**: User can filter shoes by category, size, price, and style
 - [x] **PROD-03**: User can view product detail page with multiple images and descriptions
-- [ ] **PROD-04**: Product page shows shoe + custom insole bundle pricing
-- [ ] **PROD-05**: Product page shows insole customization preview based on user's scan data
+- [x] **PROD-04**: Product page shows shoe + custom insole bundle pricing
+- [x] **PROD-05**: Product page shows insole customization preview based on user's scan data
 
 ### Shopping & Checkout (쇼핑/결제)
 
@@ -151,13 +151,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCAN-07 | Phase 2 | Complete |
 | INSL-01 | Phase 3 | Complete |
 | INSL-02 | Phase 3 | Complete |
-| INSL-03 | Phase 3 | Pending |
+| INSL-03 | Phase 3 | Complete |
 | INSL-04 | Phase 3 | Complete |
 | PROD-01 | Phase 3 | Complete |
 | PROD-02 | Phase 3 | Complete |
 | PROD-03 | Phase 3 | Complete |
-| PROD-04 | Phase 3 | Pending |
-| PROD-05 | Phase 3 | Pending |
+| PROD-04 | Phase 3 | Complete |
+| PROD-05 | Phase 3 | Complete |
 | SHOP-01 | Phase 4 | Pending |
 | SHOP-02 | Phase 4 | Pending |
 | SHOP-03 | Phase 4 | Pending |
