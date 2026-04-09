@@ -56,7 +56,7 @@ Plans:
 - [x] 02-04-PLAN.md — Gait analysis (MediaPipe Pose) and pressure estimation backend
 - [x] 02-05-PLAN.md — Scan flow pages, video upload (TUS), processing status polling
 - [x] 02-06-PLAN.md — 3D foot model viewer (R3F), results page, pressure heatmap
-- [ ] 02-07-PLAN.md — Integration wiring, profile update, end-to-end verification
+- [x] 02-07-PLAN.md — Integration wiring, profile update, end-to-end verification
 **UI hint**: yes
 
 ### Phase 3: Insole Design & Product Catalog
