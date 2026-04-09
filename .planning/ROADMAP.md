@@ -48,7 +48,7 @@ Plans:
   3. User can record a 5-10 step walking video and the system analyzes gait pattern, ankle alignment, and arch flexibility via AI
   4. System detects left/right asymmetry, scores scan quality, prompts re-scan if insufficient, and generates AI-estimated pressure distribution heatmap
   5. User can view interactive 3D foot model with measurement overlay and pressure heatmap, results saved to profile
-**Plans:** 7 plans
+**Plans:** 8 plans
 Plans:
 - [x] 02-01-PLAN.md — Type contracts, DB schema extension, Zustand store, scan API routes
 - [x] 02-02-PLAN.md — Python FastAPI backend scaffold with COLMAP SfM pipeline
@@ -57,6 +57,7 @@ Plans:
 - [x] 02-05-PLAN.md — Scan flow pages, video upload (TUS), processing status polling
 - [x] 02-06-PLAN.md — 3D foot model viewer (R3F), results page, pressure heatmap
 - [x] 02-07-PLAN.md — Integration wiring, profile update, end-to-end verification
+- [ ] 02-08-PLAN.md — Gap closure: fix orchestration wiring, gait upload routing, biometric inputs
 **UI hint**: yes
 
 ### Phase 3: Insole Design & Product Catalog
@@ -116,7 +117,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Accounts | 0/4 | Planning complete | - |
-| 2. Foot Scanning | 0/7 | Planning complete | - |
+| 2. Foot Scanning | 0/8 | Planning complete | - |
 | 3. Insole Design & Product Catalog | 0/TBD | Not started | - |
 | 4. Shopping & Checkout | 0/TBD | Not started | - |
 | 5. Order Management & Factory Integration | 0/TBD | Not started | - |
