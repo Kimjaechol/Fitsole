@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-04-09T23:28:14.431Z"
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-04-09T23:35:12.828Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 23
-  completed_plans: 21
-  percent: 91
+  completed_plans: 22
+  percent: 96
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 ## Current Position
 
 Phase: 04 (Shopping & Checkout) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-04-09
 
@@ -76,6 +76,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-insole-design-product-catalog P07 | 5min | 3 tasks | 8 files |
 | Phase 03-insole-design-product-catalog P08 | 2min | 2 tasks | 2 files |
 | Phase 04-shopping-checkout P01 | 5min | 2 tasks | 7 files |
+| Phase 04-shopping-checkout P02 | 4min | 2 tasks | 11 files |
 
 ## Accumulated Context
 
@@ -129,6 +130,9 @@ Recent decisions affecting current work:
 - [Phase 03-insole-design-product-catalog]: API proxy routes use MEASUREMENT_SERVICE_URL env var; T-03-19 frame/duration limits enforced in proxy
 - [Phase 03-insole-design-product-catalog]: Dynamic import with ssr:false for R3F components on product page; 240px compact height for embedded insole preview
 - [Phase 04-shopping-checkout]: Cart deduplicates by productId+size+designId; free shipping over 50,000 KRW
+- [Phase 04-shopping-checkout]: Toss Payments widgets API for SDK integration with customerKey-based initialization
+- [Phase 04-shopping-checkout]: Server-side price validation via Payload Local API to prevent price tampering (T-04-03)
+- [Phase 04-shopping-checkout]: Daum Postcode script loaded dynamically on button click rather than in global layout
 
 ### Pending Todos
 
@@ -141,6 +145,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T23:28:14.429Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-04-09T23:35:12.826Z
+Stopped at: Completed 04-02-PLAN.md
 Resume file: None

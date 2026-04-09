@@ -95,7 +95,7 @@ Plans:
 **Plans:** 3 plans
 Plans:
 - [x] 04-01-PLAN.md — Cart system: Zustand store, orders DB schema, cart page UI, add-to-cart button
-- [ ] 04-02-PLAN.md — Checkout flow: shipping form with Daum API, Toss Payments SDK widget
+- [x] 04-02-PLAN.md — Checkout flow: shipping form with Daum API, Toss Payments SDK widget
 - [ ] 04-03-PLAN.md — Payment verification, order confirmation page, confirmation email
 **UI hint**: yes
 
