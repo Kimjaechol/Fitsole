@@ -15,7 +15,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SCAN-04**: System captures video (15-20s) of foot and reconstructs 3D model via SfM (±0.15mm accuracy)
 - [x] **SCAN-05**: System detects and stores left/right foot asymmetry separately
 - [x] **SCAN-06**: System scores scan quality and prompts re-scan if insufficient
-- [ ] **SCAN-07**: User can view 3D foot model with measurement overlay and pressure heatmap
+- [x] **SCAN-07**: User can view 3D foot model with measurement overlay and pressure heatmap
 - [x] **SCAN-08**: User can record walking video (5-10 steps) for AI gait analysis
 - [x] **SCAN-09**: System analyzes gait pattern, ankle alignment, arch flexibility from walking video
 - [x] **SCAN-10**: System generates AI-estimated pressure distribution heatmap
@@ -130,7 +130,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCAN-04 | Phase 2 | Complete |
 | SCAN-05 | Phase 2 | Complete |
 | SCAN-06 | Phase 2 | Complete |
-| SCAN-07 | Phase 2 | Pending |
+| SCAN-07 | Phase 2 | Complete |
 | INSL-01 | Phase 3 | Pending |
 | INSL-02 | Phase 3 | Pending |
 | INSL-03 | Phase 3 | Pending |
