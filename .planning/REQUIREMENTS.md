@@ -39,9 +39,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SALT-01**: System connects to SALTED smart insole via BLE and receives real-time pressure data (100Hz)
 - [x] **SALT-02**: System collects 5-min walking session data (~300,000 data points) and stores to server
 - [x] **SALT-03**: System analyzes SALTED data: landing pattern, pronation/supination, COP trajectory, arch flexibility
-- [ ] **SALT-04**: System generates precision insole design from SALTED pressure data + SfM scan data combined
+- [x] **SALT-04**: System generates precision insole design from SALTED pressure data + SfM scan data combined
 - [x] **SALT-05**: System auto-generates parametric CAD (OpenSCAD) → STL file with zone-specific Varioshore TPU temperature mapping
-- [ ] **SALT-06**: System generates before/after verification report comparing pressure distribution with and without custom insole
+- [x] **SALT-06**: System generates before/after verification report comparing pressure distribution with and without custom insole
 
 ### Admin Dashboard (관리자 대시보드)
 

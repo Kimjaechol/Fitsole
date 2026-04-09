@@ -79,7 +79,7 @@ Plans:
 - [x] 03-04-PLAN.md — OpenSCAD parametric CAD pipeline, STL export, PrusaSlicer profile
 - [x] 03-05-PLAN.md — SALTED BLE adapter (mock+real), biomechanical analysis, session API
 - [x] 03-06-PLAN.md — Product catalog UI (listing, filters, detail), 3D insole preview, design page
-- [ ] 03-07-PLAN.md — SALTED session UI, precision design, before/after report, API proxy wiring
+- [x] 03-07-PLAN.md — SALTED session UI, precision design, before/after report, API proxy wiring
 **UI hint**: yes
 
 ### Phase 4: Shopping & Checkout
