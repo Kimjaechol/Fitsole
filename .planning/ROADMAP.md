@@ -71,7 +71,15 @@ Plans:
   4. System generates before/after verification report for SALTED-measured customers
   5. User can preview custom insole in 3D with zone hardness visualization
   6. User can browse shoes by category, filter, view bundle pricing with insole customization preview and size recommendation
-**Plans**: TBD
+**Plans:** 7 plans
+Plans:
+- [ ] 03-01-PLAN.md — Type contracts, DB schema extension, Python Pydantic models for insole/SALTED
+- [ ] 03-02-PLAN.md — Payload CMS setup with Products, Categories, Media collections
+- [ ] 03-03-PLAN.md — Insole optimization algorithms (arch height, heel cup, hardness), design API
+- [ ] 03-04-PLAN.md — OpenSCAD parametric CAD pipeline, STL export, PrusaSlicer profile
+- [ ] 03-05-PLAN.md — SALTED BLE adapter (mock+real), biomechanical analysis, session API
+- [ ] 03-06-PLAN.md — Product catalog UI (listing, filters, detail), 3D insole preview, design page
+- [ ] 03-07-PLAN.md — SALTED session UI, precision design, before/after report, API proxy wiring
 **UI hint**: yes
 
 ### Phase 4: Shopping & Checkout
@@ -123,7 +131,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation & Accounts | 0/4 | Planning complete | - |
 | 2. Foot Scanning | 0/8 | Planning complete | - |
-| 3. Insole Design & Product Catalog | 0/TBD | Not started | - |
+| 3. Insole Design & Product Catalog | 0/7 | Planning complete | - |
 | 4. Shopping & Checkout | 0/TBD | Not started | - |
 | 5. Order Management & Factory Integration | 0/TBD | Not started | - |
 | 6. Segmentation & Support | 0/TBD | Not started | - |
