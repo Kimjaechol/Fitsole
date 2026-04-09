@@ -52,7 +52,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Type contracts, DB schema extension, Zustand store, scan API routes
 - [x] 02-02-PLAN.md — Python FastAPI backend scaffold with COLMAP SfM pipeline
-- [ ] 02-03-PLAN.md — Scan UI components (camera, recording, guides, onboarding, quality)
+- [x] 02-03-PLAN.md — Scan UI components (camera, recording, guides, onboarding, quality)
 - [ ] 02-04-PLAN.md — Gait analysis (MediaPipe Pose) and pressure estimation backend
 - [ ] 02-05-PLAN.md — Scan flow pages, video upload (TUS), processing status polling
 - [ ] 02-06-PLAN.md — 3D foot model viewer (R3F), results page, pressure heatmap
