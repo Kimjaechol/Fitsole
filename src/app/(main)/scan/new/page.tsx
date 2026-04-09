@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import { useScanStore } from '@/lib/scan/store';
 import { checkFrameQuality } from '@/lib/scan/camera';
-import { uploadScanVideo } from '@/lib/scan/upload';
+import { uploadScanVideo, uploadGaitVideo } from '@/lib/scan/upload';
 import { ScanStepper } from '@/components/scan/scan-stepper';
 import { CameraViewfinder } from '@/components/scan/camera-viewfinder';
 import { RecordingButton } from '@/components/scan/recording-button';
@@ -47,6 +47,13 @@ export default function ScanNewPage() {
   // Walking state
   const [stepCount, setStepCount] = useState(0);
   const [showWalkingInstructions, setShowWalkingInstructions] = useState(true);
+
+  // Biometric state
+  const [weight, setWeight] = useState('');
+  const [gender, setGender] = useState<'male' | 'female' | 'other' | ''>('');
+  const [age, setAge] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processError, setProcessError] = useState<string | null>(null);
 
   // Foot side state
   const [scannedFoot, setScannedFoot] = useState<FootSide | null>(null);
@@ -150,9 +157,10 @@ export default function ScanNewPage() {
 
   const handleRecordingComplete = useCallback(
     (blob: Blob) => {
-      // Upload the video
+      // Upload the video — use uploadGaitVideo for step 3 (walking video)
       setUploadProgress(0);
-      const handle = uploadScanVideo(
+      const uploadFn = step === 3 ? uploadGaitVideo : uploadScanVideo;
+      const handle = uploadFn(
         blob,
         scanIdRef.current,
         (percent) => setUploadProgress(percent),
@@ -208,10 +216,35 @@ export default function ScanNewPage() {
     [currentFoot]
   );
 
-  const handleFinish = useCallback(() => {
-    // Navigate to processing page
-    router.push(`/scan/processing/${scanIdRef.current}`);
-  }, [router]);
+  const handleFinish = useCallback(async () => {
+    setIsProcessing(true);
+    setProcessError(null);
+
+    try {
+      const response = await fetch('/api/scan/process', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scanId: scanIdRef.current,
+          footSide: currentFoot,
+          weight: parseFloat(weight),
+          gender,
+          age: parseFloat(age),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Process trigger failed');
+      }
+
+      // Navigate to processing page (it polls status)
+      router.push(`/scan/processing/${scanIdRef.current}`);
+    } catch {
+      setProcessError('처리를 시작할 수 없습니다. 다시 시도해 주세요.');
+    } finally {
+      setIsProcessing(false);
+    }
+  }, [router, currentFoot, weight, gender, age]);
 
   // Step 1: Positioning
   if (step === 1) {
@@ -509,7 +542,10 @@ export default function ScanNewPage() {
     );
   }
 
-  // Step 4: Foot side selection
+  // Check if biometric form is complete
+  const biometricsComplete = weight !== '' && gender !== '' && age !== '';
+
+  // Step 4: Foot side selection + biometric collection
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-white px-6">
       <h2 className="text-2xl font-bold text-slate-800">
@@ -524,12 +560,84 @@ export default function ScanNewPage() {
       />
 
       {scannedFoot && (
-        <div className="flex w-full max-w-xs flex-col gap-3">
+        <div className="flex w-full max-w-xs flex-col gap-4">
+          {/* Biometric input form */}
+          <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
+            <p className="text-sm font-medium text-slate-700">
+              압력 분석을 위해 추가 정보가 필요합니다
+            </p>
+
+            {/* Weight */}
+            <div className="flex flex-col gap-1">
+              <label htmlFor="weight" className="text-sm text-slate-600">
+                체중 (kg)
+              </label>
+              <input
+                id="weight"
+                type="number"
+                placeholder="예: 65"
+                min={1}
+                max={300}
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+
+            {/* Gender */}
+            <div className="flex flex-col gap-1">
+              <span className="text-sm text-slate-600">성별</span>
+              <div className="flex gap-2">
+                {([
+                  { value: 'male', label: '남성' },
+                  { value: 'female', label: '여성' },
+                  { value: 'other', label: '기타' },
+                ] as const).map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setGender(option.value)}
+                    className={`flex-1 rounded-md border px-3 py-2 text-sm transition-colors ${
+                      gender === option.value
+                        ? 'border-blue-500 bg-blue-50 text-blue-700'
+                        : 'border-slate-300 bg-white text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Age */}
+            <div className="flex flex-col gap-1">
+              <label htmlFor="age" className="text-sm text-slate-600">
+                나이
+              </label>
+              <input
+                id="age"
+                type="number"
+                placeholder="예: 30"
+                min={1}
+                max={150}
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                className="rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+
+          {/* Error message */}
+          {processError && (
+            <p className="text-center text-sm text-red-600">{processError}</p>
+          )}
+
           <Button
             onClick={handleFinish}
-            className="w-full bg-blue-600 hover:bg-blue-700"
+            disabled={!biometricsComplete || isProcessing}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
           >
-            결과 보기
+            {isProcessing ? '처리 시작 중...' : '결과 보기'}
           </Button>
           <p className="text-center text-sm text-slate-500">
             반대쪽 발을 선택하면 추가 촬영할 수 있습니다

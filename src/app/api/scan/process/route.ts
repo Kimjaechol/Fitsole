@@ -16,6 +16,9 @@ const MEASUREMENT_SERVICE_URL =
 const processRequestSchema = z.object({
   scanId: z.string().uuid(),
   footSide: z.enum(["left", "right"]),
+  weight: z.number().positive().max(300).optional(),
+  gender: z.enum(["male", "female", "other"]).optional(),
+  age: z.number().positive().max(150).optional(),
 });
 
 export async function POST(request: Request) {
@@ -39,7 +42,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { scanId, footSide } = parsed.data;
+    const { scanId, footSide, weight, gender, age } = parsed.data;
 
     // Verify scan belongs to user (IDOR prevention)
     const [scan] = await db
@@ -137,33 +140,21 @@ export async function POST(request: Request) {
         })
         .where(eq(footScans.id, scanId));
 
-      // Step 2: Gait analysis
+      // Step 2: Check if gait analysis already exists (populated by upload route)
       await db
         .update(footScans)
         .set({ processingStage: "analyzing_gait" })
         .where(eq(footScans.id, scanId));
 
-      const gaitResponse = await fetch(
-        `${MEASUREMENT_SERVICE_URL}/gait/analyze`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ scanId }),
-        }
-      );
+      const existingGait = await db
+        .select()
+        .from(gaitAnalysis)
+        .where(eq(gaitAnalysis.scanId, scanId))
+        .limit(1);
 
-      if (!gaitResponse.ok) {
-        throw new Error(`Gait analysis failed: ${gaitResponse.status}`);
+      if (existingGait.length === 0) {
+        console.warn(`No gait results found for scan ${scanId} — gait upload may still be pending`);
       }
-
-      const gaitResult = await gaitResponse.json();
-
-      await db.insert(gaitAnalysis).values({
-        scanId,
-        gaitPattern: gaitResult.gaitPattern,
-        ankleAlignment: gaitResult.ankleAlignment,
-        archFlexibilityIndex: gaitResult.archFlexibilityIndex,
-      });
 
       // Step 3: Pressure estimation
       await db
@@ -171,31 +162,65 @@ export async function POST(request: Request) {
         .set({ processingStage: "estimating_pressure" })
         .where(eq(footScans.id, scanId));
 
-      const pressureResponse = await fetch(
-        `${MEASUREMENT_SERVICE_URL}/pressure/estimate`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            scanId,
-            footLength: scanResult.measurements.footLength,
-            ballWidth: scanResult.measurements.ballWidth,
-            archHeight: scanResult.measurements.archHeight,
-          }),
-        }
-      );
+      // Resolve biometric inputs: from request body or fallback to DB
+      let resolvedWeight = weight;
+      let resolvedGender = gender;
+      let resolvedAge = age;
 
-      if (!pressureResponse.ok) {
-        throw new Error(`Pressure estimation failed: ${pressureResponse.status}`);
+      if (!resolvedWeight || !resolvedGender || !resolvedAge) {
+        // Try to read from previously saved pressure data
+        const [existingPressure] = await db
+          .select({
+            inputWeight: pressureDistribution.inputWeight,
+            inputGender: pressureDistribution.inputGender,
+            inputAge: pressureDistribution.inputAge,
+          })
+          .from(pressureDistribution)
+          .where(eq(pressureDistribution.scanId, scanId))
+          .limit(1);
+
+        if (existingPressure) {
+          resolvedWeight = resolvedWeight ?? existingPressure.inputWeight ?? undefined;
+          resolvedGender = resolvedGender ?? (existingPressure.inputGender as "male" | "female" | "other" | undefined) ?? undefined;
+          resolvedAge = resolvedAge ?? existingPressure.inputAge ?? undefined;
+        }
       }
 
-      const pressureResult = await pressureResponse.json();
+      if (!resolvedWeight || !resolvedGender || !resolvedAge) {
+        console.warn(`Missing biometric inputs for pressure estimation on scan ${scanId} — skipping pressure step`);
+      } else {
+        const pressureResponse = await fetch(
+          `${MEASUREMENT_SERVICE_URL}/pressure/estimate`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              scanId,
+              footLength: scanResult.measurements.footLength,
+              ballWidth: scanResult.measurements.ballWidth,
+              archHeight: scanResult.measurements.archHeight,
+              weight: resolvedWeight,
+              gender: resolvedGender,
+              age: resolvedAge,
+            }),
+          }
+        );
 
-      await db.insert(pressureDistribution).values({
-        scanId,
-        heatmapData: pressureResult.heatmapData,
-        highPressureZones: pressureResult.highPressureZones,
-      });
+        if (!pressureResponse.ok) {
+          throw new Error(`Pressure estimation failed: ${pressureResponse.status}`);
+        }
+
+        const pressureResult = await pressureResponse.json();
+
+        await db.insert(pressureDistribution).values({
+          scanId,
+          heatmapData: pressureResult.heatmapData,
+          highPressureZones: pressureResult.highPressureZones,
+          inputWeight: resolvedWeight,
+          inputGender: resolvedGender,
+          inputAge: resolvedAge,
+        });
+      }
 
       // Mark as completed
       await db
