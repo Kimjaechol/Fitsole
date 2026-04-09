@@ -124,3 +124,42 @@ export const pressureDistribution = pgTable("pressure_distribution", {
   inputAge: real("input_age"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+// --- Insole Design Tables ---
+
+export const insoleDesigns = pgTable("insole_designs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  scanId: uuid("scan_id")
+    .notNull()
+    .references(() => footScans.id, { onDelete: "cascade" }),
+  footSide: footSideEnum("foot_side").notNull(),
+  lineType: text("line_type").notNull(),
+  designParams: jsonb("design_params").notNull(),
+  hardnessMap: jsonb("hardness_map").notNull(),
+  stlUrl: text("stl_url"),
+  slicerProfileUrl: text("slicer_profile_url"),
+  designParamsJson: text("design_params_json"),
+  status: text("status").default("pending").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// --- SALTED Session Tables ---
+
+export const saltedSessions = pgTable("salted_sessions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  scanId: uuid("scan_id").references(() => footScans.id, {
+    onDelete: "set null",
+  }),
+  sessionType: text("session_type").notNull(),
+  rawPressureData: jsonb("raw_pressure_data"),
+  analysisResult: jsonb("analysis_result"),
+  durationSeconds: real("duration_seconds"),
+  dataPointCount: real("data_point_count"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
