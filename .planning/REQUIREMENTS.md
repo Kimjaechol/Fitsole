@@ -10,11 +10,11 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Foot Scanning (발 측정)
 
 - [x] **SCAN-01**: User can launch guided foot scanning flow on smartphone camera
-- [ ] **SCAN-02**: User places foot on A4 paper for reference-object calibration
-- [ ] **SCAN-03**: System provides real-time guidance on lighting, angle, and positioning during video scan
-- [ ] **SCAN-04**: System captures video (15-20s) of foot and reconstructs 3D model via SfM (±0.15mm accuracy)
+- [x] **SCAN-02**: User places foot on A4 paper for reference-object calibration
+- [x] **SCAN-03**: System provides real-time guidance on lighting, angle, and positioning during video scan
+- [x] **SCAN-04**: System captures video (15-20s) of foot and reconstructs 3D model via SfM (±0.15mm accuracy)
 - [x] **SCAN-05**: System detects and stores left/right foot asymmetry separately
-- [ ] **SCAN-06**: System scores scan quality and prompts re-scan if insufficient
+- [x] **SCAN-06**: System scores scan quality and prompts re-scan if insufficient
 - [ ] **SCAN-07**: User can view 3D foot model with measurement overlay and pressure heatmap
 - [ ] **SCAN-08**: User can record walking video (5-10 steps) for AI gait analysis
 - [ ] **SCAN-09**: System analyzes gait pattern, ankle alignment, arch flexibility from walking video
@@ -125,11 +125,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UIUX-02 | Phase 1 | Complete |
 | UIUX-03 | Phase 1 | Complete |
 | SCAN-01 | Phase 2 | Complete |
-| SCAN-02 | Phase 2 | Pending |
-| SCAN-03 | Phase 2 | Pending |
-| SCAN-04 | Phase 2 | Pending |
+| SCAN-02 | Phase 2 | Complete |
+| SCAN-03 | Phase 2 | Complete |
+| SCAN-04 | Phase 2 | Complete |
 | SCAN-05 | Phase 2 | Complete |
-| SCAN-06 | Phase 2 | Pending |
+| SCAN-06 | Phase 2 | Complete |
 | SCAN-07 | Phase 2 | Pending |
 | INSL-01 | Phase 3 | Pending |
 | INSL-02 | Phase 3 | Pending |
