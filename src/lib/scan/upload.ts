@@ -42,3 +42,47 @@ export function uploadScanVideo(
     },
   };
 }
+
+/**
+ * Upload a gait (walking) video via TUS protocol with resumable uploads.
+ * Includes `type: 'gait'` metadata so the upload route routes to /gait/analyze.
+ */
+export function uploadGaitVideo(
+  file: Blob,
+  scanId: string,
+  onProgress: (percent: number) => void,
+  onComplete: (url: string) => void,
+  onError: (error: Error) => void
+): { abort: () => void } {
+  const upload = new tus.Upload(file, {
+    endpoint: '/api/scan/upload',
+    chunkSize: 5 * 1024 * 1024, // 5MB per RESEARCH Pattern 4
+    retryDelays: [0, 1000, 3000, 5000],
+    metadata: {
+      filename: 'gait-video.webm',
+      filetype: 'video/webm',
+      scanId,
+      type: 'gait',
+    },
+    onProgress: (bytesUploaded, bytesTotal) => {
+      const percent = Math.round((bytesUploaded / bytesTotal) * 100);
+      onProgress(percent);
+    },
+    onSuccess: () => {
+      const url = upload.url;
+      onComplete(url ?? '');
+    },
+    onError: (err) => {
+      onError(new Error('보행 영상 업로드에 실패했습니다'));
+      console.error('TUS gait upload error:', err);
+    },
+  });
+
+  upload.start();
+
+  return {
+    abort: () => {
+      upload.abort();
+    },
+  };
+}

@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { footScans } from "@/lib/db/schema";
+import { footScans, gaitAnalysis } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -75,7 +75,61 @@ export async function POST(request: Request) {
       );
     }
 
-    // Proxy upload to Python backend (Vercel 4.5MB limit bypass)
+    // Check upload type: gait video vs foot scan video
+    const uploadType = formData.get("type") as string | null;
+
+    if (uploadType === "gait") {
+      // Route gait video to Python /gait/analyze as multipart UploadFile
+      await db
+        .update(footScans)
+        .set({ processingStage: "analyzing_gait" })
+        .where(eq(footScans.id, scanId));
+
+      const gaitForm = new FormData();
+      gaitForm.append("video", file);
+      gaitForm.append("scanId", scanId);
+
+      const gaitResponse = await fetch(
+        `${MEASUREMENT_SERVICE_URL}/gait/analyze`,
+        {
+          method: "POST",
+          body: gaitForm,
+        }
+      );
+
+      if (!gaitResponse.ok) {
+        const errorText = await gaitResponse.text().catch(() => "Unknown error");
+        console.error("Gait analysis error:", errorText);
+        return NextResponse.json(
+          { error: "보행 분석에 실패했습니다" },
+          { status: 500 }
+        );
+      }
+
+      const gaitResult = await gaitResponse.json();
+
+      // Save gait results to DB
+      await db.insert(gaitAnalysis).values({
+        scanId,
+        gaitPattern: gaitResult.gaitPattern,
+        ankleAlignment: gaitResult.ankleAlignment,
+        archFlexibilityIndex: gaitResult.archFlexibilityIndex,
+        walkingVideoUrl: "",
+      });
+
+      // Update processing stage
+      await db
+        .update(footScans)
+        .set({ processingStage: "estimating_pressure" })
+        .where(eq(footScans.id, scanId));
+
+      return NextResponse.json({
+        scanId,
+        status: "gait_complete" as const,
+      });
+    }
+
+    // Default path: Proxy foot scan video to Python backend (Vercel 4.5MB limit bypass)
     const backendForm = new FormData();
     backendForm.append("video", file);
     backendForm.append("scanId", scanId);
