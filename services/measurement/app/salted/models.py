@@ -88,3 +88,7 @@ class VerificationReport(BaseModel):
     peak_pressure_reduction_pct: float
     contact_area_increase_pct: float
     zone_comparisons: list[ZoneComparison]
+    success: bool = Field(
+        ...,
+        description="True if both targets met: >=30% reduction AND >=40% area increase (D-09)",
+    )
