@@ -92,7 +92,11 @@ Plans:
   2. User can proceed to checkout with shipping address and payment information
   3. User can pay via Toss Payments (card, KakaoPay, NaverPay, TossPay)
   4. User receives an order confirmation email after successful purchase
-**Plans**: TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 04-01-PLAN.md — Cart system: Zustand store, orders DB schema, cart page UI, add-to-cart button
+- [ ] 04-02-PLAN.md — Checkout flow: shipping form with Daum API, Toss Payments SDK widget
+- [ ] 04-03-PLAN.md — Payment verification, order confirmation page, confirmation email
 **UI hint**: yes
 
 ### Phase 5: Admin Dashboard & Order Management
@@ -133,6 +137,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation & Accounts | 0/4 | Planning complete | - |
 | 2. Foot Scanning | 0/8 | Planning complete | - |
 | 3. Insole Design & Product Catalog | 0/8 | Gap closure planned | - |
-| 4. Shopping & Checkout | 0/TBD | Not started | - |
+| 4. Shopping & Checkout | 0/3 | Planning complete | - |
 | 5. Order Management & Factory Integration | 0/TBD | Not started | - |
 | 6. Segmentation & Support | 0/TBD | Not started | - |
