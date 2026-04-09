@@ -5,15 +5,22 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from fastapi.testclient import TestClient
 
-from app.main import app
+try:
+    from fastapi.testclient import TestClient
+    from app.main import app
 
+    @pytest.fixture
+    def client():
+        """Create a FastAPI test client."""
+        return TestClient(app)
 
-@pytest.fixture
-def client():
-    """Create a FastAPI test client."""
-    return TestClient(app)
+except ImportError:
+    # Allow tests that don't need the full app (e.g. insole/scad tests)
+    # to run without heavy dependencies like open3d installed.
+    @pytest.fixture
+    def client():
+        pytest.skip("Full app dependencies not available")
 
 
 @pytest.fixture
