@@ -77,7 +77,7 @@ Fixed-size component measurements that are not spacing tokens:
 Inherited from Phase 1. No changes. Declared weights: 400, 700 only.
 
 **Phase-specific usage:**
-- Display (32px/700): Results page headline ("측정 결과")
+- Display (32px/700): Results page headline ("측정 결과"), countdown timer numbers
 - Heading (24px/700): Step titles ("발 위치 맞추기", "영상 촬영"), measurement section headers
 - Body (16px/400): Guidance instructions, measurement values, processing status text
 - Label (14px/400): Measurement labels ("발 길이", "볼 넓이"), quality score label, heatmap legend labels, camera overlay hints
@@ -221,7 +221,7 @@ All copy is in Korean. No English fallbacks in user-facing UI.
 | Recording stop | 촬영 완료 |
 | Timer countdown | 3초 후 촬영이 시작됩니다 |
 | Retake button | 다시 촬영 |
-| Next step button | 다음 |
+| Next step button | 다음 단계로 |
 | **Processing** | |
 | Upload progress | 영상 업로드 중... ({percent}%) |
 | Processing stage 1 | 영상 분석 중... |
@@ -284,7 +284,7 @@ All copy is in Korean. No English fallbacks in user-facing UI.
 | Delete scan | 측정 삭제 |
 | Delete scan confirm | 이 측정 결과를 삭제하시겠습니까? 삭제된 데이터는 복구할 수 없습니다. |
 | Delete confirm button | 삭제하기 |
-| Delete cancel button | 취소 |
+| Delete cancel button | 삭제 안 함 |
 
 ---
 
@@ -312,7 +312,7 @@ All copy is in Korean. No English fallbacks in user-facing UI.
 
 ### Walking Video Guide
 - Instruction screen before recording: illustration of phone placed on floor at ground level
-- 3-second countdown timer (large centered numbers, 48px, 700 weight)
+- 3-second countdown timer (large centered numbers, Display size 32px, 700 weight)
 - During recording: MediaPipe pose landmarks rendered as dots on video feed (accent color dots, 8px)
 - Step counter displayed at top: "{n}/10 걸음" in body text on semi-transparent bg
 
@@ -358,7 +358,7 @@ All copy is in Korean. No English fallbacks in user-facing UI.
 - Displayed once (tracked in localStorage: `fitsole_scan_onboarded`)
 - 3-step horizontal swipeable carousel with illustrations
 - Each step: illustration (placeholder Lucide icon at 80px) + title + description
-- "시작하기" CTA on last step, "건너뛰기" skip link on all steps (muted text, top-right)
+- "시작하기" CTA on last step, "온보딩 건너뛰기" skip link on all steps (muted text, top-right)
 
 ### Results Page
 - Sticky header: "측정 결과" heading + left/right foot toggle
