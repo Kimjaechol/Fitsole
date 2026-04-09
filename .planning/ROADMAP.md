@@ -80,7 +80,7 @@ Plans:
 - [x] 03-05-PLAN.md — SALTED BLE adapter (mock+real), biomechanical analysis, session API
 - [x] 03-06-PLAN.md — Product catalog UI (listing, filters, detail), 3D insole preview, design page
 - [x] 03-07-PLAN.md — SALTED session UI, precision design, before/after report, API proxy wiring
-- [ ] 03-08-PLAN.md — Gap closure: embed InsolePreview3D on product detail page (PROD-05)
+- [x] 03-08-PLAN.md — Gap closure: embed InsolePreview3D on product detail page (PROD-05)
 **UI hint**: yes
 
 ### Phase 4: Shopping & Checkout
