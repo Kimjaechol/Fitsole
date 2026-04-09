@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Completed 03-08-PLAN.md
-last_updated: "2026-04-09T23:12:51.432Z"
+status: executing
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-04-09T23:28:14.431Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 6
   completed_phases: 3
-  total_plans: 20
-  completed_plans: 20
-  percent: 100
+  total_plans: 23
+  completed_plans: 21
+  percent: 91
 ---
 
 # Project State
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** 정확한 발 측정 데이터를 기반으로 개인 맞춤 인솔을 설계하여, 착용자의 발 건강과 편안함을 과학적으로 보장하는 것.
-**Current focus:** Phase 03 — Insole Design Engine & Product Catalog
+**Current focus:** Phase 04 — Shopping & Checkout
 
 ## Current Position
 
-Phase: 4
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 04 (Shopping & Checkout) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
 Last activity: 2026-04-09
 
 Progress: [░░░░░░░░░░] 0%
@@ -75,6 +75,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-insole-design-product-catalog P06 | 5min | 2 tasks | 12 files |
 | Phase 03-insole-design-product-catalog P07 | 5min | 3 tasks | 8 files |
 | Phase 03-insole-design-product-catalog P08 | 2min | 2 tasks | 2 files |
+| Phase 04-shopping-checkout P01 | 5min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -127,6 +128,7 @@ Recent decisions affecting current work:
 - [Phase 03-insole-design-product-catalog]: VerificationReport includes success boolean field per D-09 thresholds (>=30% reduction, >=40% area increase)
 - [Phase 03-insole-design-product-catalog]: API proxy routes use MEASUREMENT_SERVICE_URL env var; T-03-19 frame/duration limits enforced in proxy
 - [Phase 03-insole-design-product-catalog]: Dynamic import with ssr:false for R3F components on product page; 240px compact height for embedded insole preview
+- [Phase 04-shopping-checkout]: Cart deduplicates by productId+size+designId; free shipping over 50,000 KRW
 
 ### Pending Todos
 
@@ -139,6 +141,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T23:12:15.271Z
-Stopped at: Completed 03-08-PLAN.md
+Last session: 2026-04-09T23:28:14.429Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None
