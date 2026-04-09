@@ -163,3 +163,52 @@ export const saltedSessions = pgTable("salted_sessions", {
   dataPointCount: real("data_point_count"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+// --- Orders Tables ---
+
+export const orderStatusEnum = pgEnum("order_status", [
+  "pending",         // 주문 대기
+  "paid",            // 결제 완료
+  "designing",       // 인솔 설계중
+  "manufacturing",   // 제작중
+  "shipping",        // 배송중
+  "delivered",       // 배송 완료
+  "cancelled",       // 취소됨
+]);
+
+export const orders = pgTable("orders", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  orderNumber: text("order_number").notNull().unique(), // FS-YYYYMMDD-XXXX format
+  status: orderStatusEnum("status").default("pending").notNull(),
+  totalAmount: real("total_amount").notNull(),          // KRW
+  shippingName: text("shipping_name").notNull(),
+  shippingPhone: text("shipping_phone").notNull(),
+  shippingZipcode: text("shipping_zipcode").notNull(),
+  shippingAddress: text("shipping_address").notNull(),
+  shippingDetailAddress: text("shipping_detail_address"),
+  paymentKey: text("payment_key"),                      // Toss Payments paymentKey
+  paymentMethod: text("payment_method"),                // card, kakaopay, naverpay, tosspay, transfer
+  paidAt: timestamp("paid_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const orderItems = pgTable("order_items", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  orderId: uuid("order_id")
+    .notNull()
+    .references(() => orders.id, { onDelete: "cascade" }),
+  productId: text("product_id").notNull(),              // Payload product ID (text, not FK)
+  productName: text("product_name").notNull(),
+  size: real("size").notNull(),                         // mm
+  price: real("price").notNull(),                       // shoe price KRW
+  bundleInsolePrice: real("bundle_insole_price"),       // insole add-on KRW
+  includesInsole: text("includes_insole").default("false").notNull(), // boolean as text
+  designId: uuid("design_id").references(() => insoleDesigns.id, { onDelete: "set null" }),
+  designSource: text("design_source"),                  // 'general' | 'professional'
+  quantity: real("quantity").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
