@@ -3,6 +3,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.gait import router as gait_router
 from app.api.scan import router as scan_router
 
 app = FastAPI(
@@ -23,6 +24,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(gait_router)
 app.include_router(scan_router)
 
 
