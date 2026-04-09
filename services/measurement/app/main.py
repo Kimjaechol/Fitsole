@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.gait import router as gait_router
 from app.api.insole import router as insole_router
 from app.api.pressure import router as pressure_router
+from app.api.salted import router as salted_router
 from app.api.scan import router as scan_router
 
 app = FastAPI(
@@ -29,6 +30,7 @@ app.add_middleware(
 app.include_router(gait_router)
 app.include_router(insole_router)
 app.include_router(pressure_router)
+app.include_router(salted_router)
 app.include_router(scan_router)
 
 
