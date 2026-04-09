@@ -60,15 +60,17 @@ Plans:
 - [x] 02-08-PLAN.md — Gap closure: fix orchestration wiring, gait upload routing, biometric inputs
 **UI hint**: yes
 
-### Phase 3: Insole Design & Product Catalog
-**Goal**: Users can browse shoes, see their custom insole design generated from scan data, preview the insole in 3D, and view shoe+insole bundle pricing with size recommendations
+### Phase 3: Insole Design Engine (Two Lines) & Product Catalog
+**Goal**: Two-line insole design system — Line 1 (camera-based for general consumers) uses arch height/heel cup optimization from SfM data; Line 2 (SALTED SDK for pro/offline) uses real pressure sensor data for precision design. Both lines generate parametric CAD → STL. Product catalog with shoe+insole bundle browsing.
 **Depends on**: Phase 2
-**Requirements**: INSL-01, INSL-02, INSL-03, INSL-04, PROD-01, PROD-02, PROD-03, PROD-04, PROD-05
+**Requirements**: INSL-01, INSL-02, INSL-03, INSL-04, SALT-01, SALT-02, SALT-03, SALT-04, SALT-05, SALT-06, PROD-01, PROD-02, PROD-03, PROD-04, PROD-05
 **Success Criteria** (what must be TRUE):
-  1. System generates a custom insole design from user's scan measurements incorporating arch type, foot dimensions, pressure distribution, and pronation correction
-  2. User can preview their custom insole in a 3D visualization before ordering
-  3. User can browse shoes by category and filter by category, size, price, and style
-  4. Product detail page shows shoe images/descriptions, shoe+insole bundle pricing, insole customization preview based on user's scan data, and recommended shoe size
+  1. Line 1: System calculates optimal arch height (79.4% influence) and heel cup depth (40.2% influence) from SfM scan data and generates insole design with zone-specific hardness
+  2. Line 2: System connects to SALTED insole via BLE, collects 5-min walking data, analyzes landing pattern/COP/pronation, and generates precision insole design
+  3. Both lines produce parametric CAD (OpenSCAD) → STL file with Varioshore TPU temperature mapping per zone
+  4. System generates before/after verification report for SALTED-measured customers
+  5. User can preview custom insole in 3D with zone hardness visualization
+  6. User can browse shoes by category, filter, view bundle pricing with insole customization preview and size recommendation
 **Plans**: TBD
 **UI hint**: yes
 
@@ -84,27 +86,30 @@ Plans:
 **Plans**: TBD
 **UI hint**: yes
 
-### Phase 5: Order Management & Factory Integration
-**Goal**: Users can track their order through manufacturing stages, and admins can manage orders and dispatch to factory partners
+### Phase 5: Admin Dashboard & Order Management
+**Goal**: Full admin dashboard for managing orders, viewing customer scan/pressure data, downloading insole design specs, dispatching to factory, and managing SALTED sessions. Users can track their orders through manufacturing stages.
 **Depends on**: Phase 4
-**Requirements**: ORDR-01, ORDR-02, ORDR-03, ORDR-04
+**Requirements**: ORDR-01, ORDR-02, ORDR-03, ORDR-04, ADMN-01, ADMN-02, ADMN-03, ADMN-04, ADMN-05, ADMN-06
 **Success Criteria** (what must be TRUE):
   1. User can track order status through all stages: order confirmed, insole designed, in production, shipping, delivered
   2. User receives email notifications at each order stage transition
-  3. Admin can view all orders in a dashboard, update order status, and dispatch orders to factory via email/spreadsheet export
+  3. Admin dashboard: view all orders with filtering, view customer 3D scan + pressure data, download STL/design specs
+  4. Admin can update order status and dispatch to factory with design specs attached
+  5. Admin can view SALTED measurement sessions with raw pressure data visualization
+  6. Admin can manage offline store reservations and smart insole kit inventory
 **Plans**: TBD
 **UI hint**: yes
 
 ### Phase 6: Segmentation, Support & Offline Store
-**Goal**: Users receive personalized experiences based on their needs, can access support resources and the satisfaction guarantee, and can find offline store information with smart insole kit measurement service
+**Goal**: Users receive personalized experiences based on their needs (foot health, comfort, athletic performance), can access support resources and satisfaction guarantee, and can find offline store with smart insole kit measurement service
 **Depends on**: Phase 5
 **Requirements**: SEGM-01, SEGM-02, SEGM-03, SUPP-01, SUPP-02, SUPP-03, OFFL-01, OFFL-02, OFFL-03, OFFL-04
 **Success Criteria** (what must be TRUE):
-  1. User can select their primary concern (foot health, comfort, athletic performance) and see segment-specific product recommendations and scanning flow
+  1. User can select their primary concern (foot health, comfort, athletic performance) and see segment-specific product recommendations
   2. Foot health segment users see condition-specific guidance (flat feet, high arches, bunions, etc.)
   3. User can access FAQ page covering measurement accuracy and fit concerns, and contact support via email or chat
   4. Site displays 90-day satisfaction guarantee with free remake policy
-  5. Site has offline store page with 강남역 지하상가 location info, smart insole kit service description, map, hours, and contact
+  5. Site has offline store page (강남역 지하상가) with location map, hours, smart insole kit service description, and reservation/contact
   6. Athlete segment links to smart insole kit rental program information
 **Plans**: TBD
 **UI hint**: yes
