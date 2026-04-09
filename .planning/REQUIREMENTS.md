@@ -16,9 +16,9 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SCAN-05**: System detects and stores left/right foot asymmetry separately
 - [x] **SCAN-06**: System scores scan quality and prompts re-scan if insufficient
 - [ ] **SCAN-07**: User can view 3D foot model with measurement overlay and pressure heatmap
-- [ ] **SCAN-08**: User can record walking video (5-10 steps) for AI gait analysis
-- [ ] **SCAN-09**: System analyzes gait pattern, ankle alignment, arch flexibility from walking video
-- [ ] **SCAN-10**: System generates AI-estimated pressure distribution heatmap
+- [x] **SCAN-08**: User can record walking video (5-10 steps) for AI gait analysis
+- [x] **SCAN-09**: System analyzes gait pattern, ankle alignment, arch flexibility from walking video
+- [x] **SCAN-10**: System generates AI-estimated pressure distribution heatmap
 
 ### Offline Store & Smart Insole Kit (오프라인 매장/스마트 인솔)
 
