@@ -35,7 +35,7 @@ Plans:
 - [x] 01-01-PLAN.md — Scaffold Next.js project, database schema, Auth.js backend, test infrastructure
 - [x] 01-02-PLAN.md — App shell with bottom tab bar, desktop nav, and Korean landing page
 - [x] 01-03-PLAN.md — Auth forms (login, signup, password reset) with Zod validation
-- [ ] 01-04-PLAN.md — Profile page with 3 tabs, empty states, DB schema push, and verification
+- [x] 01-04-PLAN.md — Profile page with 3 tabs, empty states, DB schema push, and verification
 **UI hint**: yes
 
 ### Phase 2: Foot Scanning

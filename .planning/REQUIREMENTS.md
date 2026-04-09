@@ -43,8 +43,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [x] **ACCT-01**: User can sign up with email and password
 - [x] **ACCT-02**: User can log in and session persists across browser refresh
-- [ ] **ACCT-03**: User can view and manage saved foot scan profiles
-- [ ] **ACCT-04**: User can view order history
+- [x] **ACCT-03**: User can view and manage saved foot scan profiles
+- [x] **ACCT-04**: User can view order history
 - [x] **ACCT-05**: User can reorder using previously saved foot measurement data
 
 ### Customer Segmentation (고객 세그먼트)
@@ -108,8 +108,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | ACCT-01 | Phase 1 | Complete |
 | ACCT-02 | Phase 1 | Complete |
-| ACCT-03 | Phase 1 | Pending |
-| ACCT-04 | Phase 1 | Pending |
+| ACCT-03 | Phase 1 | Complete |
+| ACCT-04 | Phase 1 | Complete |
 | ACCT-05 | Phase 1 | Complete |
 | UIUX-01 | Phase 1 | Complete |
 | UIUX-02 | Phase 1 | Complete |
