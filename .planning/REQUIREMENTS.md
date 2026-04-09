@@ -11,11 +11,21 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **SCAN-01**: User can launch guided foot scanning flow on smartphone camera
 - [ ] **SCAN-02**: User places foot on A4 paper for reference-object calibration
-- [ ] **SCAN-03**: System provides real-time guidance on lighting, angle, and positioning during scan
-- [ ] **SCAN-04**: System measures foot length, ball width, arch height, and instep height from photos
+- [ ] **SCAN-03**: System provides real-time guidance on lighting, angle, and positioning during video scan
+- [ ] **SCAN-04**: System captures video (15-20s) of foot and reconstructs 3D model via SfM (±0.15mm accuracy)
 - [ ] **SCAN-05**: System detects and stores left/right foot asymmetry separately
 - [ ] **SCAN-06**: System scores scan quality and prompts re-scan if insufficient
-- [ ] **SCAN-07**: User can view scan results with visual overlay on foot image
+- [ ] **SCAN-07**: User can view 3D foot model with measurement overlay and pressure heatmap
+- [ ] **SCAN-08**: User can record walking video (5-10 steps) for AI gait analysis
+- [ ] **SCAN-09**: System analyzes gait pattern, ankle alignment, arch flexibility from walking video
+- [ ] **SCAN-10**: System generates AI-estimated pressure distribution heatmap
+
+### Offline Store & Smart Insole Kit (오프라인 매장/스마트 인솔)
+
+- [ ] **OFFL-01**: Site has offline store introduction page with store info (강남역 지하상가)
+- [ ] **OFFL-02**: Store page shows smart insole kit measurement service description
+- [ ] **OFFL-03**: Store page includes location map, operating hours, and reservation/contact info
+- [ ] **OFFL-04**: Athlete section links to smart insole kit rental program info
 
 ### Insole Design (인솔 설계)
 

@@ -39,14 +39,15 @@ Plans:
 **UI hint**: yes
 
 ### Phase 2: Foot Scanning
-**Goal**: Users can measure their feet using their smartphone camera and receive validated, stored measurement data for both feet
+**Goal**: Users can measure their feet using smartphone video SfM scanning (±0.15mm accuracy) with AI gait analysis, view 3D foot model with pressure heatmap, and results are saved to their profile
 **Depends on**: Phase 1
-**Requirements**: SCAN-01, SCAN-02, SCAN-03, SCAN-04, SCAN-05, SCAN-06, SCAN-07
+**Requirements**: SCAN-01, SCAN-02, SCAN-03, SCAN-04, SCAN-05, SCAN-06, SCAN-07, SCAN-08, SCAN-09, SCAN-10
 **Success Criteria** (what must be TRUE):
-  1. User can launch a guided scanning flow that accesses the smartphone camera and provides real-time feedback on positioning, lighting, and angle
-  2. User places foot on A4 paper for calibration and the system extracts foot length, ball width, arch height, and instep height from the captured images
-  3. System detects left/right asymmetry by measuring each foot independently, scores scan quality, and prompts re-scan if quality is insufficient
-  4. User can view scan results with a visual overlay on the foot image and results are saved to their profile
+  1. User can launch a guided video scanning flow that accesses the smartphone camera with real-time feedback on positioning, lighting, and circular motion guidance
+  2. User places foot on A4 paper, records 15-20s video around the foot, and the system reconstructs a 3D model via SfM extracting foot length, ball width, arch height, instep height, heel width
+  3. User can record a 5-10 step walking video and the system analyzes gait pattern, ankle alignment, and arch flexibility via AI
+  4. System detects left/right asymmetry, scores scan quality, prompts re-scan if insufficient, and generates AI-estimated pressure distribution heatmap
+  5. User can view interactive 3D foot model with measurement overlay and pressure heatmap, results saved to profile
 **Plans**: TBD
 **UI hint**: yes
 
@@ -85,15 +86,17 @@ Plans:
 **Plans**: TBD
 **UI hint**: yes
 
-### Phase 6: Segmentation & Support
-**Goal**: Users receive personalized experiences based on their needs (foot health, comfort, athletic performance) and can access support resources and the satisfaction guarantee
+### Phase 6: Segmentation, Support & Offline Store
+**Goal**: Users receive personalized experiences based on their needs, can access support resources and the satisfaction guarantee, and can find offline store information with smart insole kit measurement service
 **Depends on**: Phase 5
-**Requirements**: SEGM-01, SEGM-02, SEGM-03, SUPP-01, SUPP-02, SUPP-03
+**Requirements**: SEGM-01, SEGM-02, SEGM-03, SUPP-01, SUPP-02, SUPP-03, OFFL-01, OFFL-02, OFFL-03, OFFL-04
 **Success Criteria** (what must be TRUE):
   1. User can select their primary concern (foot health, comfort, athletic performance) and see segment-specific product recommendations and scanning flow
   2. Foot health segment users see condition-specific guidance (flat feet, high arches, bunions, etc.)
   3. User can access FAQ page covering measurement accuracy and fit concerns, and contact support via email or chat
   4. Site displays 90-day satisfaction guarantee with free remake policy
+  5. Site has offline store page with 강남역 지하상가 location info, smart insole kit service description, map, hours, and contact
+  6. Athlete segment links to smart insole kit rental program information
 **Plans**: TBD
 **UI hint**: yes
 
