@@ -29,18 +29,18 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Insole Design — Line 1: Camera-based (인솔 설계 — 일반인용)
 
-- [ ] **INSL-01**: System generates custom insole design from SfM scan data (arch height 79.4% + heel cup depth 40.2% optimization)
+- [x] **INSL-01**: System generates custom insole design from SfM scan data (arch height 79.4% + heel cup depth 40.2% optimization)
 - [ ] **INSL-02**: System calculates optimal arch height and heel cup depth using rule-based algorithms (calculate_optimal_arch_height, calculate_optimal_heel_cup_depth)
 - [ ] **INSL-03**: User can preview custom insole design in 3D visualization with zone-by-zone hardness display
 - [ ] **INSL-04**: System recommends optimal shoe size per product based on scan data
 
 ### Insole Design — Line 2: SALTED SDK (인솔 설계 — 전문가용)
 
-- [ ] **SALT-01**: System connects to SALTED smart insole via BLE and receives real-time pressure data (100Hz)
-- [ ] **SALT-02**: System collects 5-min walking session data (~300,000 data points) and stores to server
+- [x] **SALT-01**: System connects to SALTED smart insole via BLE and receives real-time pressure data (100Hz)
+- [x] **SALT-02**: System collects 5-min walking session data (~300,000 data points) and stores to server
 - [ ] **SALT-03**: System analyzes SALTED data: landing pattern, pronation/supination, COP trajectory, arch flexibility
 - [ ] **SALT-04**: System generates precision insole design from SALTED pressure data + SfM scan data combined
-- [ ] **SALT-05**: System auto-generates parametric CAD (OpenSCAD) → STL file with zone-specific Varioshore TPU temperature mapping
+- [x] **SALT-05**: System auto-generates parametric CAD (OpenSCAD) → STL file with zone-specific Varioshore TPU temperature mapping
 - [ ] **SALT-06**: System generates before/after verification report comparing pressure distribution with and without custom insole
 
 ### Admin Dashboard (관리자 대시보드)
@@ -149,7 +149,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCAN-05 | Phase 2 | Complete |
 | SCAN-06 | Phase 2 | Complete |
 | SCAN-07 | Phase 2 | Complete |
-| INSL-01 | Phase 3 | Pending |
+| INSL-01 | Phase 3 | Complete |
 | INSL-02 | Phase 3 | Pending |
 | INSL-03 | Phase 3 | Pending |
 | INSL-04 | Phase 3 | Pending |

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Completed 02-08-PLAN.md (gap closure)
-last_updated: "2026-04-09T17:17:22.720Z"
+status: executing
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-04-09T21:54:38.524Z"
 last_activity: 2026-04-09
 progress:
   total_phases: 6
   completed_phases: 2
-  total_plans: 12
-  completed_plans: 12
-  percent: 100
+  total_plans: 19
+  completed_plans: 13
+  percent: 68
 ---
 
 # Project State
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** 정확한 발 측정 데이터를 기반으로 개인 맞춤 인솔을 설계하여, 착용자의 발 건강과 편안함을 과학적으로 보장하는 것.
-**Current focus:** Phase 02 — Foot Scanning
+**Current focus:** Phase 03 — Insole Design Engine & Product Catalog
 
 ## Current Position
 
-Phase: 3
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 03 (Insole Design Engine & Product Catalog) — EXECUTING
+Plan: 2 of 7
+Status: Ready to execute
 Last activity: 2026-04-09
 
 Progress: [░░░░░░░░░░] 0%
@@ -65,6 +65,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 02-foot-scanning P06 | 4min | 2 tasks | 8 files |
 | Phase 02-foot-scanning P07 | 17min | 2 tasks | 4 files |
 | Phase 02-foot-scanning P08 | 4min | 2 tasks | 4 files |
+| Phase 03-01 P01 | 3min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -99,6 +100,9 @@ Recent decisions affecting current work:
 - [Phase 02-foot-scanning]: Upload proxy forwards video directly to Python backend (Vercel 4.5MB body limit bypass)
 - [Phase 02-foot-scanning]: Sequential orchestration of SfM/gait/pressure endpoints with per-step processingStage updates for status polling
 - [Phase 02-foot-scanning]: Gait video routed at upload time via type metadata, process route reads gait from DB
+- [Phase 03-01]: Used jsonb columns for designParams and hardnessMap to store complex nested structures without additional tables
+- [Phase 03-01]: SALTED scanId FK uses onDelete set null (session data valuable even if scan deleted)
+- [Phase 03-01]: Pydantic Field constraints enforce D-01/D-02 ranges at API boundary (arch 25-60mm, heelCup 15-35mm)
 
 ### Pending Todos
 
@@ -111,6 +115,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T17:16:42.615Z
-Stopped at: Completed 02-08-PLAN.md (gap closure)
+Last session: 2026-04-09T21:54:38.522Z
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None
