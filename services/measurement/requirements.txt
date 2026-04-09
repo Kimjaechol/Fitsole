@@ -1,0 +1,11 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+pycolmap
+opencv-python-headless>=4.10.0
+mediapipe>=0.10.14
+numpy>=2.0.0
+scipy>=1.14.0
+trimesh>=4.5.0
+open3d>=0.18.0
+python-multipart>=0.0.18
+pydantic>=2.10.0
