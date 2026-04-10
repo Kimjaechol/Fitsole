@@ -61,7 +61,7 @@ describe("/stores/gangnam page (D-11, D-12, OFFL-01)", () => {
 
   it("mentions '1-2주' rental period in kit rental section (D-15)", () => {
     render(<GangnamStorePage />);
-    expect(screen.getByText(/1-2주/)).toBeInTheDocument();
+    expect(screen.getAllByText(/1-2주/).length).toBeGreaterThanOrEqual(1);
   });
 
   it("renders the mocked reservation form between kit-service and kit-rental", () => {
