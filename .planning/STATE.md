@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-04-10T10:18:20.647Z"
+stopped_at: Completed 05-03-PLAN.md
+last_updated: "2026-04-10T10:35:54.907Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 28
-  completed_plans: 25
-  percent: 89
+  completed_plans: 26
+  percent: 93
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 ## Current Position
 
 Phase: 05 (Admin Dashboard & Order Management) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
 Last activity: 2026-04-10
 
@@ -81,6 +81,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-shopping-checkout P03 | 4min | 2 tasks | 5 files |
 | Phase 05-admin-dashboard-order-management P01 | 15min | 2 tasks | 7 files |
 | Phase 05-admin-dashboard-order-management P02 | 6min | 2 tasks | 4 files |
+| Phase 05-admin-dashboard-order-management P03 | 4min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -150,6 +151,15 @@ Recent decisions affecting current work:
 - [Phase 05-admin-dashboard-order-management]: sendOrderStatusEmail() short-circuits for pending/cancelled so callers can pass any OrderStatus without pre-filtering
 - [Phase 05-admin-dashboard-order-management]: PATCH only overwrites trackingNumber/trackingCarrier when explicitly provided, avoiding accidental clobbering on re-send flows
 - [Phase 05-admin-dashboard-order-management]: Zod enum declared as const-tuple satisfies readonly OrderStatus[] keeping DB enum, TS type, and runtime validator in sync
+- [Phase 05-admin-dashboard-order-management]: Admin server components query Drizzle directly; /api/admin/orders mirrors filter logic for external callers
+- [Phase 05-admin-dashboard-order-management]: URL searchParams drive admin filter state (Phase 3 convention) so filtered views are shareable and server-rendered
+- [Phase 05-admin-dashboard-order-management]: Native <select> used for admin filter dropdowns because shadcn Select/Radix Select not in repo yet; keeps Task 2 scope tight
+- [Phase 05-admin-dashboard-order-management]: AdminOrderSummary type exported from /api/admin/orders/route.ts (colocated with producer) rather than duplicating in src/lib/types/order.ts
+- [Phase 05-admin-dashboard-order-management]: Admin server components query Drizzle directly; /api/admin/orders kept in parallel with mirrored filter logic for external callers
+- [Phase 05-admin-dashboard-order-management]: Admin filter state lives in URL searchParams (Phase 3 product catalog convention) so filtered order views are shareable and server-rendered
+- [Phase 05-admin-dashboard-order-management]: Native <select> for admin dropdowns — shadcn Select/Popover + Radix Select not yet in repo; keeps dependency surface small
+- [Phase 05-admin-dashboard-order-management]: AdminOrderSummary exported from /api/admin/orders/route.ts (colocated with producer) rather than duplicated in src/lib/types/order.ts
+- [Phase 05-admin-dashboard-order-management]: Representative order lineType picked as professional > general > null in the admin list view to surface higher-tier designs first
 
 ### Pending Todos
 
@@ -162,6 +172,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T10:18:20.640Z
-Stopped at: Completed 05-02-PLAN.md
+Last session: 2026-04-10T10:35:54.904Z
+Stopped at: Completed 05-03-PLAN.md
 Resume file: None
