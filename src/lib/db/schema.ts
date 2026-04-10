@@ -18,6 +18,11 @@ export const users = pgTable("users", {
   hashedPassword: text("hashed_password"),
   // Role-based access control per D-12/D-13. "user" | "admin"; set directly in DB.
   role: text("role").default("user").notNull(),
+  // Phase 06 D-02: customer segment ('health' | 'general' | 'athlete').
+  // Nullable because guests and not-yet-prompted users have none. Not a
+  // pgEnum so legacy rows map cleanly to null and we can extend segments
+  // without a schema migration round-trip.
+  segment: text("segment"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
