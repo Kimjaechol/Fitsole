@@ -201,6 +201,37 @@ export const orders = pgTable("orders", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+// --- Offline Store Reservations & Kit Inventory (D-11, ADMN-06) ---
+
+export const reservationStatusEnum = pgEnum("reservation_status", [
+  "pending",    // 대기
+  "confirmed",  // 확인됨
+  "completed",  // 완료
+  "cancelled",  // 취소됨
+]);
+
+export const reservations = pgTable("reservations", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  customerName: text("customer_name").notNull(),
+  customerPhone: text("customer_phone").notNull(),
+  customerEmail: text("customer_email"),
+  reservationDate: timestamp("reservation_date").notNull(),
+  timeSlot: text("time_slot").notNull(),       // e.g., "10:00-11:00"
+  serviceType: text("service_type").notNull(), // 'measurement' | 'consultation' | 'pickup'
+  status: reservationStatusEnum("status").default("pending").notNull(),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const kitInventory = pgTable("kit_inventory", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  kitName: text("kit_name").notNull(),
+  totalQuantity: real("total_quantity").notNull(),
+  availableQuantity: real("available_quantity").notNull(),
+  lastUpdated: timestamp("last_updated").defaultNow().notNull(),
+});
+
 export const orderItems = pgTable("order_items", {
   id: uuid("id").defaultRandom().primaryKey(),
   orderId: uuid("order_id")
