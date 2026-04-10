@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-04-10T07:28:06.237Z"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-04-10T10:18:20.647Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 28
-  completed_plans: 24
-  percent: 86
+  completed_plans: 25
+  percent: 89
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 ## Current Position
 
 Phase: 05 (Admin Dashboard & Order Management) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-04-10
 
@@ -80,6 +80,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-shopping-checkout P02 | 4min | 2 tasks | 11 files |
 | Phase 04-shopping-checkout P03 | 4min | 2 tasks | 5 files |
 | Phase 05-admin-dashboard-order-management P01 | 15min | 2 tasks | 7 files |
+| Phase 05-admin-dashboard-order-management P02 | 6min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -143,6 +144,12 @@ Recent decisions affecting current work:
 - [Phase 05-admin-dashboard-order-management]: IDOR-safe order routes use WHERE (id AND userId) and return 404 on mismatch to avoid enumeration
 - [Phase 05-admin-dashboard-order-management]: users.role column added proactively with default 'user' so future admin RBAC middleware reads directly from NextAuth session
 - [Phase 05-admin-dashboard-order-management]: ORDER_STATUS_STEPS excludes pending and cancelled; cancelled renders as distinct banner so the progress bar keeps a stable 5-step shape
+- [Phase 05-admin-dashboard-order-management]: requireAdmin() re-queries users.role from DB on every admin request so role changes take effect immediately (T-05-03)
+- [Phase 05-admin-dashboard-order-management]: AdminAuthError carries discriminated 401|403 status for clean route handler mapping across future admin routes
+- [Phase 05-admin-dashboard-order-management]: Middleware only guards /admin/dashboard; /admin stays reserved for Payload CMS (D-04)
+- [Phase 05-admin-dashboard-order-management]: sendOrderStatusEmail() short-circuits for pending/cancelled so callers can pass any OrderStatus without pre-filtering
+- [Phase 05-admin-dashboard-order-management]: PATCH only overwrites trackingNumber/trackingCarrier when explicitly provided, avoiding accidental clobbering on re-send flows
+- [Phase 05-admin-dashboard-order-management]: Zod enum declared as const-tuple satisfies readonly OrderStatus[] keeping DB enum, TS type, and runtime validator in sync
 
 ### Pending Todos
 
@@ -155,6 +162,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T07:28:06.234Z
-Stopped at: Completed 05-01-PLAN.md
+Last session: 2026-04-10T10:18:20.640Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None

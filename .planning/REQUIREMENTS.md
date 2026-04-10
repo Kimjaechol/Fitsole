@@ -48,7 +48,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **ADMN-01**: Admin can view all orders with filtering (status, date, customer, line type)
 - [ ] **ADMN-02**: Admin can view customer scan data (3D model, measurements, pressure heatmap)
 - [ ] **ADMN-03**: Admin can view/download insole design specs (STL file, design parameters, TPU temperature map)
-- [ ] **ADMN-04**: Admin can update order status and trigger factory dispatch (email with design specs attached)
+- [x] **ADMN-04**: Admin can update order status and trigger factory dispatch (email with design specs attached)
 - [ ] **ADMN-05**: Admin can view SALTED measurement sessions with raw pressure data visualization
 - [ ] **ADMN-06**: Admin can manage offline store reservations and smart insole kit inventory
 
@@ -84,8 +84,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Order Management (주문 관리)
 
 - [x] **ORDR-01**: User can track order status (주문확인 → 인솔설계 → 제작중 → 배송중 → 완료)
-- [ ] **ORDR-02**: User receives email notifications at each order stage
-- [ ] **ORDR-03**: Admin can manually update order status and dispatch to factory (이메일/스프레드시트)
+- [x] **ORDR-02**: User receives email notifications at each order stage
+- [x] **ORDR-03**: Admin can manually update order status and dispatch to factory (이메일/스프레드시트)
 - [ ] **ORDR-04**: Admin can view and manage all orders in admin dashboard
 
 ### Customer Support (고객 지원)
@@ -163,8 +163,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHOP-03 | Phase 4 | Complete |
 | SHOP-04 | Phase 4 | Complete |
 | ORDR-01 | Phase 5 | Complete |
-| ORDR-02 | Phase 5 | Pending |
-| ORDR-03 | Phase 5 | Pending |
+| ORDR-02 | Phase 5 | Complete |
+| ORDR-03 | Phase 5 | Complete |
 | ORDR-04 | Phase 5 | Pending |
 | SEGM-01 | Phase 6 | Pending |
 | SEGM-02 | Phase 6 | Pending |

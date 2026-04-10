@@ -113,7 +113,7 @@ Plans:
 **Plans:** 5 plans
 Plans:
 - [x] 05-01-PLAN.md — Order type contracts, API routes, user-facing order list and detail pages
-- [ ] 05-02-PLAN.md — Status notification emails, admin auth middleware, status update API
+- [x] 05-02-PLAN.md — Status notification emails, admin auth middleware, status update API
 - [ ] 05-03-PLAN.md — Admin dashboard shell, sidebar, stats overview, filterable order table
 - [ ] 05-04-PLAN.md — Admin order detail with scan/design viewers, status controls, factory dispatch
 - [ ] 05-05-PLAN.md — SALTED session viewer and offline store reservation management
