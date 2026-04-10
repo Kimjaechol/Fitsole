@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-04-09T23:35:12.828Z"
-last_activity: 2026-04-09
+status: verifying
+stopped_at: Completed 04-03-PLAN.md
+last_updated: "2026-04-10T00:50:38.756Z"
+last_activity: 2026-04-10
 progress:
   total_phases: 6
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 23
-  completed_plans: 22
-  percent: 96
+  completed_plans: 23
+  percent: 100
 ---
 
 # Project State
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 
 Phase: 04 (Shopping & Checkout) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
-Last activity: 2026-04-09
+Status: Phase complete — ready for verification
+Last activity: 2026-04-10
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -77,6 +77,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-insole-design-product-catalog P08 | 2min | 2 tasks | 2 files |
 | Phase 04-shopping-checkout P01 | 5min | 2 tasks | 7 files |
 | Phase 04-shopping-checkout P02 | 4min | 2 tasks | 11 files |
+| Phase 04-shopping-checkout P03 | 4min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -133,6 +134,9 @@ Recent decisions affecting current work:
 - [Phase 04-shopping-checkout]: Toss Payments widgets API for SDK integration with customerKey-based initialization
 - [Phase 04-shopping-checkout]: Server-side price validation via Payload Local API to prevent price tampering (T-04-03)
 - [Phase 04-shopping-checkout]: Daum Postcode script loaded dynamically on button click rather than in global layout
+- [Phase 04-shopping-checkout]: Fire-and-forget email after confirm response to avoid blocking user
+- [Phase 04-shopping-checkout]: Webhook always returns 200 to prevent Toss retry storms
+- [Phase 04-shopping-checkout]: Amount verification in confirm endpoint before calling Toss API
 
 ### Pending Todos
 
@@ -145,6 +149,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-09T23:35:12.826Z
-Stopped at: Completed 04-02-PLAN.md
+Last session: 2026-04-10T00:50:38.754Z
+Stopped at: Completed 04-03-PLAN.md
 Resume file: None

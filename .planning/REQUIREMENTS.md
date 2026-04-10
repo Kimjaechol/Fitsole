@@ -65,7 +65,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **SHOP-01**: User can add shoe + insole bundle to shopping cart
 - [x] **SHOP-02**: User can proceed to checkout with address and payment info
 - [x] **SHOP-03**: User can pay via Toss Payments (카드, 카카오페이, 네이버페이, 토스페이)
-- [ ] **SHOP-04**: User receives order confirmation email after purchase
+- [x] **SHOP-04**: User receives order confirmation email after purchase
 
 ### Account & Profile (계정/프로필)
 
@@ -161,7 +161,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHOP-01 | Phase 4 | Complete |
 | SHOP-02 | Phase 4 | Complete |
 | SHOP-03 | Phase 4 | Complete |
-| SHOP-04 | Phase 4 | Pending |
+| SHOP-04 | Phase 4 | Complete |
 | ORDR-01 | Phase 5 | Pending |
 | ORDR-02 | Phase 5 | Pending |
 | ORDR-03 | Phase 5 | Pending |
