@@ -83,7 +83,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Order Management (주문 관리)
 
-- [ ] **ORDR-01**: User can track order status (주문확인 → 인솔설계 → 제작중 → 배송중 → 완료)
+- [x] **ORDR-01**: User can track order status (주문확인 → 인솔설계 → 제작중 → 배송중 → 완료)
 - [ ] **ORDR-02**: User receives email notifications at each order stage
 - [ ] **ORDR-03**: Admin can manually update order status and dispatch to factory (이메일/스프레드시트)
 - [ ] **ORDR-04**: Admin can view and manage all orders in admin dashboard
@@ -162,7 +162,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SHOP-02 | Phase 4 | Complete |
 | SHOP-03 | Phase 4 | Complete |
 | SHOP-04 | Phase 4 | Complete |
-| ORDR-01 | Phase 5 | Pending |
+| ORDR-01 | Phase 5 | Complete |
 | ORDR-02 | Phase 5 | Pending |
 | ORDR-03 | Phase 5 | Pending |
 | ORDR-04 | Phase 5 | Pending |

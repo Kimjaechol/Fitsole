@@ -110,7 +110,13 @@ Plans:
   4. Admin can update order status and dispatch to factory with design specs attached
   5. Admin can view SALTED measurement sessions with raw pressure data visualization
   6. Admin can manage offline store reservations and smart insole kit inventory
-**Plans**: TBD
+**Plans:** 5 plans
+Plans:
+- [x] 05-01-PLAN.md — Order type contracts, API routes, user-facing order list and detail pages
+- [ ] 05-02-PLAN.md — Status notification emails, admin auth middleware, status update API
+- [ ] 05-03-PLAN.md — Admin dashboard shell, sidebar, stats overview, filterable order table
+- [ ] 05-04-PLAN.md — Admin order detail with scan/design viewers, status controls, factory dispatch
+- [ ] 05-05-PLAN.md — SALTED session viewer and offline store reservation management
 **UI hint**: yes
 
 ### Phase 6: Segmentation, Support & Offline Store
@@ -138,5 +144,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. Foot Scanning | 0/8 | Planning complete | - |
 | 3. Insole Design & Product Catalog | 0/8 | Gap closure planned | - |
 | 4. Shopping & Checkout | 0/3 | Planning complete | - |
-| 5. Order Management & Factory Integration | 0/TBD | Not started | - |
+| 5. Order Management & Factory Integration | 0/5 | Planning complete | - |
 | 6. Segmentation & Support | 0/TBD | Not started | - |

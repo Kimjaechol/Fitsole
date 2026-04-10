@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-04-10T01:01:24.146Z"
+status: executing
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-04-10T07:28:06.237Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 6
   completed_phases: 4
-  total_plans: 23
-  completed_plans: 23
-  percent: 100
+  total_plans: 28
+  completed_plans: 24
+  percent: 86
 ---
 
 # Project State
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** 정확한 발 측정 데이터를 기반으로 개인 맞춤 인솔을 설계하여, 착용자의 발 건강과 편안함을 과학적으로 보장하는 것.
-**Current focus:** Phase 04 — Shopping & Checkout
+**Current focus:** Phase 05 — Admin Dashboard & Order Management
 
 ## Current Position
 
-Phase: 5
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 05 (Admin Dashboard & Order Management) — EXECUTING
+Plan: 2 of 5
+Status: Ready to execute
 Last activity: 2026-04-10
 
 Progress: [░░░░░░░░░░] 0%
@@ -79,6 +79,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04-shopping-checkout P01 | 5min | 2 tasks | 7 files |
 | Phase 04-shopping-checkout P02 | 4min | 2 tasks | 11 files |
 | Phase 04-shopping-checkout P03 | 4min | 2 tasks | 5 files |
+| Phase 05-admin-dashboard-order-management P01 | 15min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -138,6 +139,10 @@ Recent decisions affecting current work:
 - [Phase 04-shopping-checkout]: Fire-and-forget email after confirm response to avoid blocking user
 - [Phase 04-shopping-checkout]: Webhook always returns 200 to prevent Toss retry storms
 - [Phase 04-shopping-checkout]: Amount verification in confirm endpoint before calling Toss API
+- [Phase 05-admin-dashboard-order-management]: Order type contracts placed in src/lib/types/order.ts for cross-role reuse (user mypage + upcoming admin dashboard)
+- [Phase 05-admin-dashboard-order-management]: IDOR-safe order routes use WHERE (id AND userId) and return 404 on mismatch to avoid enumeration
+- [Phase 05-admin-dashboard-order-management]: users.role column added proactively with default 'user' so future admin RBAC middleware reads directly from NextAuth session
+- [Phase 05-admin-dashboard-order-management]: ORDER_STATUS_STEPS excludes pending and cancelled; cancelled renders as distinct banner so the progress bar keeps a stable 5-step shape
 
 ### Pending Todos
 
@@ -150,6 +155,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T00:50:38.754Z
-Stopped at: Completed 04-03-PLAN.md
+Last session: 2026-04-10T07:28:06.234Z
+Stopped at: Completed 05-01-PLAN.md
 Resume file: None
