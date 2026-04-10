@@ -8,19 +8,23 @@
  */
 
 import { NextResponse } from "next/server";
-import { z } from "zod";
 import { and, desc, eq, gte, inArray, lte, type SQL } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { reservations } from "@/lib/db/schema";
 import { requireAdmin, AdminAuthError } from "@/lib/admin-auth";
+import {
+  createReservationSchema,
+  RESERVATION_STATUS_VALUES,
+  type ReservationStatus,
+  type ServiceType,
+} from "@/lib/reservations/schema";
 
-export type ReservationStatus =
-  | "pending"
-  | "confirmed"
-  | "completed"
-  | "cancelled";
+// Re-export types for existing callers that imported them from this route
+// before the schema was extracted to @/lib/reservations/schema (06-03).
+export type { ReservationStatus, ServiceType };
 
-export type ServiceType = "measurement" | "consultation" | "pickup";
+// Keep `eq` imported — used by the PATCH handler which may be added later.
+void eq;
 
 export interface AdminReservation {
   id: string;
@@ -35,42 +39,6 @@ export interface AdminReservation {
   createdAt: string;
   updatedAt: string;
 }
-
-const RESERVATION_STATUS_VALUES = [
-  "pending",
-  "confirmed",
-  "completed",
-  "cancelled",
-] as const satisfies readonly ReservationStatus[];
-
-const SERVICE_TYPE_VALUES = [
-  "measurement",
-  "consultation",
-  "pickup",
-] as const satisfies readonly ServiceType[];
-
-const createReservationSchema = z.object({
-  customerName: z.string().trim().min(1, "고객명은 필수입니다.").max(100),
-  customerPhone: z.string().trim().min(1, "전화번호는 필수입니다.").max(40),
-  customerEmail: z
-    .string()
-    .trim()
-    .email("이메일 형식이 올바르지 않습니다.")
-    .optional()
-    .or(z.literal(""))
-    .transform((v) => (v === "" || v === undefined ? null : v)),
-  reservationDate: z
-    .string()
-    .min(1, "예약일은 필수입니다.")
-    .refine((s) => !Number.isNaN(new Date(s).getTime()), {
-      message: "예약일 형식이 올바르지 않습니다.",
-    }),
-  timeSlot: z.string().trim().min(1, "시간대는 필수입니다.").max(40),
-  serviceType: z.enum(SERVICE_TYPE_VALUES, {
-    message: "서비스 유형이 올바르지 않습니다.",
-  }),
-  notes: z.string().trim().max(1000).optional().nullable(),
-});
 
 function parseStatusParam(raw: string | null): ReservationStatus[] | null {
   if (!raw) return null;
@@ -216,5 +184,4 @@ export async function POST(request: Request) {
   }
 }
 
-// Re-export for route handler sibling
-export { createReservationSchema };
+// createReservationSchema is re-exported via @/lib/reservations/schema.
