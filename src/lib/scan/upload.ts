@@ -45,11 +45,17 @@ export function uploadScanVideo(
 
 /**
  * Upload a gait (walking) video via TUS protocol with resumable uploads.
- * Includes `type: 'gait'` metadata so the upload route routes to /gait/analyze.
+ * Includes `type: 'gait'` + `viewType` metadata so the upload route routes
+ * to the correct gait analyzer (side=sagittal, rear=frontal).
+ *
+ * Per 2-phase biomechanically-correct capture:
+ * - viewType='side' → sagittal plane analysis (stride, dorsiflexion, arch flex)
+ * - viewType='rear' → frontal plane analysis (pronation/supination)
  */
 export function uploadGaitVideo(
   file: Blob,
   scanId: string,
+  viewType: 'side' | 'rear',
   onProgress: (percent: number) => void,
   onComplete: (url: string) => void,
   onError: (error: Error) => void
@@ -59,10 +65,11 @@ export function uploadGaitVideo(
     chunkSize: 5 * 1024 * 1024, // 5MB per RESEARCH Pattern 4
     retryDelays: [0, 1000, 3000, 5000],
     metadata: {
-      filename: 'gait-video.webm',
+      filename: `gait-${viewType}-video.webm`,
       filetype: 'video/webm',
       scanId,
       type: 'gait',
+      viewType,
     },
     onProgress: (bytesUploaded, bytesTotal) => {
       const percent = Math.round((bytesUploaded / bytesTotal) * 100);
@@ -73,8 +80,9 @@ export function uploadGaitVideo(
       onComplete(url ?? '');
     },
     onError: (err) => {
-      onError(new Error('보행 영상 업로드에 실패했습니다'));
-      console.error('TUS gait upload error:', err);
+      const viewLabel = viewType === 'side' ? '옆모습' : '뒷모습';
+      onError(new Error(`${viewLabel} 보행 영상 업로드에 실패했습니다`));
+      console.error(`TUS gait ${viewType} upload error:`, err);
     },
   });
 

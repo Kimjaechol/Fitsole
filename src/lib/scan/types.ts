@@ -7,11 +7,21 @@ export type ScanStatus =
   | 'onboarding'
   | 'positioning'
   | 'recording_foot'
-  | 'recording_gait'
+  | 'recording_gait_side'
+  | 'recording_gait_rear'
   | 'uploading'
   | 'processing'
   | 'results'
   | 'error';
+
+/**
+ * Gait video view type (D-21 through D-25: 2-phase biomechanically-correct capture).
+ * - 'side' = Sagittal plane (camera on user's side at knee height, landscape)
+ *           → measures stride, dorsiflexion, arch flex, gait cycle
+ * - 'rear' = Frontal plane (camera behind user at hip height, portrait)
+ *           → measures pronation/supination, Q-angle, bilateral symmetry
+ */
+export type GaitViewType = 'side' | 'rear';
 
 /** Which foot is being scanned (D-20: left/right scanned independently) */
 export type FootSide = 'left' | 'right';

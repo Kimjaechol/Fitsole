@@ -26,6 +26,117 @@ interface Section {
 
 const SECTIONS: Section[] = [
   {
+    id: "measurement-method",
+    title: "측정 방법 (카메라 설치 가이드)",
+    items: [
+      {
+        q: "측정은 총 몇 번 촬영해야 하나요?",
+        a: (
+          <div className="space-y-2">
+            <p>정확한 측정을 위해 총 <strong>3번의 촬영</strong>이 필요합니다:</p>
+            <ol className="ml-4 list-decimal space-y-1">
+              <li><strong>발 360° 촬영</strong> (15-20초) — 3D 발 모델 생성</li>
+              <li><strong>옆에서 걷기 촬영</strong> (10-15초) — 보폭과 아치 변화 측정</li>
+              <li><strong>뒤에서 걷기 촬영</strong> (10-15초) — 회내/회외 정확도 측정</li>
+            </ol>
+            <p className="text-sm text-[#64748B]">
+              옆과 뒤 두 각도에서 촬영하는 이유는 생체역학적으로 발이 <strong>3개의 평면</strong>에서 움직이기 때문입니다. 옆에서는 앞/뒤 움직임, 뒤에서는 좌/우 기울기를 측정합니다.
+            </p>
+          </div>
+        ),
+      },
+      {
+        q: "옆에서 걷는 영상은 어떻게 촬영하나요?",
+        a: (
+          <div className="space-y-3">
+            <p className="font-medium">🎯 카메라 설정 (옆모습):</p>
+            <ul className="ml-4 list-disc space-y-1">
+              <li>카메라 방향: <strong>가로 모드</strong></li>
+              <li>카메라 높이: <strong>바닥에서 50cm (무릎 높이)</strong></li>
+              <li>받침대: 의자, 작은 탁자 또는 책 쌓기</li>
+              <li>카메라와 보행선 거리: <strong>옆으로 3m</strong></li>
+              <li>카메라 수평 유지 (기울어지면 안 됨)</li>
+            </ul>
+            <p className="font-medium">🚶 걷는 방법:</p>
+            <ul className="ml-4 list-disc space-y-1">
+              <li>카메라 옆 3m 지점에 서서 시작</li>
+              <li>카메라와 직각 방향(카메라 옆을 지나가며)으로 5-10걸음</li>
+              <li>카메라를 쳐다보지 말고 전방 응시</li>
+              <li>평소 속도로 자연스럽게</li>
+            </ul>
+            <p className="text-sm text-[#64748B]">
+              측정 항목: 보폭, 발목 굽힘 각도, 아치 변형, 보행 주기
+            </p>
+          </div>
+        ),
+      },
+      {
+        q: "뒤에서 걷는 영상은 어떻게 촬영하나요?",
+        a: (
+          <div className="space-y-3">
+            <p className="font-medium">🎯 카메라 설정 (뒷모습):</p>
+            <ul className="ml-4 list-disc space-y-1">
+              <li>카메라 방향: <strong>세로 모드</strong></li>
+              <li>카메라 높이: <strong>바닥에서 80cm (엉덩이 높이)</strong></li>
+              <li>받침대: 옆모습 촬영 시 받침대 위에 책 추가로 쌓기</li>
+              <li>사용자 시작점: <strong>카메라 앞 1m</strong></li>
+              <li>카메라 수평 유지</li>
+            </ul>
+            <p className="font-medium">🚶 걷는 방법:</p>
+            <ul className="ml-4 list-disc space-y-1">
+              <li>카메라에 <strong>등지고</strong> 섬 (카메라가 뒷모습을 봄)</li>
+              <li>카메라에서 <strong>멀어지는 방향</strong>으로 5-10걸음</li>
+              <li>양팔을 자연스럽게 흔들며 걷기</li>
+              <li>뒤돌아보지 말고 전방 응시</li>
+            </ul>
+            <p className="text-sm text-[#64748B]">
+              측정 항목: 회내/회외 각도 (발이 안/바깥으로 기우는 정도), Q각도, 양쪽 다리 대칭성
+            </p>
+          </div>
+        ),
+      },
+      {
+        q: "촬영 공간과 복장은 어떻게 준비해야 하나요?",
+        a: (
+          <div className="space-y-2">
+            <p className="font-medium">📏 공간:</p>
+            <ul className="ml-4 list-disc space-y-1">
+              <li>최소 직선 4m 이상 걸을 수 있는 공간</li>
+              <li>측면에 3m 이상 여유 공간 (옆 촬영용)</li>
+              <li>단색 배경 (흰 벽, 회색 벽) 권장</li>
+              <li>균일한 조명 (역광 금지 — 창문 앞에 서지 마세요)</li>
+              <li>평평한 바닥 (카펫/울퉁불퉁한 바닥 피하기)</li>
+            </ul>
+            <p className="mt-3 font-medium">👖 복장:</p>
+            <ul className="ml-4 list-disc space-y-1">
+              <li><strong>무릎이 보이는 옷</strong> — 반바지 또는 레깅스 권장</li>
+              <li>긴 바지 + 검은 양말은 AI 관절 감지 실패율이 높습니다</li>
+              <li>맨발 또는 얇은 양말 (발 윤곽이 보여야 함)</li>
+            </ul>
+          </div>
+        ),
+      },
+      {
+        q: "촬영 시 흔한 실수는 무엇인가요?",
+        a: (
+          <div className="space-y-2">
+            <p>다음 실수를 피해주세요:</p>
+            <ul className="ml-4 list-disc space-y-1">
+              <li>❌ 카메라를 손에 들고 촬영 → 흔들림으로 정확도 저하</li>
+              <li>❌ 카메라를 바닥에 놓기 → 다리 전체가 안 보임</li>
+              <li>❌ 트레드밀에서 촬영 → 바닥이 움직여 보폭 계산 불가</li>
+              <li>❌ 카메라 쳐다보며 걷기 → 자세가 부자연스러움</li>
+              <li>❌ 긴 바지 + 어두운 양말 → 관절 감지 실패</li>
+              <li>❌ 역광 (창문 앞) → 실루엣만 보임</li>
+              <li>❌ 3걸음만 걷기 → 데이터 부족</li>
+              <li>❌ 걷다가 프레임 밖으로 이탈</li>
+            </ul>
+          </div>
+        ),
+      },
+    ],
+  },
+  {
     id: "accuracy",
     title: "측정 정확도",
     items: [
@@ -36,6 +147,10 @@ const SECTIONS: Section[] = [
       {
         q: "측정할 때 왜 A4 용지가 필요한가요?",
         a: "A4 용지의 국제 표준 크기(210×297mm)를 기준 스케일로 사용해 실제 발 치수를 정확히 환산합니다. 첫 5프레임의 중앙값을 취해 노이즈를 제거합니다.",
+      },
+      {
+        q: "왜 옆과 뒤 두 방향에서 보행을 촬영하나요?",
+        a: "해부학적으로 발은 3개의 평면에서 움직입니다. 보폭과 아치 변화(시상면)는 옆에서, 회내/회외 기울기(관상면)는 뒤에서만 정확히 측정할 수 있습니다. 한 방향으로만 촬영하면 핵심 데이터의 절반이 누락됩니다.",
       },
       {
         q: "스캔 품질 점수는 무엇인가요?",

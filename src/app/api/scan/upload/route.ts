@@ -79,7 +79,18 @@ export async function POST(request: Request) {
     const uploadType = formData.get("type") as string | null;
 
     if (uploadType === "gait") {
-      // Route gait video to Python /gait/analyze as multipart UploadFile
+      // Gait view type: 'side' (sagittal) or 'rear' (frontal)
+      // Defaults to 'side' for backward compatibility
+      const viewType = (formData.get("viewType") as string | null) ?? "side";
+
+      if (viewType !== "side" && viewType !== "rear") {
+        return NextResponse.json(
+          { error: "잘못된 보행 영상 유형입니다." },
+          { status: 400 }
+        );
+      }
+
+      // Route gait video to Python /gait/analyze with viewType
       await db
         .update(footScans)
         .set({ processingStage: "analyzing_gait" })
@@ -88,6 +99,7 @@ export async function POST(request: Request) {
       const gaitForm = new FormData();
       gaitForm.append("video", file);
       gaitForm.append("scanId", scanId);
+      gaitForm.append("viewType", viewType);
 
       const gaitResponse = await fetch(
         `${MEASUREMENT_SERVICE_URL}/gait/analyze`,
@@ -99,32 +111,78 @@ export async function POST(request: Request) {
 
       if (!gaitResponse.ok) {
         const errorText = await gaitResponse.text().catch(() => "Unknown error");
-        console.error("Gait analysis error:", errorText);
+        console.error(`Gait ${viewType} analysis error:`, errorText);
         return NextResponse.json(
-          { error: "보행 분석에 실패했습니다" },
+          {
+            error:
+              viewType === "side"
+                ? "옆모습 보행 분석에 실패했습니다"
+                : "뒷모습 보행 분석에 실패했습니다",
+          },
           { status: 500 }
         );
       }
 
       const gaitResult = await gaitResponse.json();
 
-      // Save gait results to DB
-      await db.insert(gaitAnalysis).values({
-        scanId,
-        gaitPattern: gaitResult.gaitPattern,
-        ankleAlignment: gaitResult.ankleAlignment,
-        archFlexibilityIndex: gaitResult.archFlexibilityIndex,
-        walkingVideoUrl: "",
-      });
+      // Fetch existing gait record (if any) to merge side+rear results
+      const [existing] = await db
+        .select()
+        .from(gaitAnalysis)
+        .where(eq(gaitAnalysis.scanId, scanId))
+        .limit(1);
 
-      // Update processing stage
-      await db
-        .update(footScans)
-        .set({ processingStage: "estimating_pressure" })
-        .where(eq(footScans.id, scanId));
+      if (viewType === "side") {
+        // Side view provides: gaitPattern, archFlexibilityIndex
+        // Preserve rear-view ankleAlignment if already recorded
+        if (existing) {
+          await db
+            .update(gaitAnalysis)
+            .set({
+              gaitPattern: gaitResult.gaitPattern,
+              archFlexibilityIndex: gaitResult.archFlexibilityIndex,
+            })
+            .where(eq(gaitAnalysis.scanId, scanId));
+        } else {
+          await db.insert(gaitAnalysis).values({
+            scanId,
+            gaitPattern: gaitResult.gaitPattern,
+            ankleAlignment: "neutral", // placeholder until rear view arrives
+            archFlexibilityIndex: gaitResult.archFlexibilityIndex,
+            walkingVideoUrl: "",
+          });
+        }
+      } else {
+        // Rear view provides: ankleAlignment, pronationDegree
+        // Preserve side-view gaitPattern/archFlex if already recorded
+        if (existing) {
+          await db
+            .update(gaitAnalysis)
+            .set({
+              ankleAlignment: gaitResult.ankleAlignment,
+            })
+            .where(eq(gaitAnalysis.scanId, scanId));
+        } else {
+          await db.insert(gaitAnalysis).values({
+            scanId,
+            gaitPattern: "normal", // placeholder until side view arrives
+            ankleAlignment: gaitResult.ankleAlignment,
+            archFlexibilityIndex: 0.5, // placeholder
+            walkingVideoUrl: "",
+          });
+        }
+
+        // Only transition to next stage after BOTH gait videos processed
+        // (rear view is always captured second in the flow)
+        await db
+          .update(footScans)
+          .set({ processingStage: "estimating_pressure" })
+          .where(eq(footScans.id, scanId));
+      }
 
       return NextResponse.json({
         scanId,
+        viewType,
         status: "gait_complete" as const,
       });
     }

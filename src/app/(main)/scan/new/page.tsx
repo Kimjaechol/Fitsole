@@ -21,10 +21,18 @@ import { CircularGuide } from '@/components/scan/circular-guide';
 import { A4PaperGuide } from '@/components/scan/a4-paper-guide';
 import { WalkingGuide } from '@/components/scan/walking-guide';
 import { FootSideSelector } from '@/components/scan/foot-side-selector';
-import type { FootSide } from '@/lib/scan/types';
+import type { FootSide, GaitViewType } from '@/lib/scan/types';
 
 const FOOT_RECORD_MAX_SECONDS = 20;
-const GAIT_RECORD_MAX_SECONDS = 30;
+const GAIT_RECORD_MAX_SECONDS = 15;
+
+// Steps:
+// 1 = Positioning (A4 placement)
+// 2 = Recording foot (360° video)
+// 3 = Walking side view (sagittal plane)
+// 4 = Walking rear view (frontal plane)
+// 5 = Foot side + biometric form
+const TOTAL_STEPS = 5;
 
 export default function ScanNewPage() {
   const router = useRouter();
@@ -45,7 +53,6 @@ export default function ScanNewPage() {
   const [uploadProgress, setUploadProgress] = useState<number | null>(null);
 
   // Walking state
-  const [stepCount, setStepCount] = useState(0);
   const [showWalkingInstructions, setShowWalkingInstructions] = useState(true);
 
   // Biometric state
@@ -66,6 +73,10 @@ export default function ScanNewPage() {
   const countdownRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const uploadAbortRef = useRef<{ abort: () => void } | null>(null);
   const scanIdRef = useRef<string>('');
+
+  // Derive current gait view type from step
+  const currentGaitView: GaitViewType | null =
+    step === 3 ? 'side' : step === 4 ? 'rear' : null;
 
   // Initialize scan session
   useEffect(() => {
@@ -101,7 +112,6 @@ export default function ScanNewPage() {
 
   const startRecording = useCallback(
     (maxSeconds: number) => {
-      // Get video element from the DOM (CameraViewfinder renders it)
       const videoEl = document.querySelector('video');
       if (!videoEl || !videoEl.srcObject) return;
 
@@ -122,12 +132,11 @@ export default function ScanNewPage() {
         handleRecordingComplete(blob);
       };
 
-      recorder.start(1000); // Collect data every second
+      recorder.start(1000);
       mediaRecorderRef.current = recorder;
       setIsRecording(true);
       setElapsedSeconds(0);
 
-      // Timer for elapsed seconds
       let seconds = 0;
       timerRef.current = setInterval(() => {
         seconds += 1;
@@ -157,30 +166,57 @@ export default function ScanNewPage() {
 
   const handleRecordingComplete = useCallback(
     (blob: Blob) => {
-      // Upload the video — use uploadGaitVideo for step 3 (walking video)
       setUploadProgress(0);
-      const uploadFn = step === 3 ? uploadGaitVideo : uploadScanVideo;
-      const handle = uploadFn(
-        blob,
-        scanIdRef.current,
-        (percent) => setUploadProgress(percent),
-        () => {
-          setUploadProgress(null);
-          // Move to next step
-          if (step === 2) {
+
+      // Step 2 = foot 360° scan; Step 3 = side walking; Step 4 = rear walking
+      let handle: { abort: () => void };
+
+      if (step === 2) {
+        handle = uploadScanVideo(
+          blob,
+          scanIdRef.current,
+          (percent) => setUploadProgress(percent),
+          () => {
+            setUploadProgress(null);
             setCompletedSteps((prev) => [...prev, 2]);
             setStep(3);
             setShowWalkingInstructions(true);
-          } else if (step === 3) {
+          },
+          () => setUploadProgress(null)
+        );
+      } else if (step === 3) {
+        // Side view gait video
+        handle = uploadGaitVideo(
+          blob,
+          scanIdRef.current,
+          'side',
+          (percent) => setUploadProgress(percent),
+          () => {
+            setUploadProgress(null);
             setCompletedSteps((prev) => [...prev, 3]);
             setStep(4);
-          }
-        },
-        () => {
-          setUploadProgress(null);
-          // Error handled by upload.ts with Korean message
-        }
-      );
+            setShowWalkingInstructions(true);
+          },
+          () => setUploadProgress(null)
+        );
+      } else if (step === 4) {
+        // Rear view gait video
+        handle = uploadGaitVideo(
+          blob,
+          scanIdRef.current,
+          'rear',
+          (percent) => setUploadProgress(percent),
+          () => {
+            setUploadProgress(null);
+            setCompletedSteps((prev) => [...prev, 4]);
+            setStep(5);
+          },
+          () => setUploadProgress(null)
+        );
+      } else {
+        return;
+      }
+
       uploadAbortRef.current = handle;
     },
     [step]
@@ -209,7 +245,6 @@ export default function ScanNewPage() {
     (side: FootSide) => {
       setCurrentFoot(side);
       setScannedFoot(currentFoot);
-      // Loop back to step 1 for second foot
       setStep(1);
       setCompletedSteps([]);
     },
@@ -237,7 +272,6 @@ export default function ScanNewPage() {
         throw new Error('Process trigger failed');
       }
 
-      // Navigate to processing page (it polls status)
       router.push(`/scan/processing/${scanIdRef.current}`);
     } catch {
       setProcessError('처리를 시작할 수 없습니다. 다시 시도해 주세요.');
@@ -246,33 +280,28 @@ export default function ScanNewPage() {
     }
   }, [router, currentFoot, weight, gender, age]);
 
-  // Step 1: Positioning
+  // Step 1: Positioning (A4 placement)
   if (step === 1) {
     return (
       <>
         <CameraViewfinder onFrame={handleFrameCheck} onBack={handleBack}>
-          {/* Stepper at top */}
           <div className="absolute left-0 right-0 top-4 z-10 px-4">
             <ScanStepper currentStep={1} completedSteps={completedSteps} />
           </div>
 
-          {/* A4 Paper Guide */}
           <A4PaperGuide detected={false} />
 
-          {/* Guidance */}
           <GuidanceOverlay
             message="A4 용지 위에 발을 올려주세요"
             type="info"
           />
 
-          {/* Subtitle guidance */}
           <div className="absolute bottom-32 left-0 right-0 z-10 px-4 text-center">
             <p className="text-sm text-white/80">
               밝은 곳에서 A4 용지 위에 맨발을 올려주세요
             </p>
           </div>
 
-          {/* Quality warning */}
           {qualityWarning && (
             <div className="absolute bottom-44 left-0 right-0 z-10 px-4 text-center">
               <div className="inline-block rounded-lg bg-amber-600/90 px-3 py-1.5">
@@ -281,7 +310,6 @@ export default function ScanNewPage() {
             </div>
           )}
 
-          {/* Proceed button */}
           <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center px-6">
             <Button
               onClick={() => {
@@ -295,7 +323,6 @@ export default function ScanNewPage() {
           </div>
         </CameraViewfinder>
 
-        {/* Exit confirmation dialog */}
         <Dialog open={showExitDialog} onOpenChange={setShowExitDialog}>
           <DialogContent>
             <DialogTitle>스캔을 중단하시겠습니까?</DialogTitle>
@@ -316,7 +343,7 @@ export default function ScanNewPage() {
     );
   }
 
-  // Step 2: Recording foot
+  // Step 2: Recording foot (360° scan)
   if (step === 2) {
     return (
       <>
@@ -324,15 +351,12 @@ export default function ScanNewPage() {
           onFrame={isRecording ? handleFrameCheck : undefined}
           onBack={handleBack}
         >
-          {/* Stepper */}
           <div className="absolute left-0 right-0 top-4 z-10 px-4">
             <ScanStepper currentStep={2} completedSteps={completedSteps} />
           </div>
 
-          {/* Circular Guide */}
           <CircularGuide progress={circularProgress} />
 
-          {/* Guidance */}
           <GuidanceOverlay
             message={
               isRecording
@@ -350,7 +374,6 @@ export default function ScanNewPage() {
             </div>
           )}
 
-          {/* Countdown overlay */}
           {countdown !== null && (
             <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60">
               <span className="text-[64px] font-bold leading-none text-white">
@@ -359,7 +382,6 @@ export default function ScanNewPage() {
             </div>
           )}
 
-          {/* Recording timer */}
           {isRecording && (
             <div className="absolute right-4 top-20 z-10 rounded-lg bg-black/60 px-3 py-1.5">
               <span className="text-sm font-medium text-white">
@@ -368,7 +390,6 @@ export default function ScanNewPage() {
             </div>
           )}
 
-          {/* Quality warning */}
           {qualityWarning && isRecording && (
             <div className="absolute bottom-32 left-0 right-0 z-10 px-4 text-center">
               <div className="inline-block rounded-lg bg-amber-600/90 px-3 py-1.5">
@@ -377,7 +398,6 @@ export default function ScanNewPage() {
             </div>
           )}
 
-          {/* Upload progress */}
           {uploadProgress !== null && (
             <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-4 bg-black/70">
               <p className="text-base text-white">영상 업로드 중... {uploadProgress}%</p>
@@ -390,7 +410,6 @@ export default function ScanNewPage() {
             </div>
           )}
 
-          {/* Recording button */}
           <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center">
             <RecordingButton
               isRecording={isRecording}
@@ -403,7 +422,6 @@ export default function ScanNewPage() {
           </div>
         </CameraViewfinder>
 
-        {/* Exit dialog */}
         <Dialog open={showExitDialog} onOpenChange={setShowExitDialog}>
           <DialogContent>
             <DialogTitle>스캔을 중단하시겠습니까?</DialogTitle>
@@ -424,69 +442,77 @@ export default function ScanNewPage() {
     );
   }
 
-  // Step 3: Walking/gait recording
-  if (step === 3) {
+  // Steps 3 & 4: Walking videos (side + rear)
+  if ((step === 3 || step === 4) && currentGaitView) {
+    // Instruction screen before recording
     if (showWalkingInstructions) {
+      const accentClass =
+        currentGaitView === 'side'
+          ? 'bg-blue-600 hover:bg-blue-700'
+          : 'bg-emerald-600 hover:bg-emerald-700';
+
       return (
-        <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-white px-6">
-          <WalkingGuide stepCount={0} totalSteps={10} />
-          <div className="flex flex-col gap-4 w-full max-w-xs">
-            <p className="text-center text-sm text-slate-500">
-              3초 후 촬영이 시작됩니다
-            </p>
+        <div className="flex min-h-screen flex-col items-center gap-6 overflow-y-auto bg-white px-6 py-8">
+          {/* Stepper at top */}
+          <div className="w-full max-w-md">
+            <ScanStepper currentStep={step} completedSteps={completedSteps} />
+          </div>
+
+          {/* Guide component with diagrams */}
+          <WalkingGuide viewType={currentGaitView} stepCount={0} totalSteps={10} />
+
+          {/* Start button */}
+          <div className="flex w-full max-w-xs flex-col gap-3 pb-8">
             <Button
               onClick={() => {
                 setShowWalkingInstructions(false);
-                setStepCount(0);
                 startCountdown(() => startRecording(GAIT_RECORD_MAX_SECONDS));
               }}
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className={`w-full ${accentClass}`}
+              size="lg"
             >
-              보행 촬영 시작
+              {currentGaitView === 'side'
+                ? '옆모습 촬영 시작'
+                : '뒷모습 촬영 시작'}
             </Button>
+            <p className="text-center text-sm text-slate-500">
+              시작 버튼을 누르면 3초 카운트다운 후 촬영이 시작됩니다
+            </p>
           </div>
         </div>
       );
     }
 
+    // Recording screen
+    const overlayLabel =
+      currentGaitView === 'side'
+        ? '카메라 옆을 지나가며 걷기'
+        : '카메라에서 멀어지며 걷기';
+    const accentColor = currentGaitView === 'side' ? 'bg-blue-600' : 'bg-emerald-600';
+
     return (
       <>
         <CameraViewfinder onBack={handleBack}>
-          {/* Stepper */}
           <div className="absolute left-0 right-0 top-4 z-10 px-4">
-            <ScanStepper currentStep={3} completedSteps={completedSteps} />
+            <ScanStepper currentStep={step} completedSteps={completedSteps} />
           </div>
 
-          {/* Guidance */}
           <GuidanceOverlay
-            message={isRecording ? '자연스럽게 걸어주세요' : '촬영 준비 중...'}
+            message={isRecording ? overlayLabel : '촬영 준비 중...'}
             type="info"
           />
 
-          {/* Countdown */}
           {countdown !== null && (
             <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-4 bg-black/60">
               <span className="text-[64px] font-bold leading-none text-white">
                 {countdown}
               </span>
               <p className="text-base text-white/80">
-                3초 후 촬영이 시작됩니다
+                위치로 이동해 주세요
               </p>
             </div>
           )}
 
-          {/* Step counter overlay */}
-          {isRecording && (
-            <div className="absolute bottom-32 left-0 right-0 z-10 flex justify-center">
-              <div className="rounded-lg bg-black/60 px-4 py-2">
-                <span className="text-base text-white">
-                  {stepCount}/10 걸음
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Recording timer */}
           {isRecording && (
             <div className="absolute right-4 top-20 z-10 rounded-lg bg-black/60 px-3 py-1.5">
               <span className="text-sm font-medium text-white">
@@ -495,20 +521,18 @@ export default function ScanNewPage() {
             </div>
           )}
 
-          {/* Upload progress */}
           {uploadProgress !== null && (
             <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-4 bg-black/70">
               <p className="text-base text-white">영상 업로드 중... {uploadProgress}%</p>
               <div className="h-2 w-48 overflow-hidden rounded-full bg-white/20">
                 <div
-                  className="h-full bg-blue-600 transition-all duration-300"
+                  className={`h-full transition-all duration-300 ${accentColor}`}
                   style={{ width: `${uploadProgress}%` }}
                 />
               </div>
             </div>
           )}
 
-          {/* Recording button */}
           <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center">
             <RecordingButton
               isRecording={isRecording}
@@ -521,7 +545,6 @@ export default function ScanNewPage() {
           </div>
         </CameraViewfinder>
 
-        {/* Exit dialog */}
         <Dialog open={showExitDialog} onOpenChange={setShowExitDialog}>
           <DialogContent>
             <DialogTitle>스캔을 중단하시겠습니까?</DialogTitle>
@@ -542,16 +565,19 @@ export default function ScanNewPage() {
     );
   }
 
-  // Check if biometric form is complete
+  // Step 5: Foot side selection + biometric collection
   const biometricsComplete = weight !== '' && gender !== '' && age !== '';
 
-  // Step 4: Foot side selection + biometric collection
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-white px-6">
+      <div className="w-full max-w-md">
+        <ScanStepper currentStep={5} completedSteps={completedSteps} />
+      </div>
+
       <h2 className="text-2xl font-bold text-slate-800">
         {scannedFoot
           ? `${scannedFoot === 'left' ? '왼발' : '오른발'} 촬영 완료`
-          : '어떤 발을 촬영할까요?'}
+          : '어떤 발을 촬영했나요?'}
       </h2>
 
       <FootSideSelector
@@ -561,13 +587,11 @@ export default function ScanNewPage() {
 
       {scannedFoot && (
         <div className="flex w-full max-w-xs flex-col gap-4">
-          {/* Biometric input form */}
           <div className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-slate-50 p-4">
             <p className="text-sm font-medium text-slate-700">
               압력 분석을 위해 추가 정보가 필요합니다
             </p>
 
-            {/* Weight */}
             <div className="flex flex-col gap-1">
               <label htmlFor="weight" className="text-sm text-slate-600">
                 체중 (kg)
@@ -584,7 +608,6 @@ export default function ScanNewPage() {
               />
             </div>
 
-            {/* Gender */}
             <div className="flex flex-col gap-1">
               <span className="text-sm text-slate-600">성별</span>
               <div className="flex gap-2">
@@ -609,7 +632,6 @@ export default function ScanNewPage() {
               </div>
             </div>
 
-            {/* Age */}
             <div className="flex flex-col gap-1">
               <label htmlFor="age" className="text-sm text-slate-600">
                 나이
@@ -627,7 +649,6 @@ export default function ScanNewPage() {
             </div>
           </div>
 
-          {/* Error message */}
           {processError && (
             <p className="text-center text-sm text-red-600">{processError}</p>
           )}

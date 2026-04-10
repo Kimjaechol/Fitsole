@@ -4,14 +4,15 @@ import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ScanStepperProps {
-  currentStep: number; // 1-4
+  currentStep: number; // 1-5
   completedSteps: number[];
 }
 
 const STEPS = [
   { label: '발 위치' },
-  { label: '영상 촬영' },
-  { label: '보행 촬영' },
+  { label: '발 촬영' },
+  { label: '보행 옆' },
+  { label: '보행 뒤' },
   { label: '결과' },
 ];
 
@@ -21,9 +22,9 @@ export function ScanStepper({ currentStep, completedSteps }: ScanStepperProps) {
       role="progressbar"
       aria-valuenow={currentStep}
       aria-valuemin={1}
-      aria-valuemax={4}
+      aria-valuemax={5}
       aria-label="스캔 진행 상태"
-      className="flex items-start justify-center gap-6"
+      className="flex items-start justify-center gap-4"
     >
       {STEPS.map((step, index) => {
         const stepNumber = index + 1;
