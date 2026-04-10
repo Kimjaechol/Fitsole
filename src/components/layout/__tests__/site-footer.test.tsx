@@ -1,6 +1,10 @@
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
+
+afterEach(() => {
+  cleanup();
+});
 
 vi.mock("next/link", () => ({
   default: ({
@@ -17,7 +21,8 @@ import { SiteFooter } from "@/components/layout/site-footer";
 describe("SiteFooter (D-09)", () => {
   it("renders '90일 만족 보장' badge", () => {
     render(<SiteFooter />);
-    expect(screen.getByText(/90일 만족 보장/)).toBeInTheDocument();
+    // Phrase appears both in the badge span and in the nav label — both are intentional.
+    expect(screen.getAllByText(/90일 만족 보장/).length).toBeGreaterThanOrEqual(1);
   });
 
   it("links the 90-day guarantee badge to /guarantee", () => {

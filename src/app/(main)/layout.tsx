@@ -1,6 +1,7 @@
 import { SessionProvider } from "next-auth/react";
 import { BottomTabBar } from "@/components/layout/bottom-tab-bar";
 import { DesktopNav } from "@/components/layout/desktop-nav";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { SegmentProvider } from "@/components/segment/segment-provider";
 
 export default function MainLayout({
@@ -19,6 +20,7 @@ export default function MainLayout({
 
           <main className="flex-1 pb-[72px] md:pb-0">
             <div className="mx-auto max-w-[1280px]">{children}</div>
+            <SiteFooter />
           </main>
 
           <BottomTabBar />
