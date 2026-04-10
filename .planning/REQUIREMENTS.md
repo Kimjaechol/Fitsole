@@ -49,8 +49,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **ADMN-02**: Admin can view customer scan data (3D model, measurements, pressure heatmap)
 - [x] **ADMN-03**: Admin can view/download insole design specs (STL file, design parameters, TPU temperature map)
 - [x] **ADMN-04**: Admin can update order status and trigger factory dispatch (email with design specs attached)
-- [ ] **ADMN-05**: Admin can view SALTED measurement sessions with raw pressure data visualization
-- [ ] **ADMN-06**: Admin can manage offline store reservations and smart insole kit inventory
+- [x] **ADMN-05**: Admin can view SALTED measurement sessions with raw pressure data visualization
+- [x] **ADMN-06**: Admin can manage offline store reservations and smart insole kit inventory
 
 ### Product Catalog (상품 카탈로그)
 

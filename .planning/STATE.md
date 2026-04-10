@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 05-04-PLAN.md
-last_updated: "2026-04-10T11:09:56.435Z"
+status: verifying
+stopped_at: Completed 05-05-PLAN.md
+last_updated: "2026-04-10T11:20:40.205Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 6
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 28
-  completed_plans: 27
-  percent: 96
+  completed_plans: 28
+  percent: 100
 ---
 
 # Project State
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 
 Phase: 05 (Admin Dashboard & Order Management) — EXECUTING
 Plan: 5 of 5
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-10
 
 Progress: [░░░░░░░░░░] 0%
@@ -83,6 +83,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-admin-dashboard-order-management P02 | 6min | 2 tasks | 4 files |
 | Phase 05-admin-dashboard-order-management P03 | 4min | 2 tasks | 9 files |
 | Phase 05-admin-dashboard-order-management P04 | 8min | 2 tasks | 8 files |
+| Phase 05-admin-dashboard-order-management P05 | 12min | 2 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -167,6 +168,10 @@ Recent decisions affecting current work:
 - [Phase 05-admin-dashboard-order-management]: AdminOrderDetail / AdminScanData / AdminDesignData types colocated with the GET /api/admin/orders/[id] route and re-imported by the page
 - [Phase 05-admin-dashboard-order-management]: DesignSpecViewer coerces stored designParams JSON into typed DesignParams with safe fallbacks so the 3D preview never crashes on partial data
 - [Phase 05-admin-dashboard-order-management]: FACTORY_EMAIL env var with factory@fitsole.kr default per CONTEXT.md (factory partner not yet identified)
+- [Phase 05-admin-dashboard-order-management]: Inline SVG line chart for SALTED pressure timeline avoids pulling recharts dependency for a single chart
+- [Phase 05-admin-dashboard-order-management]: jsonb coercion with safe fallbacks in SALTED detail viewer so partial/malformed analysisResult never crashes UI
+- [Phase 05-admin-dashboard-order-management]: Reservations use soft delete (status=cancelled) to preserve audit trail and keep cancelled bookings in filtered views
+- [Phase 05-admin-dashboard-order-management]: Kit inventory PATCH endpoint (/api/admin/kit-inventory/[id]) enforces availableQuantity <= totalQuantity server-side
 
 ### Pending Todos
 
@@ -179,6 +184,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T11:09:44.547Z
-Stopped at: Completed 05-04-PLAN.md
+Last session: 2026-04-10T11:20:40.203Z
+Stopped at: Completed 05-05-PLAN.md
 Resume file: None
