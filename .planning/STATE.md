@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Completed 05-05-PLAN.md
-last_updated: "2026-04-10T11:21:17.205Z"
+status: executing
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-04-10T13:17:47.764Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 6
   completed_phases: 5
-  total_plans: 28
-  completed_plans: 28
-  percent: 100
+  total_plans: 31
+  completed_plans: 29
+  percent: 94
 ---
 
 # Project State
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** 정확한 발 측정 데이터를 기반으로 개인 맞춤 인솔을 설계하여, 착용자의 발 건강과 편안함을 과학적으로 보장하는 것.
-**Current focus:** Phase 05 — Admin Dashboard & Order Management
+**Current focus:** Phase 06 — Segmentation, Support & Offline Store
 
 ## Current Position
 
-Phase: 6
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 06 (Segmentation, Support & Offline Store) — EXECUTING
+Plan: 2 of 3
+Status: Ready to execute
 Last activity: 2026-04-10
 
 Progress: [░░░░░░░░░░] 0%
@@ -85,6 +85,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-admin-dashboard-order-management P03 | 4min | 2 tasks | 9 files |
 | Phase 05-admin-dashboard-order-management P04 | 8min | 2 tasks | 8 files |
 | Phase 05-admin-dashboard-order-management P05 | 12min | 2 tasks | 13 files |
+| Phase 06-segmentation-support-offline-store P01 | 39min | 2 tasks | 18 files |
 
 ## Accumulated Context
 
@@ -173,6 +174,12 @@ Recent decisions affecting current work:
 - [Phase 05-admin-dashboard-order-management]: jsonb coercion with safe fallbacks in SALTED detail viewer so partial/malformed analysisResult never crashes UI
 - [Phase 05-admin-dashboard-order-management]: Reservations use soft delete (status=cancelled) to preserve audit trail and keep cancelled bookings in filtered views
 - [Phase 05-admin-dashboard-order-management]: Kit inventory PATCH endpoint (/api/admin/kit-inventory/[id]) enforces availableQuantity <= totalQuantity server-side
+- [Phase 06-segmentation-support-offline-store]: users.segment stored as nullable text (not pgEnum) so guests/legacy rows map cleanly to null and future segments need no migration
+- [Phase 06-segmentation-support-offline-store]: SessionProvider scoped to (main) layout (not root) so admin/payload trees stay free of next-auth context
+- [Phase 06-segmentation-support-offline-store]: SegmentProvider precedence is DB > localStorage for authenticated users; guest selections auto-persist to DB on first authenticated reconcile
+- [Phase 06-segmentation-support-offline-store]: SEGMENT_TO_CATEGORIES aligned to existing Payload Korean top-level slugs (운동화/구두/샌들) with TODO for richer mapping when subcategories land
+- [Phase 06-segmentation-support-offline-store]: POST /api/user/segment ignores body userId; only updates WHERE users.id = session.user.id (T-06-02 mitigation)
+- [Phase 06-segmentation-support-offline-store]: Catalog segment filter is additive: segment categories unioned with explicit ?category= rather than replacing
 
 ### Pending Todos
 
@@ -185,6 +192,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T11:20:40.203Z
-Stopped at: Completed 05-05-PLAN.md
+Last session: 2026-04-10T13:17:47.761Z
+Stopped at: Completed 06-01-PLAN.md
 Resume file: None

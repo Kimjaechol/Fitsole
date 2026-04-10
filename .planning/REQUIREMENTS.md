@@ -77,9 +77,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Customer Segmentation (고객 세그먼트)
 
-- [ ] **SEGM-01**: User selects their primary concern on entry (발 건강 / 편안함 / 운동 성능)
-- [ ] **SEGM-02**: System shows segment-specific product recommendations and scanning flow
-- [ ] **SEGM-03**: Foot health segment sees condition-specific guidance (평발, 요족, 무지외반 등)
+- [x] **SEGM-01**: User selects their primary concern on entry (발 건강 / 편안함 / 운동 성능)
+- [x] **SEGM-02**: System shows segment-specific product recommendations and scanning flow
+- [x] **SEGM-03**: Foot health segment sees condition-specific guidance (평발, 요족, 무지외반 등)
 
 ### Order Management (주문 관리)
 
@@ -166,9 +166,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ORDR-02 | Phase 5 | Complete |
 | ORDR-03 | Phase 5 | Complete |
 | ORDR-04 | Phase 5 | Complete |
-| SEGM-01 | Phase 6 | Pending |
-| SEGM-02 | Phase 6 | Pending |
-| SEGM-03 | Phase 6 | Pending |
+| SEGM-01 | Phase 6 | Complete |
+| SEGM-02 | Phase 6 | Complete |
+| SEGM-03 | Phase 6 | Complete |
 | SUPP-01 | Phase 6 | Pending |
 | SUPP-02 | Phase 6 | Pending |
 | SUPP-03 | Phase 6 | Pending |

@@ -130,7 +130,11 @@ Plans:
   4. Site displays 90-day satisfaction guarantee with free remake policy
   5. Site has offline store page (강남역 지하상가) with location map, hours, smart insole kit service description, and reservation/contact
   6. Athlete segment links to smart insole kit rental program information
-**Plans**: TBD
+**Plans:** 3 plans
+Plans:
+- [x] 06-01-PLAN.md — Customer segmentation: type contracts, users.segment column, SegmentProvider modal, /segment/{health,general,athlete} pages, catalog filter (SEGM-01/02/03)
+- [ ] 06-02-PLAN.md — Support & guarantee: shadcn Accordion, /faq, /guarantee, /remake-policy, /support contact form + email endpoint, site footer (SUPP-01/02/03)
+- [ ] 06-03-PLAN.md — Offline store: /stores/gangnam page, Kakao static map, reservation form + public POST /api/reservations, athlete kit rental section (OFFL-01/02/03/04)
 **UI hint**: yes
 
 ## Progress
@@ -145,4 +149,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 3. Insole Design & Product Catalog | 0/8 | Gap closure planned | - |
 | 4. Shopping & Checkout | 0/3 | Planning complete | - |
 | 5. Order Management & Factory Integration | 0/5 | Planning complete | - |
-| 6. Segmentation & Support | 0/TBD | Not started | - |
+| 6. Segmentation, Support & Offline Store | 0/3 | Planning complete | - |
