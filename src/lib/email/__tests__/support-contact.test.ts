@@ -7,11 +7,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 const resendSendMock = vi.fn();
 
-vi.mock("resend", () => ({
-  Resend: vi.fn().mockImplementation(() => ({
-    emails: { send: resendSendMock },
-  })),
-}));
+vi.mock("resend", () => {
+  class Resend {
+    emails = { send: resendSendMock };
+    constructor(_apiKey?: string) {}
+  }
+  return { Resend };
+});
 
 import { sendSupportContactEmail } from "@/lib/email/support-contact";
 
@@ -112,7 +114,11 @@ describe("sendSupportContactEmail", () => {
       subject: "<img src=x onerror=alert(1)>",
     });
     const call = resendSendMock.mock.calls[0][0];
+    // Raw HTML tags must be escaped to HTML entities.
     expect(call.html).not.toContain("<script>");
-    expect(call.html).not.toContain("onerror=");
+    expect(call.html).not.toContain("<img src=x");
+    // Escaped forms must be present (proof that escaping ran).
+    expect(call.html).toContain("&lt;script&gt;");
+    expect(call.html).toContain("&lt;img src=x onerror=alert(1)&gt;");
   });
 });
