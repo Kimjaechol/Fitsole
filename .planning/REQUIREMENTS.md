@@ -22,10 +22,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Offline Store & Smart Insole Kit (오프라인 매장/스마트 인솔)
 
-- [ ] **OFFL-01**: Site has offline store introduction page with store info (강남역 지하상가)
-- [ ] **OFFL-02**: Store page shows smart insole kit measurement service description
-- [ ] **OFFL-03**: Store page includes location map, operating hours, and reservation/contact info
-- [ ] **OFFL-04**: Athlete section links to smart insole kit rental program info
+- [x] **OFFL-01**: Site has offline store introduction page with store info (강남역 지하상가)
+- [x] **OFFL-02**: Store page shows smart insole kit measurement service description
+- [x] **OFFL-03**: Store page includes location map, operating hours, and reservation/contact info
+- [x] **OFFL-04**: Athlete section links to smart insole kit rental program info
 
 ### Insole Design — Line 1: Camera-based (인솔 설계 — 일반인용)
 

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 06-02-PLAN.md
-last_updated: "2026-04-10T13:49:21.014Z"
+status: verifying
+stopped_at: Completed 06-03-PLAN.md — Phase 06 ready for verification
+last_updated: "2026-04-10T14:02:34.851Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 6
-  completed_phases: 5
+  completed_phases: 6
   total_plans: 31
-  completed_plans: 30
-  percent: 97
+  completed_plans: 31
+  percent: 100
 ---
 
 # Project State
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 
 Phase: 06 (Segmentation, Support & Offline Store) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-10
 
 Progress: [░░░░░░░░░░] 0%
@@ -87,6 +87,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-admin-dashboard-order-management P05 | 12min | 2 tasks | 13 files |
 | Phase 06-segmentation-support-offline-store P01 | 39min | 2 tasks | 18 files |
 | Phase 06-segmentation-support-offline-store P02 | 27min | 2 tasks | 16 files |
+| Phase 06-segmentation-support-offline-store P03 | 8min | 2 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -186,6 +187,10 @@ Recent decisions affecting current work:
 - [Phase 06-segmentation-support-offline-store]: Contact form submissions not persisted to DB in v1 (T-06-08 accepted); Resend delivery log is the audit trail
 - [Phase 06-segmentation-support-offline-store]: escapeHtml helper inline in src/lib/email/support-contact.ts to mitigate T-06-09 injection into email body
 - [Phase 06-segmentation-support-offline-store]: afterEach(cleanup) required in Vitest @testing-library page tests to prevent DOM leakage across getByRole queries
+- [Phase 06-segmentation-support-offline-store]: Extracted createReservationSchema to @/lib/reservations/schema so public route avoids admin-auth/next-auth transitive import
+- [Phase 06-segmentation-support-offline-store]: Public /api/reservations (not /api/admin/reservations) — admin route is auth-gated; public form needs its own POST-only endpoint with past-date refinement
+- [Phase 06-segmentation-support-offline-store]: StoreLocationMap falls back to '지도 준비 중' placeholder when KAKAO_MAP_KEY env var is unset, avoiding hard dev/preview failures
+- [Phase 06-segmentation-support-offline-store]: Service type labels (일반/SALTED 정밀/운동선수 키트 대여) map to existing ServiceType enum values (measurement/consultation/pickup) — no schema migration
 
 ### Pending Todos
 
@@ -198,6 +203,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T13:49:21.011Z
-Stopped at: Completed 06-02-PLAN.md
+Last session: 2026-04-10T14:02:34.849Z
+Stopped at: Completed 06-03-PLAN.md — Phase 06 ready for verification
 Resume file: None
