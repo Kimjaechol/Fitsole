@@ -16,6 +16,8 @@ export const users = pgTable("users", {
   emailVerified: timestamp("email_verified", { mode: "date" }),
   image: text("image"),
   hashedPassword: text("hashed_password"),
+  // Role-based access control per D-12/D-13. "user" | "admin"; set directly in DB.
+  role: text("role").default("user").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -192,6 +194,9 @@ export const orders = pgTable("orders", {
   paymentKey: text("payment_key"),                      // Toss Payments paymentKey
   paymentMethod: text("payment_method"),                // card, kakaopay, naverpay, tosspay, transfer
   paidAt: timestamp("paid_at"),
+  // Fulfillment tracking per D-03 ("tracking number when available")
+  trackingNumber: text("tracking_number"),
+  trackingCarrier: text("tracking_carrier"),            // e.g., "cj", "hanjin", "lotte"
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
