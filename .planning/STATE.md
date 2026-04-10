@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 06-01-PLAN.md
-last_updated: "2026-04-10T13:17:47.764Z"
+stopped_at: Completed 06-02-PLAN.md
+last_updated: "2026-04-10T13:49:21.014Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 6
   completed_phases: 5
   total_plans: 31
-  completed_plans: 29
-  percent: 94
+  completed_plans: 30
+  percent: 97
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 ## Current Position
 
 Phase: 06 (Segmentation, Support & Offline Store) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-04-10
 
@@ -86,6 +86,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-admin-dashboard-order-management P04 | 8min | 2 tasks | 8 files |
 | Phase 05-admin-dashboard-order-management P05 | 12min | 2 tasks | 13 files |
 | Phase 06-segmentation-support-offline-store P01 | 39min | 2 tasks | 18 files |
+| Phase 06-segmentation-support-offline-store P02 | 27min | 2 tasks | 16 files |
 
 ## Accumulated Context
 
@@ -180,6 +181,11 @@ Recent decisions affecting current work:
 - [Phase 06-segmentation-support-offline-store]: SEGMENT_TO_CATEGORIES aligned to existing Payload Korean top-level slugs (운동화/구두/샌들) with TODO for richer mapping when subcategories land
 - [Phase 06-segmentation-support-offline-store]: POST /api/user/segment ignores body userId; only updates WHERE users.id = session.user.id (T-06-02 mitigation)
 - [Phase 06-segmentation-support-offline-store]: Catalog segment filter is additive: segment categories unioned with explicit ?category= rather than replacing
+- [Phase 06-segmentation-support-offline-store]: SiteFooter rendered inside (main) <main> to coexist with BottomTabBar without overlap
+- [Phase 06-segmentation-support-offline-store]: POST /api/support/contact always returns 200 on valid input even when sendSupportContactEmail throws (T-06-07 mitigation)
+- [Phase 06-segmentation-support-offline-store]: Contact form submissions not persisted to DB in v1 (T-06-08 accepted); Resend delivery log is the audit trail
+- [Phase 06-segmentation-support-offline-store]: escapeHtml helper inline in src/lib/email/support-contact.ts to mitigate T-06-09 injection into email body
+- [Phase 06-segmentation-support-offline-store]: afterEach(cleanup) required in Vitest @testing-library page tests to prevent DOM leakage across getByRole queries
 
 ### Pending Todos
 
@@ -192,6 +198,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T13:17:47.761Z
-Stopped at: Completed 06-01-PLAN.md
+Last session: 2026-04-10T13:49:21.011Z
+Stopped at: Completed 06-02-PLAN.md
 Resume file: None

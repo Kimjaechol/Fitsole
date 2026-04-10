@@ -133,7 +133,7 @@ Plans:
 **Plans:** 3 plans
 Plans:
 - [x] 06-01-PLAN.md — Customer segmentation: type contracts, users.segment column, SegmentProvider modal, /segment/{health,general,athlete} pages, catalog filter (SEGM-01/02/03)
-- [ ] 06-02-PLAN.md — Support & guarantee: shadcn Accordion, /faq, /guarantee, /remake-policy, /support contact form + email endpoint, site footer (SUPP-01/02/03)
+- [x] 06-02-PLAN.md — Support & guarantee: shadcn Accordion, /faq, /guarantee, /remake-policy, /support contact form + email endpoint, site footer (SUPP-01/02/03)
 - [ ] 06-03-PLAN.md — Offline store: /stores/gangnam page, Kakao static map, reservation form + public POST /api/reservations, athlete kit rental section (OFFL-01/02/03/04)
 **UI hint**: yes
 

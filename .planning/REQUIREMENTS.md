@@ -90,9 +90,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Customer Support (고객 지원)
 
-- [ ] **SUPP-01**: User can access FAQ page covering measurement accuracy and fit concerns
-- [ ] **SUPP-02**: User can contact support via email or chat
-- [ ] **SUPP-03**: Site displays 90-day satisfaction guarantee with free remake policy
+- [x] **SUPP-01**: User can access FAQ page covering measurement accuracy and fit concerns
+- [x] **SUPP-02**: User can contact support via email or chat
+- [x] **SUPP-03**: Site displays 90-day satisfaction guarantee with free remake policy
 
 ### UI/UX
 
@@ -169,9 +169,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEGM-01 | Phase 6 | Complete |
 | SEGM-02 | Phase 6 | Complete |
 | SEGM-03 | Phase 6 | Complete |
-| SUPP-01 | Phase 6 | Pending |
-| SUPP-02 | Phase 6 | Pending |
-| SUPP-03 | Phase 6 | Pending |
+| SUPP-01 | Phase 6 | Complete |
+| SUPP-02 | Phase 6 | Complete |
+| SUPP-03 | Phase 6 | Complete |
 
 **Coverage:**
 - v1 requirements: 38 total
