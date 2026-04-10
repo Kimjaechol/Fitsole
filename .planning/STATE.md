@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 05-03-PLAN.md
-last_updated: "2026-04-10T10:35:54.907Z"
+stopped_at: Completed 05-04-PLAN.md
+last_updated: "2026-04-10T11:09:56.435Z"
 last_activity: 2026-04-10
 progress:
   total_phases: 6
   completed_phases: 4
   total_plans: 28
-  completed_plans: 26
-  percent: 93
+  completed_plans: 27
+  percent: 96
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 ## Current Position
 
 Phase: 05 (Admin Dashboard & Order Management) — EXECUTING
-Plan: 4 of 5
+Plan: 5 of 5
 Status: Ready to execute
 Last activity: 2026-04-10
 
@@ -82,6 +82,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 05-admin-dashboard-order-management P01 | 15min | 2 tasks | 7 files |
 | Phase 05-admin-dashboard-order-management P02 | 6min | 2 tasks | 4 files |
 | Phase 05-admin-dashboard-order-management P03 | 4min | 2 tasks | 9 files |
+| Phase 05-admin-dashboard-order-management P04 | 8min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -160,6 +161,12 @@ Recent decisions affecting current work:
 - [Phase 05-admin-dashboard-order-management]: Native <select> for admin dropdowns — shadcn Select/Popover + Radix Select not yet in repo; keeps dependency surface small
 - [Phase 05-admin-dashboard-order-management]: AdminOrderSummary exported from /api/admin/orders/route.ts (colocated with producer) rather than duplicated in src/lib/types/order.ts
 - [Phase 05-admin-dashboard-order-management]: Representative order lineType picked as professional > general > null in the admin list view to surface higher-tier designs first
+- [Phase 05-admin-dashboard-order-management]: Admin server components query Drizzle directly; mirror /api/admin endpoints for external callers
+- [Phase 05-admin-dashboard-order-management]: PressureHeatmap rendered as FootModel3D children for shared R3F Canvas (matches scan results page)
+- [Phase 05-admin-dashboard-order-management]: Factory dispatch route awaits the email send so admins get explicit pass/fail; updates status BEFORE sending so retries cannot fire from stale designing state
+- [Phase 05-admin-dashboard-order-management]: AdminOrderDetail / AdminScanData / AdminDesignData types colocated with the GET /api/admin/orders/[id] route and re-imported by the page
+- [Phase 05-admin-dashboard-order-management]: DesignSpecViewer coerces stored designParams JSON into typed DesignParams with safe fallbacks so the 3D preview never crashes on partial data
+- [Phase 05-admin-dashboard-order-management]: FACTORY_EMAIL env var with factory@fitsole.kr default per CONTEXT.md (factory partner not yet identified)
 
 ### Pending Todos
 
@@ -172,6 +179,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-10T10:35:54.904Z
-Stopped at: Completed 05-03-PLAN.md
+Last session: 2026-04-10T11:09:44.547Z
+Stopped at: Completed 05-04-PLAN.md
 Resume file: None
