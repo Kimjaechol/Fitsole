@@ -251,5 +251,72 @@ export const orderItems = pgTable("order_items", {
   designId: uuid("design_id").references(() => insoleDesigns.id, { onDelete: "set null" }),
   designSource: text("design_source"),                  // 'general' | 'professional'
   quantity: real("quantity").notNull(),
+  // Shoe model reference for insole sizing (T-shoe-01: internal dimensions lookup)
+  shoeModelId: uuid("shoe_model_id").references(() => shoeModels.id, { onDelete: "set null" }),
+  insoleFitMode: text("insole_fit_mode"),               // 'shoe_specific' | 'trim_to_fit'
   createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// --- Shoe Models Database (shoe interior dimensions for insole sizing) ---
+// Based on smartphone photogrammetry research (Hernandez & Lemaire 2017,
+// updated sub-millimeter accuracy per Tandfonline 2025 & Springer 2026).
+// Partnerships with wholesale shoe vendors populate this database via
+// the admin shoe scanner tool, eliminating the need to purchase each model.
+
+export const shoeFitTypeEnum = pgEnum("shoe_fit_type", [
+  "narrow",    // 좁은 핏 (삼바, 척테일러 등)
+  "standard",  // 표준 핏
+  "wide",      // 넓은 핏 (나이키 에어포스, 뉴발란스 등)
+]);
+
+export const shoeScanStatusEnum = pgEnum("shoe_scan_status", [
+  "draft",      // 임시 저장 (관리자 검토 전)
+  "processing", // SfM 처리 중
+  "verified",   // 검증 완료, 프로덕션 DB에 등록
+  "failed",     // 스캔 실패 또는 품질 불량
+]);
+
+export const shoeModels = pgTable("shoe_models", {
+  id: uuid("id").defaultRandom().primaryKey(),
+
+  // --- Identification ---
+  brand: text("brand").notNull(),              // '나이키', '아디다스', '뉴발란스'
+  modelName: text("model_name").notNull(),     // '에어포스1', '삼바', '574'
+  variant: text("variant"),                    // '화이트 로우', '블랙 하이' 등 (선택)
+  sizeBase: real("size_base").notNull(),       // 한국 기준 사이즈 (예: 270)
+
+  // --- Internal Dimensions (mm) — from SfM scan of shoe interior ---
+  // Primary insole sizing parameters
+  internalLength: real("internal_length").notNull(),      // 내부 길이
+  internalWidth: real("internal_width").notNull(),        // 볼 위치 내부 폭
+  heelCupDepth: real("heel_cup_depth"),                   // 힐컵 벽 깊이
+  archSupportX: real("arch_support_x"),                   // 아치 지지대 X 위치 (발뒤꿈치 기준 mm)
+  toeBoxVolume: real("toe_box_volume"),                   // 토박스 볼륨 (ml 또는 mm³/1000)
+  instepClearance: real("instep_clearance"),              // 발등 여유 공간 (mm)
+
+  // --- Classification ---
+  fitType: shoeFitTypeEnum("fit_type").default("standard").notNull(),
+  shoeCategory: text("shoe_category"),         // 'running' | 'casual' | 'dress' | 'boots' | 'sandals'
+
+  // --- Data Provenance ---
+  scanStatus: shoeScanStatusEnum("scan_status").default("draft").notNull(),
+  scanVideoUrl: text("scan_video_url"),        // SfM 스캔 원본 동영상
+  scanModelUrl: text("scan_model_url"),        // 재구성된 3D 내부 공동 모델
+  scanQualityScore: real("scan_quality_score"),// 0-100
+  scanAccuracy: real("scan_accuracy"),         // 예상 정확도 (mm)
+  contributorId: uuid("contributor_id")        // 누가 스캔했는지 (직원 or 사용자)
+    .references(() => users.id, { onDelete: "set null" }),
+  contributorType: text("contributor_type"),   // 'admin' | 'wholesale_partner' | 'user_crowdsource'
+
+  // --- Verification ---
+  verifiedAt: timestamp("verified_at"),
+  verifiedBy: uuid("verified_by")
+    .references(() => users.id, { onDelete: "set null" }),
+  verificationNotes: text("verification_notes"),
+
+  // --- Metadata ---
+  imageUrl: text("image_url"),                 // 제품 사진 (썸네일용)
+  notes: text("notes"),                        // 자유 메모
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
