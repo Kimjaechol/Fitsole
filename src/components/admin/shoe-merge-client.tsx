@@ -106,7 +106,6 @@ type DimensionMap = Record<string, DimensionValue>;
 interface ResolutionReportEntry {
   confidence: number;
   method: string;
-  note?: string;
 }
 
 interface MergeResponse {
@@ -142,7 +141,6 @@ interface ResolutionRow {
   label: string;
   method: string;
   confidence: number;
-  note?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -521,7 +519,6 @@ function MergeResultCard({
                     <TableHead>항목</TableHead>
                     <TableHead>해결 방법</TableHead>
                     <TableHead className="text-right">신뢰도</TableHead>
-                    <TableHead>비고</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -535,9 +532,6 @@ function MergeResultCard({
                       </TableCell>
                       <TableCell className="text-right tabular-nums text-slate-900">
                         {row.confidence.toFixed(2)}
-                      </TableCell>
-                      <TableCell className="text-slate-500">
-                        {row.note ?? "—"}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -804,7 +798,6 @@ export default function ShoeMergeClient() {
       label: DIMENSION_LABELS[key] ?? key,
       method: entry.method,
       confidence: entry.confidence,
-      note: entry.note,
     }));
   }, [mergeResult]);
 
