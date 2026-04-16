@@ -287,7 +287,13 @@ async def grade_shoe_sizes(request: GradeRequest):
                     base.size_base, base.dimensions, float(target)
                 )
 
-            predictions[str(target)] = {
+            # Pydantic coerces incoming integer sizes (230, 240…) to floats so
+            # str(target) produces "230.0"; normalize to "230" when integral to
+            # keep the UI labels clean and stable.
+            target_key = (
+                str(int(target)) if float(target).is_integer() else str(target)
+            )
+            predictions[target_key] = {
                 "internal_length": predicted.internal_length,
                 "internal_width": predicted.internal_width,
                 "heel_cup_depth": predicted.heel_cup_depth,
