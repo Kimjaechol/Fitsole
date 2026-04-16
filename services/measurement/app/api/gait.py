@@ -8,7 +8,6 @@ View types:
 """
 
 import logging
-import re
 import shutil
 import tempfile
 from pathlib import Path
@@ -19,6 +18,7 @@ from app.gait.angle_calculator import compute_ankle_angles
 from app.gait.arch_analyzer import compute_arch_flex_index
 from app.gait.gait_classifier import classify_gait, compute_pronation_supination
 from app.gait.pose_detector import detect_landmarks
+from app.validation import UUID_PATTERN  # shared scanId format validator
 
 logger = logging.getLogger(__name__)
 
@@ -35,12 +35,6 @@ ALLOWED_MIME_TYPES = {
     "video/x-msvideo",
     "video/mpeg",
 }
-
-# UUID format validation
-UUID_PATTERN = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-    re.IGNORECASE,
-)
 
 # Valid view types
 VALID_VIEW_TYPES = {"side", "rear"}

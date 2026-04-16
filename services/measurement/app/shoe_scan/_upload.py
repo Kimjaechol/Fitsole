@@ -7,10 +7,11 @@ or accepted formats change.
 
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 from fastapi import HTTPException, UploadFile
+
+from app.validation import UUID_PATTERN
 
 # ─────────────────────────────────────────────
 # Shared limits
@@ -20,11 +21,6 @@ MAX_UPLOAD_SIZE = 200 * 1024 * 1024  # 200MB per mesh file
 
 ALLOWED_MESH_EXTENSIONS: frozenset[str] = frozenset(
     {".stl", ".obj", ".ply", ".gltf", ".glb"}
-)
-
-UUID_PATTERN = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-    re.IGNORECASE,
 )
 
 

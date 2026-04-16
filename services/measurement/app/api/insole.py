@@ -8,7 +8,6 @@ handling and response models.
 from __future__ import annotations
 
 import logging
-import re
 import uuid
 from typing import List, Optional
 
@@ -17,16 +16,11 @@ from pydantic import BaseModel, Field
 
 from app.insole.models import InsoleDesignInput, InsoleDesignResult
 from app.insole.optimizer import generate_insole_design, recommend_shoe_size
+from app.validation import UUID_PATTERN  # T-03-06: shared scan_id format validator
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/insole", tags=["insole"])
-
-# UUID format validation (T-03-06: validate scan_id format)
-UUID_PATTERN = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-    re.IGNORECASE,
-)
 
 # --- Request/Response Models ---
 

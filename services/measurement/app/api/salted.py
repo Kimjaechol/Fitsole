@@ -7,7 +7,6 @@ Follows existing scan.py/insole.py patterns for error handling.
 from __future__ import annotations
 
 import logging
-import re
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException
@@ -22,16 +21,11 @@ from app.salted.session_manager import (
     store_session,
     update_session_analysis,
 )
+from app.validation import UUID_PATTERN  # T-02-06: shared session_id format validator
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/salted", tags=["salted"])
-
-# UUID format validation (same pattern as scan.py T-02-06)
-UUID_PATTERN = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-    re.IGNORECASE,
-)
 
 # T-03-13: Maximum frame count for DoS mitigation
 MAX_FRAME_COUNT = 500_000

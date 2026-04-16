@@ -1,7 +1,6 @@
 """Scan processing API endpoints."""
 
 import logging
-import re
 import shutil
 import tempfile
 import uuid
@@ -16,6 +15,7 @@ from app.pipeline.mesh_generator import point_cloud_to_mesh
 from app.pipeline.model_exporter import export_to_glb
 from app.pipeline.quality_filter import compute_scan_quality, filter_frames
 from app.pipeline.sfm_reconstructor import get_point_cloud, run_sfm_pipeline
+from app.validation import UUID_PATTERN  # T-02-06: shared scanId format validator
 
 logger = logging.getLogger(__name__)
 
@@ -32,12 +32,6 @@ ALLOWED_MIME_TYPES = {
     "video/x-msvideo",
     "video/mpeg",
 }
-
-# UUID format validation pattern (T-02-06 Tampering mitigation)
-UUID_PATTERN = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-    re.IGNORECASE,
-)
 
 
 @router.post("/process")
