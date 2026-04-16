@@ -15,9 +15,15 @@ from typing import Optional
 
 import numpy as np
 import open3d as o3d
-from fastapi import APIRouter, Form, HTTPException, UploadFile
+from fastapi import Form, HTTPException, UploadFile
 from pydantic import BaseModel, Field
 
+# Share the single APIRouter that owns the /shoe-scan prefix. Creating a
+# separate APIRouter here — even without a prefix — made it possible for
+# main.py to mount the same URL space twice; going through one router
+# eliminates that class of accident entirely, and any duplicate @router.post
+# decorator is now caught by the startup route-uniqueness assertion in main.py.
+from app.api.shoe_scan import router
 from app.shoe_scan._upload import (
     save_upload,
     validate_mesh_file,
@@ -42,11 +48,6 @@ from app.shoe_scan.mesh_merger import (
 from app.shoe_scan.models import ShoeInternalDimensions
 
 logger = logging.getLogger(__name__)
-
-# Prefix is applied by main.py so the /shoe-scan URL space lives in a single
-# place and future routes added to either this file or shoe_scan.py can't
-# silently collide.
-router = APIRouter(tags=["shoe-scan"])
 
 # Revopoint outputs in mm — no pixel-to-mm conversion needed
 REVOPOINT_PIXELS_PER_MM = 1.0
