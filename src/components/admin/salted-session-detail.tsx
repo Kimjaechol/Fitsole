@@ -533,6 +533,7 @@ export function SaltedSessionDetailLoader({
 
   useEffect(() => {
     let cancelled = false;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Reset loader state when sessionId changes; equivalent to derived-state-from-props which needs explicit reset on mount/id-change.
     setState({ loading: true, error: null, data: null });
 
     fetch(`/api/admin/salted/${sessionId}`, { cache: "no-store" })

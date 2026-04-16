@@ -90,7 +90,7 @@ async function ProductsContent({
   let filtered = products;
   if (params.size) {
     const [minSize, maxSize] = params.size.split('-').map(Number);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    /* eslint-disable @typescript-eslint/no-explicit-any -- Payload generated types don't expose the `sizes` array field; cast to any for this block. */
     filtered = products.filter((p: any) => {
       const doc = result.docs.find((d: any) => d.id === p.id);
       if (!doc || !Array.isArray((doc as any).sizes)) return true;
@@ -99,6 +99,7 @@ async function ProductsContent({
           s.size >= minSize && (!maxSize || s.size <= maxSize),
       );
     });
+    /* eslint-enable @typescript-eslint/no-explicit-any */
   }
 
   return <ProductGrid products={filtered} />;

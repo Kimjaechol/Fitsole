@@ -56,7 +56,10 @@ export function OrderFilters() {
   );
 
   // Keep local state in sync if URL changes externally (e.g., reset).
+  // Syncing local form state from URL searchParams (external source); this is
+  // the documented React pattern for external-input sync.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStatus((searchParams.get("status") ?? "") as "" | OrderStatus);
     setDateFrom(searchParams.get("dateFrom") ?? "");
     setDateTo(searchParams.get("dateTo") ?? "");

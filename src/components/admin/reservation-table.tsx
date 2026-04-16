@@ -192,7 +192,10 @@ export function ReservationTable({ reservations }: ReservationTableProps) {
   const [dateFrom, setDateFrom] = useState(searchParams.get("dateFrom") ?? "");
   const [dateTo, setDateTo] = useState(searchParams.get("dateTo") ?? "");
 
+  // Syncing local form state from URL searchParams (external source); this is
+  // the documented React pattern for external-input sync.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setStatus((searchParams.get("status") ?? "") as "" | ReservationStatus);
     setDateFrom(searchParams.get("dateFrom") ?? "");
     setDateTo(searchParams.get("dateTo") ?? "");

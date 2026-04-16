@@ -68,6 +68,7 @@ export default function CheckoutSuccessPage() {
   }, [searchParams, clearCart]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Intentional fire-on-mount; confirmedRef guards against double-invocation.
     confirmPayment();
   }, [confirmPayment]);
 
