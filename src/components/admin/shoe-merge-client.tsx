@@ -63,14 +63,20 @@ const DEFAULT_TARGET_SIZES = [
   230, 235, 240, 245, 250, 255, 260, 265, 270, 275, 280, 285, 290,
 ] as const;
 
-/** Known dimension keys → Korean labels. Unknown keys render the raw key. */
+/**
+ * Known dimension keys → Korean labels. Unknown keys render the raw key.
+ *
+ * NOTE: The Python backend (services/measurement/app/shoe_scan/models.py)
+ * emits snake_case keys in `resolved_dimensions` and `resolution_report`,
+ * so this map must key on snake_case to resolve labels correctly.
+ */
 const DIMENSION_LABELS: Record<string, string> = {
-  internalLength: "내부 길이",
-  internalWidth: "내부 너비",
-  heelCupDepth: "힐컵 깊이",
-  archSupportX: "아치 지지점 X",
-  toeBoxVolume: "토박스 부피",
-  instepClearance: "발등 여유",
+  internal_length: "내부 길이",
+  internal_width: "내부 너비",
+  heel_cup_depth: "힐컵 깊이",
+  arch_support_x: "아치 지지점 X",
+  toe_box_volume: "토박스 부피",
+  instep_clearance: "발등 여유",
 };
 
 /**
@@ -163,14 +169,9 @@ function discrepancyBand(count: number): QualityBand {
 }
 
 function formatNumber(value: DimensionValue, decimals = 2): string {
-  if (value === null || value === undefined || Number.isNaN(value)) return "—";
-  return Number(value).toFixed(decimals);
-}
-
-function renderValue(value: DimensionValue): string {
   if (value === null || value === undefined) return "—";
   if (typeof value !== "number" || Number.isNaN(value)) return "—";
-  return value.toFixed(2);
+  return value.toFixed(decimals);
 }
 
 function getExtension(name: string): string {
@@ -601,7 +602,7 @@ export default function ShoeMergeClient() {
                           </span>
                         </TableCell>
                         <TableCell className="text-right tabular-nums text-slate-900">
-                          {renderValue(row.value)}
+                          {formatNumber(row.value)}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -720,7 +721,7 @@ export default function ShoeMergeClient() {
                       >
                         <span className="text-slate-600">{row.label}</span>
                         <span className="font-semibold text-slate-900">
-                          {renderValue(row.value)}
+                          {formatNumber(row.value)}
                         </span>
                       </li>
                     ))}
@@ -817,7 +818,7 @@ export default function ShoeMergeClient() {
                           key={k}
                           className="text-right tabular-nums text-slate-900"
                         >
-                          {renderValue(row[k])}
+                          {formatNumber(row[k])}
                         </TableCell>
                       ))}
                     </TableRow>
