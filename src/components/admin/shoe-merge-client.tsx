@@ -605,7 +605,17 @@ function GradingSection({
               max={320}
               step={5}
               value={anchorSize}
-              onChange={(e) => setAnchorSize(Number(e.target.value))}
+              onChange={(e) => {
+                // Snap to the nearest 5mm so the field respects its own
+                // step attribute. Without this, paste/programmatic entry
+                // admits decimals (e.g. 273) that never match the
+                // DEFAULT_TARGET_SIZES filter and the server is then asked
+                // to re-predict the anchor itself.
+                const raw = Number(e.target.value);
+                setAnchorSize(
+                  Number.isFinite(raw) ? Math.round(raw / 5) * 5 : 0,
+                );
+              }}
             />
             <p className="text-xs text-slate-500">
               기본값 270mm. 한국 사이즈 230~290mm 범위에서 하나의 앵커를
