@@ -5,6 +5,14 @@ const MEASUREMENT_SERVICE_URL =
   process.env.MEASUREMENT_SERVICE_URL || "http://localhost:8000";
 
 /**
+ * Cap the JSON body for grading requests. A legitimate request carries a
+ * handful of anchor dimensions + ≤30 target sizes (tens of bytes each),
+ * so 1MB is several orders of magnitude above the real ceiling and still
+ * blocks JSON-bomb DoS attempts from a compromised admin cookie.
+ */
+const MAX_GRADE_REQUEST_BYTES = 1 * 1024 * 1024;
+
+/**
  * POST /api/admin/shoe-scan/grade
  *
  * Derives all shoe sizes of a model from 1+ anchor scans using industry-
@@ -33,6 +41,20 @@ const MEASUREMENT_SERVICE_URL =
 export async function POST(request: Request) {
   try {
     await requireAdmin();
+
+    // Pre-flight size check: reject oversized JSON bodies before parse.
+    const contentLengthHeader = request.headers.get("content-length");
+    if (contentLengthHeader) {
+      const contentLength = Number(contentLengthHeader);
+      if (Number.isFinite(contentLength) && contentLength > MAX_GRADE_REQUEST_BYTES) {
+        return NextResponse.json(
+          {
+            error: `요청 본문이 ${MAX_GRADE_REQUEST_BYTES / (1024 * 1024)}MB 제한을 초과했습니다`,
+          },
+          { status: 413 }
+        );
+      }
+    }
 
     const body = await request.json().catch(() => null);
     if (!body || !Array.isArray(body.anchors) || !Array.isArray(body.target_sizes)) {

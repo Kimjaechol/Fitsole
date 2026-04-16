@@ -5,6 +5,15 @@ const MEASUREMENT_SERVICE_URL =
   process.env.MEASUREMENT_SERVICE_URL || "http://localhost:8000";
 
 /**
+ * Upload ceiling for the combined multipart body (Revopoint + cast + scanId).
+ * Client enforces 100MB per file, Python enforces 200MB per file; the
+ * combined multipart envelope is capped just above 2 × 100MB to leave
+ * headroom for form boundaries without letting a rogue admin cookie
+ * OOM the Node runtime with a multi-GB body.
+ */
+const MAX_MERGE_REQUEST_BYTES = 220 * 1024 * 1024;
+
+/**
  * POST /api/admin/shoe-scan/merge
  *
  * Merges a Revopoint partial interior scan with an alginate cast scan.
@@ -29,6 +38,23 @@ export async function POST(request: Request) {
   try {
     await requireAdmin();
 
+    // Reject oversized bodies before buffering them into memory. The
+    // Content-Length header isn't required by the spec, but every browser
+    // and our own client supplies one for multipart uploads; when it's
+    // missing we still fall back to the post-parse guard below.
+    const contentLengthHeader = request.headers.get("content-length");
+    if (contentLengthHeader) {
+      const contentLength = Number(contentLengthHeader);
+      if (Number.isFinite(contentLength) && contentLength > MAX_MERGE_REQUEST_BYTES) {
+        return NextResponse.json(
+          {
+            error: `요청 본문이 ${MAX_MERGE_REQUEST_BYTES / (1024 * 1024)}MB 제한을 초과했습니다`,
+          },
+          { status: 413 }
+        );
+      }
+    }
+
     const formData = await request.formData();
     const revopointMesh = formData.get("revopoint_mesh");
     const castMesh = formData.get("cast_mesh");
@@ -45,6 +71,21 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: "scanId가 필요합니다" },
         { status: 400 }
+      );
+    }
+
+    // Defense-in-depth: reject oversized payloads even when Content-Length
+    // was absent (e.g. chunked upload). File.size is the parsed, in-memory
+    // byte count, so this catches the attack class the header check missed.
+    if (
+      revopointMesh.size + castMesh.size >
+      MAX_MERGE_REQUEST_BYTES
+    ) {
+      return NextResponse.json(
+        {
+          error: `업로드 파일 합계가 ${MAX_MERGE_REQUEST_BYTES / (1024 * 1024)}MB 제한을 초과했습니다`,
+        },
+        { status: 413 }
       );
     }
 
