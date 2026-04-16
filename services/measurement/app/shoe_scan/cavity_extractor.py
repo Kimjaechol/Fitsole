@@ -271,9 +271,14 @@ def compute_quality_score(
     width = measurements["internal_width"]
 
     ratio_score = 100.0
-    expected_ratio = length / width
-    if expected_ratio < 2.0 or expected_ratio > 4.5:
-        ratio_score = 50.0  # unusual proportions
+    if width > 0:
+        expected_ratio = length / width
+        if expected_ratio < 2.0 or expected_ratio > 4.5:
+            ratio_score = 50.0  # unusual proportions
+    else:
+        # Width missing/sparse — fall back to a neutral score rather than
+        # crashing on ZeroDivisionError; caller already marks the measurement.
+        ratio_score = 50.0
 
     quality = (vertex_score * 0.4 + triangle_score * 0.4 + ratio_score * 0.2)
 
