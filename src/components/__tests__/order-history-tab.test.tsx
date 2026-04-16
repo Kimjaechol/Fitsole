@@ -22,10 +22,12 @@ vi.mock("next/link", () => ({
 import { OrderHistoryTab } from "@/components/profile/order-history-tab";
 
 describe("OrderHistoryTab", () => {
-  it("renders empty state title", () => {
+  it("renders empty state title", async () => {
     render(<OrderHistoryTab />);
+    // Component shows a loader until fetch resolves; wait for the empty-state
+    // text to appear so the assertion runs after the async effect settles.
     expect(
-      screen.getByText("아직 주문 내역이 없어요")
+      await screen.findByText("아직 주문 내역이 없어요")
     ).toBeInTheDocument();
   });
 

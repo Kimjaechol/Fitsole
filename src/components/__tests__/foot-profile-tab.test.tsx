@@ -22,10 +22,12 @@ vi.mock("next/link", () => ({
 import { FootProfileTab } from "@/components/profile/foot-profile-tab";
 
 describe("FootProfileTab", () => {
-  it("renders empty state title", () => {
+  it("renders empty state title", async () => {
     render(<FootProfileTab />);
+    // Component shows a loader until fetch resolves; wait for the empty-state
+    // text to appear so the assertion runs after the async effect settles.
     expect(
-      screen.getByText("아직 발 측정을 하지 않았어요")
+      await screen.findByText("아직 발 측정을 하지 않았어요")
     ).toBeInTheDocument();
   });
 
