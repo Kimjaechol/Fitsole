@@ -21,6 +21,7 @@ Output: A unified internal cavity mesh + confidence-weighted measurements.
 
 from __future__ import annotations
 
+import copy
 import logging
 from dataclasses import dataclass
 from typing import Optional
@@ -161,8 +162,12 @@ def merge_partial_scans(
             f"{WARNING_DISCREPANCY}mm — review merge quality"
         )
 
-    # Step 6: Apply transformation to cast mesh
-    cast_mesh_aligned = cast_mesh.transform(icp_result.transformation)
+    # Step 6: Apply transformation to a cloned cast mesh — TriangleMesh.transform
+    # mutates in place, so without the deepcopy the caller's cast_mesh would be
+    # aligned too, corrupting any downstream independent dimension extraction.
+    cast_mesh_aligned = copy.deepcopy(cast_mesh).transform(
+        icp_result.transformation
+    )
 
     # Step 7: Identify overlap regions and discrepancies
     discrepancies, overlap_pct = _find_discrepancies(
