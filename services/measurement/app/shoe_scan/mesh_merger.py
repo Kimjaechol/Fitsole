@@ -218,7 +218,7 @@ def resolve_discrepancy(
     revopoint_value: Optional[float],
     cast_value: Optional[float],
     measurement_name: str,
-) -> tuple[float, float, str]:
+) -> tuple[Optional[float], float, str]:
     """Predict the true measurement value when two scans disagree.
 
     This is the core "inference" function asked by the user. Strategy:
@@ -235,10 +235,14 @@ def resolve_discrepancy(
         measurement_name: For logging (e.g., "internal_length")
 
     Returns:
-        (resolved_value, confidence_0_to_1, resolution_method)
+        ``(resolved_value_or_None, confidence_0_to_1, resolution_method)``.
+        The first element is ``None`` when both sources are missing — the
+        previous ``0.0`` sentinel violated the Pydantic ``ge`` bounds on
+        ``ShoeInternalDimensions`` and turned a recoverable partial scan
+        into a 500 response.
     """
     if revopoint_value is None and cast_value is None:
-        return (0.0, 0.0, "no_data")
+        return (None, 0.0, "no_data")
 
     if revopoint_value is None:
         return (cast_value, CAST_CONFIDENCE, "cast_only")

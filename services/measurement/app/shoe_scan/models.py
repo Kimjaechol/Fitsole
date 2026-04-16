@@ -45,25 +45,33 @@ class ShoeScanInput(BaseModel):
 
 
 class ShoeInternalDimensions(BaseModel):
-    """Extracted internal cavity dimensions from SfM scan (all in mm)."""
+    """Extracted internal cavity dimensions from SfM scan (all in mm).
 
-    internal_length: float = Field(
-        ..., ge=100.0, le=400.0, description="내부 길이 (heel to toe)"
+    Fields are ``Optional`` because sparse meshes, occluded slices, or
+    ``no_data`` merge branches produce missing (None) measurements rather
+    than physically invalid sentinels — the prior ``0.0`` fallback violated
+    the lower bounds and converted a recoverable partial scan into a 500.
+    ``le`` upper bounds are kept to catch runaway outliers while still
+    admitting ``None``.
+    """
+
+    internal_length: Optional[float] = Field(
+        None, ge=100.0, le=400.0, description="내부 길이 (heel to toe)"
     )
-    internal_width: float = Field(
-        ..., ge=50.0, le=200.0, description="볼 위치 내부 폭"
+    internal_width: Optional[float] = Field(
+        None, ge=50.0, le=200.0, description="볼 위치 내부 폭"
     )
-    heel_cup_depth: float = Field(
-        ..., ge=5.0, le=60.0, description="힐컵 벽 깊이"
+    heel_cup_depth: Optional[float] = Field(
+        None, ge=5.0, le=60.0, description="힐컵 벽 깊이"
     )
-    arch_support_x: float = Field(
-        ..., ge=20.0, le=200.0, description="아치 지지대 X 위치 (뒤꿈치 기준)"
+    arch_support_x: Optional[float] = Field(
+        None, ge=20.0, le=200.0, description="아치 지지대 X 위치 (뒤꿈치 기준)"
     )
-    toe_box_volume: float = Field(
-        ..., ge=10.0, le=500.0, description="토박스 볼륨 (mL)"
+    toe_box_volume: Optional[float] = Field(
+        None, ge=10.0, le=500.0, description="토박스 볼륨 (mL)"
     )
-    instep_clearance: float = Field(
-        ..., ge=5.0, le=80.0, description="발등 여유 공간"
+    instep_clearance: Optional[float] = Field(
+        None, ge=5.0, le=80.0, description="발등 여유 공간"
     )
 
 
