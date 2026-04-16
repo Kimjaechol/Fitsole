@@ -34,8 +34,12 @@ app.include_router(insole_router)
 app.include_router(pressure_router)
 app.include_router(salted_router)
 app.include_router(scan_router)
+
+# shoe_scan_router owns the /shoe-scan prefix; shoe_merge_router is mounted
+# under the same prefix here so route-collision risk is visible in one place
+# instead of silently relying on duplicate APIRouter(prefix=...) declarations.
 app.include_router(shoe_scan_router)
-app.include_router(shoe_merge_router)
+app.include_router(shoe_merge_router, prefix="/shoe-scan")
 
 
 @app.get("/")

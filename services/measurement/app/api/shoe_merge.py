@@ -43,7 +43,10 @@ from app.shoe_scan.models import ShoeInternalDimensions
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/shoe-scan", tags=["shoe-scan"])
+# Prefix is applied by main.py so the /shoe-scan URL space lives in a single
+# place and future routes added to either this file or shoe_scan.py can't
+# silently collide.
+router = APIRouter(tags=["shoe-scan"])
 
 # Revopoint outputs in mm — no pixel-to-mm conversion needed
 REVOPOINT_PIXELS_PER_MM = 1.0
