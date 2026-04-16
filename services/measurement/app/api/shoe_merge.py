@@ -335,7 +335,13 @@ def _validate_mesh_file(file: UploadFile, field_name: str) -> str:
             status_code=400, detail=f"{field_name} has no filename"
         )
 
-    ext = "." + file.filename.split(".")[-1].lower()
+    ext = Path(file.filename).suffix.lower()
+    if not ext:
+        raise HTTPException(
+            status_code=400,
+            detail=f"{field_name} filename has no extension. "
+            f"Allowed: {', '.join(sorted(ALLOWED_MESH_EXTENSIONS))}",
+        )
     if ext not in ALLOWED_MESH_EXTENSIONS:
         raise HTTPException(
             status_code=400,
