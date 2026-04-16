@@ -95,26 +95,29 @@ export interface ShoeScanRequest {
 /**
  * Shoe scan result returned by the Python measurement service.
  *
- * Individual measurement fields are nullable because sparse slices of the
- * reconstructed cavity mesh produce missing values rather than sentinels
- * (see `ShoeInternalDimensions` in the Python service). A partial scan
- * therefore still parses and is rendered with '—' placeholders by the UI.
+ * Keys are snake_case because that's the wire format FastAPI + Pydantic emit
+ * for `ShoeScanResult` and the companion `MergeResponse` — the admin merge
+ * UI already consumes snake_case directly, so picking that convention as
+ * the single source of truth avoids a translation layer. Individual
+ * measurement fields are nullable because sparse slices of the reconstructed
+ * cavity mesh propagate None rather than invalid sentinels, so a partial
+ * scan still parses cleanly and the UI renders '—' via `formatNumber`.
  */
 export interface ShoeScanResult {
-  scanId: string;
+  scan_id: string;
   status: "success" | "failed";
   measurements: {
-    internalLength: number | null;
-    internalWidth: number | null;
-    heelCupDepth: number | null;
-    archSupportX: number | null;
-    toeBoxVolume: number | null;
-    instepClearance: number | null;
+    internal_length: number | null;
+    internal_width: number | null;
+    heel_cup_depth: number | null;
+    arch_support_x: number | null;
+    toe_box_volume: number | null;
+    instep_clearance: number | null;
   } | null;
-  qualityScore: number;
+  quality_score: number;
   accuracy: number;
-  modelUrl: string | null;
-  errorMessage: string | null;
+  model_url: string | null;
+  error_message: string | null;
 }
 
 /**
