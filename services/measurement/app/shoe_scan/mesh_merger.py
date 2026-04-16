@@ -400,12 +400,15 @@ def _find_discrepancies(
     return discrepancies, overlap_pct
 
 
+_FAILED_ALIGNMENT_RMSE = 9999.0  # finite sentinel — JSON-safe for Node clients
+
+
 def _failed_result(warnings: list[str], error_msg: str) -> MergeResult:
     """Build a failure result."""
     warnings.append(error_msg)
     return MergeResult(
         merged_mesh=None,
-        alignment_rmse=float("inf"),
+        alignment_rmse=_FAILED_ALIGNMENT_RMSE,
         overlap_percentage=0.0,
         discrepancies=[],
         warnings=warnings,
