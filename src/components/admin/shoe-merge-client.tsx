@@ -21,7 +21,7 @@
  * No new npm dependencies — uses shadcn/ui primitives, sonner, lucide-react.
  */
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -241,7 +241,7 @@ export default function ShoeMergeClient() {
   // Form state
   const [revopointFile, setRevopointFile] = useState<File | null>(null);
   const [castFile, setCastFile] = useState<File | null>(null);
-  const [scanId, setScanId] = useState<string>("");
+  const [scanId, setScanId] = useState<string>(() => generateScanId());
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Merge result state
@@ -256,11 +256,6 @@ export default function ShoeMergeClient() {
   // awkward in React).
   const revopointInputRef = useRef<HTMLInputElement | null>(null);
   const castInputRef = useRef<HTMLInputElement | null>(null);
-
-  // Seed scanId on mount.
-  useEffect(() => {
-    setScanId(generateScanId());
-  }, []);
 
   const resolvedDimensionRows = useMemo(
     () => buildDimensionRows(mergeResult?.resolved_dimensions),
