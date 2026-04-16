@@ -128,16 +128,19 @@ async def merge_shoe_scans(
         raise HTTPException(status_code=400, detail="Invalid scanId format")
 
     # Validate file extensions
-    _validate_mesh_file(revopoint_mesh, "revopoint_mesh")
-    _validate_mesh_file(cast_mesh, "cast_mesh")
+    revopoint_ext = _validate_mesh_file(revopoint_mesh, "revopoint_mesh")
+    cast_ext = _validate_mesh_file(cast_mesh, "cast_mesh")
 
     work_dir = Path(tempfile.mkdtemp(prefix=f"fitsole_merge_{scanId}_"))
     try:
-        # Save both uploaded files
+        # Save both uploaded files — preserve the original extension so Open3D
+        # dispatches the correct loader (read_triangle_mesh picks by suffix).
         revopoint_path = await _save_upload(
-            revopoint_mesh, work_dir / "revopoint_raw.obj"
+            revopoint_mesh, work_dir / f"revopoint_raw{revopoint_ext}"
         )
-        cast_path = await _save_upload(cast_mesh, work_dir / "cast_raw.obj")
+        cast_path = await _save_upload(
+            cast_mesh, work_dir / f"cast_raw{cast_ext}"
+        )
 
         # Load meshes
         revopoint = o3d.io.read_triangle_mesh(str(revopoint_path))
@@ -319,8 +322,8 @@ async def grade_shoe_sizes(request: GradeRequest):
 # ─────────────────────────────────────────────
 
 
-def _validate_mesh_file(file: UploadFile, field_name: str) -> None:
-    """Validate a mesh file upload by extension."""
+def _validate_mesh_file(file: UploadFile, field_name: str) -> str:
+    """Validate a mesh file upload by extension and return the normalized suffix."""
     if not file.filename:
         raise HTTPException(
             status_code=400, detail=f"{field_name} has no filename"
@@ -333,6 +336,7 @@ def _validate_mesh_file(file: UploadFile, field_name: str) -> None:
             detail=f"{field_name} has invalid extension {ext}. "
             f"Allowed: {', '.join(sorted(ALLOWED_MESH_EXTENSIONS))}",
         )
+    return ext
 
 
 async def _save_upload(file: UploadFile, dest: Path) -> Path:
