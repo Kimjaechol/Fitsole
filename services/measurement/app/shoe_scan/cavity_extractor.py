@@ -48,7 +48,11 @@ def extract_shoe_dimensions(
         pixels_per_mm: Scale factor from calibration target detection.
 
     Returns:
-        Dict with 6 measurement keys (all mm), or None if extraction fails.
+        Dict with 6 measurement keys (all mm). Individual values may be
+        ``None`` when a slice has too few vertices — downstream Pydantic
+        ``ShoeInternalDimensions`` fields are ``Optional`` so the merge
+        endpoint can still return a partial result instead of 500ing.
+        Returns ``None`` only when the whole mesh is unusable.
     """
     vertices = np.asarray(mesh.vertices)
     if len(vertices) < 100:
@@ -74,7 +78,7 @@ def extract_shoe_dimensions(
     # Shift so heel is at Z=0
     v_shifted = v - np.array([0, min_b[1], min_b[2]])
 
-    # --- Extract measurements ---
+    # --- Extract measurements (Optional[float]; None → sparse slice) ---
     internal_width = _measure_width_at_section(
         v_shifted, internal_length, BALL_GIRTH_POSITION
     )
@@ -83,13 +87,16 @@ def extract_shoe_dimensions(
     toe_box_volume = _measure_toe_box_volume(v_shifted, internal_length)
     instep_clearance = _measure_instep_clearance(v_shifted, internal_length)
 
+    def _round(x: Optional[float]) -> Optional[float]:
+        return round(x, 2) if x is not None else None
+
     return {
         "internal_length": round(internal_length, 2),
-        "internal_width": round(internal_width, 2),
-        "heel_cup_depth": round(heel_cup_depth, 2),
-        "arch_support_x": round(arch_support_x, 2),
-        "toe_box_volume": round(toe_box_volume, 2),
-        "instep_clearance": round(instep_clearance, 2),
+        "internal_width": _round(internal_width),
+        "heel_cup_depth": _round(heel_cup_depth),
+        "arch_support_x": _round(arch_support_x),
+        "toe_box_volume": _round(toe_box_volume),
+        "instep_clearance": _round(instep_clearance),
     }
 
 
@@ -145,8 +152,14 @@ def _measure_width_at_section(
     total_length: float,
     position_ratio: float,
     window_mm: float = 8.0,
-) -> float:
-    """Measure X-axis width at a cross-section at the given length ratio."""
+) -> Optional[float]:
+    """Measure X-axis width at a cross-section at the given length ratio.
+
+    Returns ``None`` when the slice is too sparse to trust — the prior
+    ``0.0`` sentinel violated the Pydantic ``ge=50.0`` bound on
+    ``internal_width`` and also blew up ``compute_quality_score`` with
+    ``ZeroDivisionError``.
+    """
     z_center = total_length * position_ratio
     z_min = z_center - window_mm / 2
     z_max = z_center + window_mm / 2
@@ -155,36 +168,38 @@ def _measure_width_at_section(
         (vertices[:, 2] >= z_min) & (vertices[:, 2] <= z_max)
     ]
     if len(slice_verts) < 5:
-        return 0.0
+        return None
 
     return float(slice_verts[:, 0].max() - slice_verts[:, 0].min())
 
 
 def _measure_heel_cup_depth(
     vertices: np.ndarray, total_length: float
-) -> float:
+) -> Optional[float]:
     """Measure vertical wall height at the heel section (Z=0 to 15%).
 
     The heel cup depth is the difference between the highest point on
-    the heel wall and the lowest point on the heel floor.
+    the heel wall and the lowest point on the heel floor. Returns
+    ``None`` for sparse heel slices (see ``_measure_width_at_section``).
     """
     heel_z_max = total_length * HEEL_SECTION_END
     heel_verts = vertices[vertices[:, 2] < heel_z_max]
     if len(heel_verts) < 10:
-        return 0.0
+        return None
 
     return float(heel_verts[:, 1].max() - heel_verts[:, 1].min())
 
 
 def _find_arch_peak_position(
     vertices: np.ndarray, total_length: float
-) -> float:
+) -> Optional[float]:
     """Find Z position where the inner floor curves upward the most.
 
     Scans the midfoot region (25-55% of length) and finds the Z where
-    the floor height (min Y at that Z) is maximized.
+    the floor height (min Y at that Z) is maximized. Returns ``None``
+    when no midfoot slice has enough vertices to measure an arch peak.
     """
-    best_z = total_length * 0.40  # default midfoot
+    best_z: Optional[float] = None
     best_height = float("-inf")
 
     start = total_length * ARCH_SEARCH_START
@@ -208,16 +223,17 @@ def _find_arch_peak_position(
 
 def _measure_toe_box_volume(
     vertices: np.ndarray, total_length: float
-) -> float:
+) -> Optional[float]:
     """Approximate toe box volume (70-100% of length) in milliliters.
 
     Uses axis-aligned bounding-box volume of the forefoot section
-    converted from mm³ to mL (1 mL = 1000 mm³).
+    converted from mm³ to mL (1 mL = 1000 mm³). Returns ``None``
+    when the forefoot region has too few vertices.
     """
     z_min = total_length * TOE_BOX_START
     forefoot = vertices[vertices[:, 2] >= z_min]
     if len(forefoot) < 10:
-        return 0.0
+        return None
 
     x_range = forefoot[:, 0].max() - forefoot[:, 0].min()
     y_range = forefoot[:, 1].max() - forefoot[:, 1].min()
@@ -229,10 +245,11 @@ def _measure_toe_box_volume(
 
 def _measure_instep_clearance(
     vertices: np.ndarray, total_length: float
-) -> float:
+) -> Optional[float]:
     """Measure Y distance from floor to ceiling at the instep (60% length).
 
     This is the vertical space available for the foot's dorsal surface.
+    Returns ``None`` for sparse instep slices.
     """
     z_center = total_length * INSTEP_POSITION
     window = 8.0
@@ -242,7 +259,7 @@ def _measure_instep_clearance(
         & (vertices[:, 2] <= z_center + window / 2)
     ]
     if len(slice_verts) < 5:
-        return 0.0
+        return None
 
     return float(slice_verts[:, 1].max() - slice_verts[:, 1].min())
 
@@ -271,18 +288,19 @@ def compute_quality_score(
     vertex_score = min(100.0, (vertex_count / 5000.0) * 100.0)
     triangle_score = min(100.0, (triangle_count / 10000.0) * 100.0)
 
-    # Sanity checks on measurements
-    length = measurements["internal_length"]
-    width = measurements["internal_width"]
+    # Sanity checks on measurements — individual fields may be None now
+    # that _measure_* helpers propagate missing slices instead of 0.0.
+    length = measurements.get("internal_length")
+    width = measurements.get("internal_width")
 
     ratio_score = 100.0
-    if width > 0:
+    if length is not None and width is not None and width > 0:
         expected_ratio = length / width
         if expected_ratio < 2.0 or expected_ratio > 4.5:
             ratio_score = 50.0  # unusual proportions
     else:
-        # Width missing/sparse — fall back to a neutral score rather than
-        # crashing on ZeroDivisionError; caller already marks the measurement.
+        # Length or width missing/zero — fall back to a neutral score
+        # rather than crashing on None comparison or ZeroDivisionError.
         ratio_score = 50.0
 
     quality = (vertex_score * 0.4 + triangle_score * 0.4 + ratio_score * 0.2)

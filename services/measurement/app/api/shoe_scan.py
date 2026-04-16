@@ -9,10 +9,8 @@ measurement extraction (cavity dimensions instead of foot dimensions).
 """
 
 import logging
-import re
 import shutil
 import tempfile
-import uuid
 from pathlib import Path
 
 from fastapi import APIRouter, Form, HTTPException, UploadFile
@@ -21,6 +19,7 @@ from app.pipeline.frame_extractor import extract_frames
 from app.pipeline.mesh_generator import generate_mesh_from_reconstruction
 from app.pipeline.quality_filter import filter_quality
 from app.pipeline.sfm_reconstructor import run_sfm_pipeline
+from app.shoe_scan._upload import save_upload, validate_uuid
 from app.shoe_scan.cavity_extractor import (
     compute_quality_score,
     extract_shoe_dimensions,
@@ -31,8 +30,8 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/shoe-scan", tags=["shoe-scan"])
 
-# Limits and validation
-MAX_UPLOAD_SIZE = 500 * 1024 * 1024  # 500MB
+# Video upload is much larger than mesh files — override the default cap.
+MAX_VIDEO_UPLOAD_SIZE = 500 * 1024 * 1024  # 500MB
 ALLOWED_MIME_TYPES = {
     "video/mp4",
     "video/quicktime",
@@ -40,11 +39,6 @@ ALLOWED_MIME_TYPES = {
     "video/x-msvideo",
     "video/mpeg",
 }
-
-UUID_PATTERN = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-    re.IGNORECASE,
-)
 
 # Pattern target for shoe interior calibration (80mm × 40mm checkerboard)
 # In the current v1 we approximate pixels_per_mm from video resolution
@@ -90,11 +84,7 @@ async def process_shoe_scan(
         ShoeScanResult with extracted dimensions or error details.
     """
     # Validate scanId format
-    if not UUID_PATTERN.match(scanId):
-        raise HTTPException(
-            status_code=400,
-            detail="Invalid scanId format. Must be UUID.",
-        )
+    validate_uuid(scanId)
 
     # Validate MIME type
     if video.content_type and video.content_type not in ALLOWED_MIME_TYPES:
@@ -108,17 +98,9 @@ async def process_shoe_scan(
         work_dir = Path(tempfile.mkdtemp(prefix=f"fitsole_shoe_{scanId}_"))
         video_path = work_dir / "shoe_interior.mp4"
 
-        # Save video with size check
-        total_size = 0
-        with open(video_path, "wb") as f:
-            while chunk := await video.read(1024 * 1024):
-                total_size += len(chunk)
-                if total_size > MAX_UPLOAD_SIZE:
-                    raise HTTPException(
-                        status_code=413,
-                        detail=f"File too large. Maximum size is {MAX_UPLOAD_SIZE // (1024*1024)}MB.",
-                    )
-                f.write(chunk)
+        # Save video with size check (video ceiling is higher than mesh ceiling).
+        await save_upload(video, video_path, max_bytes=MAX_VIDEO_UPLOAD_SIZE)
+        total_size = video_path.stat().st_size
 
         logger.info(
             "Saved shoe scan video (%d bytes) for %s %s %smm",
@@ -212,14 +194,17 @@ async def process_shoe_scan(
                 sizeBase,
             )
 
+        def _fmt(x: object) -> str:
+            return f"{x:.1f}" if isinstance(x, (int, float)) else "—"
+
         logger.info(
-            "Shoe scan complete: %s %s %smm → length=%.1f width=%.1f arch=%.1f",
+            "Shoe scan complete: %s %s %smm → length=%s width=%s arch=%s",
             brand,
             modelName,
             sizeBase,
-            measurements_dict["internal_length"],
-            measurements_dict["internal_width"],
-            measurements_dict["arch_support_x"],
+            _fmt(measurements_dict["internal_length"]),
+            _fmt(measurements_dict["internal_width"]),
+            _fmt(measurements_dict["arch_support_x"]),
         )
 
         return ShoeScanResult(

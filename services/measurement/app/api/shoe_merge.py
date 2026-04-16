@@ -8,7 +8,6 @@ GET  /shoe-scan/grade/{id}  - Get graded dimensions for a specific target size
 from __future__ import annotations
 
 import logging
-import re
 import shutil
 import tempfile
 from pathlib import Path
@@ -19,6 +18,11 @@ import open3d as o3d
 from fastapi import APIRouter, Form, HTTPException, UploadFile
 from pydantic import BaseModel, Field
 
+from app.shoe_scan._upload import (
+    save_upload,
+    validate_mesh_file,
+    validate_uuid,
+)
 from app.shoe_scan.cavity_extractor import (
     compute_quality_score,
     extract_shoe_dimensions,
@@ -40,14 +44,6 @@ from app.shoe_scan.models import ShoeInternalDimensions
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/shoe-scan", tags=["shoe-scan"])
-
-MAX_UPLOAD_SIZE = 200 * 1024 * 1024  # 200MB per mesh file
-ALLOWED_MESH_EXTENSIONS = {".stl", ".obj", ".ply", ".gltf", ".glb"}
-
-UUID_PATTERN = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
-    re.IGNORECASE,
-)
 
 # Revopoint outputs in mm — no pixel-to-mm conversion needed
 REVOPOINT_PIXELS_PER_MM = 1.0
@@ -124,21 +120,20 @@ async def merge_shoe_scans(
         Unified dimensions with confidence scores per measurement.
     """
     # Validate scanId
-    if not UUID_PATTERN.match(scanId):
-        raise HTTPException(status_code=400, detail="Invalid scanId format")
+    validate_uuid(scanId)
 
     # Validate file extensions
-    revopoint_ext = _validate_mesh_file(revopoint_mesh, "revopoint_mesh")
-    cast_ext = _validate_mesh_file(cast_mesh, "cast_mesh")
+    revopoint_ext = validate_mesh_file(revopoint_mesh, "revopoint_mesh")
+    cast_ext = validate_mesh_file(cast_mesh, "cast_mesh")
 
     work_dir = Path(tempfile.mkdtemp(prefix=f"fitsole_merge_{scanId}_"))
     try:
         # Save both uploaded files — preserve the original extension so Open3D
         # dispatches the correct loader (read_triangle_mesh picks by suffix).
-        revopoint_path = await _save_upload(
+        revopoint_path = await save_upload(
             revopoint_mesh, work_dir / f"revopoint_raw{revopoint_ext}"
         )
-        cast_path = await _save_upload(
+        cast_path = await save_upload(
             cast_mesh, work_dir / f"cast_raw{cast_ext}"
         )
 
@@ -323,44 +318,3 @@ async def grade_shoe_sizes(request: GradeRequest):
         raise HTTPException(status_code=500, detail=f"Grading failed: {str(e)}")
 
 
-# ─────────────────────────────────────────────
-# Helper functions
-# ─────────────────────────────────────────────
-
-
-def _validate_mesh_file(file: UploadFile, field_name: str) -> str:
-    """Validate a mesh file upload by extension and return the normalized suffix."""
-    if not file.filename:
-        raise HTTPException(
-            status_code=400, detail=f"{field_name} has no filename"
-        )
-
-    ext = Path(file.filename).suffix.lower()
-    if not ext:
-        raise HTTPException(
-            status_code=400,
-            detail=f"{field_name} filename has no extension. "
-            f"Allowed: {', '.join(sorted(ALLOWED_MESH_EXTENSIONS))}",
-        )
-    if ext not in ALLOWED_MESH_EXTENSIONS:
-        raise HTTPException(
-            status_code=400,
-            detail=f"{field_name} has invalid extension {ext}. "
-            f"Allowed: {', '.join(sorted(ALLOWED_MESH_EXTENSIONS))}",
-        )
-    return ext
-
-
-async def _save_upload(file: UploadFile, dest: Path) -> Path:
-    """Save an UploadFile to disk with size check."""
-    total = 0
-    with open(dest, "wb") as f:
-        while chunk := await file.read(1024 * 1024):
-            total += len(chunk)
-            if total > MAX_UPLOAD_SIZE:
-                raise HTTPException(
-                    status_code=413,
-                    detail=f"File too large. Max {MAX_UPLOAD_SIZE // (1024 * 1024)}MB",
-                )
-            f.write(chunk)
-    return dest
