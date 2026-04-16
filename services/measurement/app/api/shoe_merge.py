@@ -188,17 +188,29 @@ async def merge_shoe_scans(
         # Step 3: Resolve discrepancies (the user's key requirement)
         resolved, report = resolve_all_dimensions(rev_dims, cast_dims)
 
+        # Surface a human-readable warning for every dimension that came back
+        # as None so the admin UI can flag partial scans without the client
+        # needing to know which keys are expected.
+        missing = [name for name, value in resolved.items() if value is None]
+        merge_warnings = list(merge_result.warnings)
+        if missing:
+            merge_warnings.append(
+                "측정 누락 항목: " + ", ".join(missing)
+                + " — 해당 영역의 메쉬 밀도가 낮습니다"
+            )
+
         # Step 4: Compute quality score on merged mesh
         quality, accuracy = compute_quality_score(
             merge_result.merged_mesh, resolved
         )
 
         logger.info(
-            "Merge complete %s: RMSE=%.2f overlap=%.1f%% quality=%.1f",
+            "Merge complete %s: RMSE=%.2f overlap=%.1f%% quality=%.1f missing=%d",
             scanId,
             merge_result.alignment_rmse,
             merge_result.overlap_percentage,
             quality,
+            len(missing),
         )
 
         return MergeResponse(
@@ -207,7 +219,7 @@ async def merge_shoe_scans(
             alignment_rmse=merge_result.alignment_rmse,
             overlap_percentage=merge_result.overlap_percentage,
             discrepancy_count=len(merge_result.discrepancies),
-            warnings=merge_result.warnings,
+            warnings=merge_warnings,
             resolved_dimensions=ShoeInternalDimensions(**resolved),
             resolution_report=report,
             quality_score=quality,

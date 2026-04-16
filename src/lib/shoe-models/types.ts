@@ -94,17 +94,22 @@ export interface ShoeScanRequest {
 
 /**
  * Shoe scan result returned by the Python measurement service.
+ *
+ * Individual measurement fields are nullable because sparse slices of the
+ * reconstructed cavity mesh produce missing values rather than sentinels
+ * (see `ShoeInternalDimensions` in the Python service). A partial scan
+ * therefore still parses and is rendered with '—' placeholders by the UI.
  */
 export interface ShoeScanResult {
   scanId: string;
   status: "success" | "failed";
   measurements: {
-    internalLength: number;
-    internalWidth: number;
-    heelCupDepth: number;
-    archSupportX: number;
-    toeBoxVolume: number;
-    instepClearance: number;
+    internalLength: number | null;
+    internalWidth: number | null;
+    heelCupDepth: number | null;
+    archSupportX: number | null;
+    toeBoxVolume: number | null;
+    instepClearance: number | null;
   } | null;
   qualityScore: number;
   accuracy: number;
