@@ -57,12 +57,6 @@ export async function generateMetadata({
   };
 }
 
-const priceFormatter = new Intl.NumberFormat('ko-KR', {
-  style: 'currency',
-  currency: 'KRW',
-  maximumFractionDigits: 0,
-});
-
 /**
  * Recommend shoe size based on foot length measurement.
  * Korean sizing: shoe size number = foot length in mm (rounded to nearest 5).

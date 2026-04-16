@@ -32,7 +32,6 @@ const GAIT_RECORD_MAX_SECONDS = 15;
 // 3 = Walking side view (sagittal plane)
 // 4 = Walking rear view (frontal plane)
 // 5 = Foot side + biometric form
-const TOTAL_STEPS = 5;
 
 export default function ScanNewPage() {
   const router = useRouter();

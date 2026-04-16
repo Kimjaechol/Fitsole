@@ -31,6 +31,7 @@ vi.mock("@/lib/db", () => {
     }),
     update: () => ({
       set: (values: { segment?: string | null }) => ({
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars -- signature-required arg for Drizzle's fluent API mock.
         where: async (_cond: unknown) => {
           updateCalls.push({
             segment: values.segment ?? null,

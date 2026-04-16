@@ -181,6 +181,7 @@ export function OrderTable({ orders }: { orders: AdminOrderSummary[] }) {
     []
   );
 
+  // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table's useReactTable returns non-memoizable functions by design; a refactor would require replacing the library. See https://github.com/TanStack/table/issues for React Compiler compatibility status.
   const table = useReactTable({
     data: orders,
     columns,

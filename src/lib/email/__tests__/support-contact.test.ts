@@ -10,6 +10,7 @@ const resendSendMock = vi.fn();
 vi.mock("resend", () => {
   class Resend {
     emails = { send: resendSendMock };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- signature-required arg for Resend client mock.
     constructor(_apiKey?: string) {}
   }
   return { Resend };

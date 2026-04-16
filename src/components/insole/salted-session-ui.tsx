@@ -38,7 +38,6 @@ export function SaltedSessionUi({ onSessionComplete }: SaltedSessionUiProps) {
     addFrame,
     startRecording,
     stopRecording,
-    setAnalysis,
     error,
     reset,
   } = useSaltedStore();

@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { AlertTriangle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Toggle } from '@/components/ui/toggle';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
@@ -59,7 +59,6 @@ function hasAsymmetry(
 
 export default function ScanResultsPage() {
   const params = useParams<{ id: string }>();
-  const router = useRouter();
 
   const [leftResult, setLeftResult] = useState<ScanResult | null>(null);
   const [rightResult, setRightResult] = useState<ScanResult | null>(null);

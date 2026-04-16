@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { orders } from "@/lib/db/schema";
-import { eq, gte, inArray, sql } from "drizzle-orm";
+import { gte, inArray, sql } from "drizzle-orm";
 import { DashboardStats } from "@/components/admin/dashboard-stats";
 
 export const dynamic = "force-dynamic";

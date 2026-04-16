@@ -11,7 +11,6 @@ import { SaltedSessionUi } from '@/components/insole/salted-session-ui';
 import { InsolePreview3D } from '@/components/insole/insole-preview-3d';
 import { BeforeAfterReport } from '@/components/insole/before-after-report';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 
 /** Build default hardness map from VARIOSHORE_ZONES constant. */
 function buildDefaultHardnessMap(): Record<HardnessZone, VarioshoreTpuZone> {
@@ -28,12 +27,14 @@ function buildDefaultHardnessMap(): Record<HardnessZone, VarioshoreTpuZone> {
 }
 
 export default function SaltedMeasurementPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [designResult, setDesignResult] = useState<{
     designParams: DesignParams;
     hardnessMap: Record<HardnessZone, VarioshoreTpuZone>;
   } | null>(null);
   const [showPressureOverlay, setShowPressureOverlay] = useState(false);
+  // TODO: wire up setter when verification flow lands; setter intentionally unused for now.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [verificationReport, setVerificationReport] = useState<VerificationReport | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +45,8 @@ export default function SaltedMeasurementPage() {
   }
 
   const handleSessionComplete = useCallback(
-    async (frames: SaltedPressureFrame[], analysis: BiomechanicalAnalysis | null) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- analysis not yet consumed server-side; keep in signature for future use.
+    async (frames: SaltedPressureFrame[], _analysis: BiomechanicalAnalysis | null) => {
       setIsProcessing(true);
       setError(null);
 
