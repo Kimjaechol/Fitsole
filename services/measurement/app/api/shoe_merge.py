@@ -261,20 +261,86 @@ async def grade_shoe_sizes(request: GradeRequest):
         Output: predictions for all 5 sizes calculated via grading rules.
     """
     try:
-        # Convert request anchors to GradingAnchor objects
+        # Convert request anchors to GradingAnchor objects. Every dimension
+        # is required: grading extrapolates all target sizes from these values,
+        # so a zero or null here would silently produce nonsense for every
+        # predicted size. We reject such anchors with a 400 that names the
+        # offending field.
         anchor_objs = []
-        for a in request.anchors:
-            dims_data = a.get("dimensions", {})
-            dims = ShoeDimensions(
-                internal_length=float(dims_data.get("internal_length", 0)),
-                internal_width=float(dims_data.get("internal_width", 0)),
-                heel_cup_depth=float(dims_data.get("heel_cup_depth", 0)),
-                arch_support_x=float(dims_data.get("arch_support_x", 0)),
-                toe_box_volume=float(dims_data.get("toe_box_volume", 0)),
-                instep_clearance=float(dims_data.get("instep_clearance", 0)),
-            )
+        required_fields = (
+            "internal_length",
+            "internal_width",
+            "heel_cup_depth",
+            "arch_support_x",
+            "toe_box_volume",
+            "instep_clearance",
+        )
+        for i, a in enumerate(request.anchors):
+            if "size_base" not in a:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"anchors[{i}] is missing size_base",
+                )
+
+            dims_data = a.get("dimensions")
+            if not isinstance(dims_data, dict):
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"anchors[{i}].dimensions must be an object",
+                )
+
+            dim_values: dict[str, float] = {}
+            for field in required_fields:
+                raw = dims_data.get(field)
+                if raw is None:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=(
+                            f"anchors[{i}].dimensions.{field} is required "
+                            "for grading (received null/missing)"
+                        ),
+                    )
+                try:
+                    value = float(raw)
+                except (TypeError, ValueError):
+                    raise HTTPException(
+                        status_code=400,
+                        detail=(
+                            f"anchors[{i}].dimensions.{field} must be a number "
+                            f"(got {raw!r})"
+                        ),
+                    )
+                if not np.isfinite(value) or value <= 0:
+                    raise HTTPException(
+                        status_code=400,
+                        detail=(
+                            f"anchors[{i}].dimensions.{field} must be a positive "
+                            f"finite number (got {value})"
+                        ),
+                    )
+                dim_values[field] = value
+
+            try:
+                size_base = float(a["size_base"])
+            except (TypeError, ValueError):
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"anchors[{i}].size_base must be a number",
+                )
+            if not np.isfinite(size_base) or size_base <= 0:
+                raise HTTPException(
+                    status_code=400,
+                    detail=(
+                        f"anchors[{i}].size_base must be a positive finite "
+                        f"number (got {size_base})"
+                    ),
+                )
+
             anchor_objs.append(
-                GradingAnchor(size_base=float(a["size_base"]), dimensions=dims)
+                GradingAnchor(
+                    size_base=size_base,
+                    dimensions=ShoeDimensions(**dim_values),
+                )
             )
 
         if not anchor_objs:
