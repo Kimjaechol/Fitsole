@@ -114,8 +114,13 @@ def _orient_to_shoe_axes(vertices: np.ndarray) -> Optional[np.ndarray]:
         order = np.argsort(eigvals)[::-1]
         eigvecs = eigvecs[:, order]
 
-        # Build rotation: principal component → Z, second → X, third → Y
+        # Build rotation: principal component → Z, second → X, third → Y.
+        # The raw column stack is orthonormal but not guaranteed right-handed
+        # (det may be -1, a reflection that inverts mesh normals); if so, flip
+        # one axis to restore a proper rotation.
         R = np.column_stack([eigvecs[:, 1], eigvecs[:, 2], eigvecs[:, 0]])
+        if np.linalg.det(R) < 0:
+            R[:, 0] = -R[:, 0]
         rotated = centered @ R
 
         # Ensure heel-to-toe direction (more vertices at heel = lower Z)
